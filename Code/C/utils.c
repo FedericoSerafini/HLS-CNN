@@ -37,21 +37,21 @@ void
 padding
 (
   float img_in  [IMG_ROWS][IMG_COLS],
-  float img_out [IMG_ROWS+1][IMG_COLS+1]
+  float img_out [IMG_ROWS + 2][IMG_COLS + 2]
 )
 {
-  for(uint8_t i = 0; i < IMG_ROWS+1U; ++i)
-    for(uint8_t j = 0; j < IMG_COLS+1U; ++j)
+  for(uint8_t i = 0; i < IMG_ROWS + 2; ++i)
+    for(uint8_t j = 0; j < IMG_COLS + 2; ++j)
     {
-      if (i == 0 || i == IMG_ROWS)
+      if (i == 0 || i == IMG_ROWS + 1)
       {
         // Add pagging.
         img_out[i][j] = 0.0;
       }
-      else if (j == 0 || j == IMG_COLS)
+      else if (j == 0 || j == IMG_COLS + 1)
       {
         // Add padding.
-        img_out[i][j] = 0;
+        img_out[i][j] = 0.0;
       }
       else
       {
@@ -69,7 +69,7 @@ print_img(float img[IMG_ROWS][IMG_COLS])
   {
     for (uint8_t j = 0; j < IMG_COLS; ++j)
     {
-      printf(" %.0f", img[i][j]);
+      printf("%.0f", img[i][j]);
     }
 
     printf("\n");
@@ -77,13 +77,13 @@ print_img(float img[IMG_ROWS][IMG_COLS])
 }
 
 void
-print_pad_img(float img[IMG_ROWS+1][IMG_COLS+1])
+print_pad_img(float img[IMG_ROWS + 2][IMG_COLS + 2])
 {
-  for (uint8_t i = 0; i < IMG_ROWS+1; ++i)
+  for (uint8_t i = 0; i < IMG_ROWS + 2; ++i)
   {
-    for (uint8_t j = 0; j < IMG_COLS+1; ++j)
+    for (uint8_t j = 0; j < IMG_COLS + 2; ++j)
     {
-      printf(" %.0f", img[i][j]);
+      printf("%.0f", img[i][j]);
     }
 
     printf("\n");

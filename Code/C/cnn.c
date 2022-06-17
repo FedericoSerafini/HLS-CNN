@@ -6,7 +6,7 @@ int8_t cnn()
 {
 
   float img [IMG_ROWS][IMG_COLS];
-  read_img("image.txt", img);
+  read_img("../Data/image.txt", img);
   print_img(img);
 
   float norm_img [IMG_ROWS][IMG_COLS];

@@ -19,11 +19,11 @@ void
 padding
 (
   const float img_in [IMG_ROWS][IMG_COLS],
-  float       img_out [IMG_ROWS + 2][IMG_COLS + 2]
+  float       img_out [IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS]
 )
 {
-  for(uint8_t i = 0; i < IMG_ROWS + 2; ++i)
-    for(uint8_t j = 0; j < IMG_COLS + 2; ++j)
+  for(uint8_t i = 0; i < IMG_ROWS + PAD_ROWS; ++i)
+    for(uint8_t j = 0; j < IMG_COLS + PAD_COLS; ++j)
     {
       if (i == 0 || i == IMG_ROWS + 1)
       {
@@ -59,11 +59,11 @@ print_img(const float img[IMG_ROWS][IMG_COLS])
 }
 
 void
-print_pad_img(const float img[IMG_ROWS + 2][IMG_COLS + 2])
+print_pad_img(const float img[IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS])
 {
-  for (uint8_t i = 0; i < IMG_ROWS + 2; ++i)
+  for (uint8_t i = 0; i < IMG_ROWS + PAD_ROWS; ++i)
   {
-    for (uint8_t j = 0; j < IMG_COLS + 2; ++j)
+    for (uint8_t j = 0; j < IMG_COLS + PAD_COLS; ++j)
     {
       printf("%.0f", img[i][j]);
     }

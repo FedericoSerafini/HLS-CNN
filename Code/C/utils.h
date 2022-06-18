@@ -10,8 +10,8 @@ normalize (
 
 void
 padding(
-  const float img_in [IMG_ROWS][IMG_COLS],         // Input image.
-  float       img_out [IMG_ROWS + 2][IMG_COLS + 2] // Padded image.
+  const float img_in [IMG_ROWS][IMG_COLS],                       // Input image.
+  float       img_out [IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS] // Paded out.
 );
 
 // FIME: remove code below before synthesis.
@@ -20,4 +20,4 @@ void
 print_img(const float img[IMG_ROWS][IMG_COLS]);
 
 void
-print_pad_img(const float img[IMG_ROWS + 2][IMG_COLS + 2]);
+print_pad_img(const float img[IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS]);

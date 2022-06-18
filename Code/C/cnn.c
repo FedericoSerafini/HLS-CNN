@@ -13,7 +13,7 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
 
   /******** Padding. ********/
   printf("Padded image.\n");
-  float pad_img [IMG_ROWS + 2][IMG_COLS + 2];
+  float pad_img [IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS];
   padding(norm_img, pad_img);
   print_pad_img(pad_img);
 

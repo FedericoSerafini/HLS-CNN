@@ -6,16 +6,14 @@
 void
 conv
 (
-  const float   img_in[IMG_ROWS + 2][IMG_COLS + 2],
+  const float   img_in[IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS],
   const uint8_t filter,
   float         img_out[IMG_ROWS][IMG_COLS])
 {
   float w_sum = 0; // Weighted sum.
 
-
-  for(int i = 0; i < IMG_ROWS; ++i) // stride instead of ++ ? 
-    for(int j = 0; j < IMG_COLS; ++j)  // stride instead of ++ ?
-      // TO ADD: for each filter.
+  for(int i = 0; i < IMG_ROWS; ++i)   // Stride instead of ++ ?
+    for(int j = 0; j < IMG_COLS; ++j) // Stride instead of ++ ?
     {
       w_sum = 0;
 

@@ -1,7 +1,7 @@
 #include "conv.h"
 #include "definitions.h"
 #include "activ_fun.h"
-#include "weight_conv.h"
+#include "weights.h"
 
 void
 conv

@@ -3,28 +3,11 @@
 
 #include <stdio.h>
 
-int
-read_img(const char * file, float img [IMG_ROWS][IMG_COLS])
-{
-  FILE *fp;
-
-  fp = fopen(file, "r");
-
-  if(fp == NULL)
-    return -1;
-
-  for(int i = 0; i < IMG_ROWS; ++i)
-    for(int j = 0; j < IMG_COLS; ++j)
-      fscanf(fp, "%f", & img[i][j]);
-
-  return fclose(fp);
-}
-
 void
 normalize
 (
-  float  img_in  [IMG_ROWS][IMG_COLS],
-  float img_out [IMG_ROWS][IMG_COLS]
+  const float img_in  [IMG_ROWS][IMG_COLS],
+  float       img_out [IMG_ROWS][IMG_COLS]
 )
 {
   for (int i = 0; i < IMG_ROWS; ++i)
@@ -32,12 +15,11 @@ normalize
       img_out[i][j] = img_in[i][j] / 255.0;
 }
 
-
 void
 padding
 (
-  float img_in  [IMG_ROWS][IMG_COLS],
-  float img_out [IMG_ROWS + 2][IMG_COLS + 2]
+  const float img_in [IMG_ROWS][IMG_COLS],
+  float       img_out [IMG_ROWS + 2][IMG_COLS + 2]
 )
 {
   for(uint8_t i = 0; i < IMG_ROWS + 2; ++i)
@@ -63,7 +45,7 @@ padding
 }
 
 void
-print_img(float img[IMG_ROWS][IMG_COLS])
+print_img(const float img[IMG_ROWS][IMG_COLS])
 {
   for (uint8_t i = 0; i < IMG_ROWS; ++i)
   {
@@ -77,7 +59,7 @@ print_img(float img[IMG_ROWS][IMG_COLS])
 }
 
 void
-print_pad_img(float img[IMG_ROWS + 2][IMG_COLS + 2])
+print_pad_img(const float img[IMG_ROWS + 2][IMG_COLS + 2])
 {
   for (uint8_t i = 0; i < IMG_ROWS + 2; ++i)
   {

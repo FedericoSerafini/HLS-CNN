@@ -1,25 +1,28 @@
 #include "conv.h"
 #include "definitions.h"
+#include "activ_fun.h"
+#include "weights.h"
 
 void
 conv
 (
-  const float img_in[IMG_ROWS + 2][IMG_COLS + 2],
-  const float kernel[KERNEL_ROWS][KERNEL_COLS],
-  float       img_out[IMG_ROWS][IMG_COLS])
+  const float   img_in[IMG_ROWS + 2][IMG_COLS + 2],
+  const uint8_t filter,
+  float         img_out[IMG_ROWS][IMG_COLS])
 {
+  float w_sum = 0; // Weighted sum.
 
   for(int i = 0; i < IMG_ROWS; ++i)
     for(int j = 0; j < IMG_COLS; ++j)
     {
-      float sum = 0;
+      w_sum = 0;
 
-      for(int ki = 0; ki < KERNEL_ROWS; ++ki)
-        for(int kj = 0; kj < KERNEL_COLS; ++kj)
+      for(int ki = 0; ki < KRN_ROWS; ++ki)
+        for(int kj = 0; kj < KRN_COLS; ++kj)
         {
-          sum += kernel[ki][kj] * img_in[i+ki][j+kj];
+          w_sum += krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
         }
 
-     img_out[i][j] = sum;
+     img_out[i][j] = relu(w_sum) + krn_biases[filter];
     }
 }

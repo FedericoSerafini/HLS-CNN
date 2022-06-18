@@ -1,2 +1,2 @@
 hls_nnet :
-	gcc -Wall -Wextra -g -fsanitize=address utils.c conv.c cnn.c main.c
+	gcc -Wall -Wextra -O0 -g -fsanitize=address utils.c weights.c activ_fun.c conv.c cnn.c cnn_tb.c

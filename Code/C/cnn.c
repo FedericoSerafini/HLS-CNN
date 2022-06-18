@@ -1,38 +1,43 @@
 #include "cnn.h"
 #include "utils.h"
+#include "activ_fun.h"
 #include "conv.h"
 
-// FIXME: remove all print from utils.
-
-int8_t cnn()
+void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
 {
-  // Read the image.
-  float img [IMG_ROWS][IMG_COLS];
-  read_img("../Data/image.txt", img);
-
-  // Normalization.
+  /******** Normalization. ********/
   printf("Normalized image.\n");
   float norm_img [IMG_ROWS][IMG_COLS];
-  normalize(img, norm_img);
+  normalize(img_in, norm_img);
   print_img(norm_img);
 
-  // Padding.
+  /******** Padding. ********/
   printf("Padded image.\n");
   float pad_img [IMG_ROWS + 2][IMG_COLS + 2];
   padding(norm_img, pad_img);
   print_pad_img(pad_img);
 
-  // Convolution 1.
+  /******** Convolution layer 1. ********/
   printf("Conv1 image.\n");
-  float conv1_img [IMG_ROWS][IMG_COLS];
-  float kernel[KERNEL_ROWS][KERNEL_COLS]
-    ={
-      {0.11, 0.11, 0.11},
-      {0.11, 0.11, 0.11},
-      {0.11, 0.11, 0.11}
-    };
-  conv(pad_img, kernel, conv1_img);
-  print_img(conv1_img);
+  /*
+    An array to collect the results of the convolutions:
+    32 result images, one for each filter.
+  */
+  float conv1_images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
 
-  return 0;
+  // Apply a convolution operation for each filter.
+  for(uint8_t kf = 0; kf < KRN_FILTERS; ++kf)
+    conv(pad_img, kf, conv1_images[kf]);
+
+  // Print results.
+  for(int i = 0; i < KRN_FILTERS; ++i)
+    print_img(conv1_images[i]);
+
+
+  /******** Output. ********/
+  for(int i = 0; i < 10; ++i)
+  {
+    pred[i] = 0.0;
+  }
+
 }

@@ -6,7 +6,7 @@
 void
 conv
 (
-  const float   img_in[IMG_ROWS + PAD_ROWS][IMG_COLS + PAD_COLS],
+  const float   img_in[PAD_IMG_ROWS][PAD_IMG_COLS],
   const uint8_t filter,
   float         img_out[IMG_ROWS][IMG_COLS])
 {

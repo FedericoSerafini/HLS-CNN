@@ -11,4 +11,4 @@
 #define KRN_FILTERS 1
 
 #define  PAD_ROWS (KRN_ROWS - 1)
-#define  PAD_COLS (KRN_COLS -1)
+#define  PAD_COLS (KRN_COLS - 1)

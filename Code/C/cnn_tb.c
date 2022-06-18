@@ -1,5 +1,4 @@
 #include "cnn.h"
-#include "utils.h"
 
 int
 read_img(const char * file, float img [IMG_ROWS][IMG_COLS])

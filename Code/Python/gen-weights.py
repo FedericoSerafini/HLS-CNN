@@ -169,7 +169,7 @@ def main() -> None:
 	# define model
 	model = Sequential()
 	model.add(ZeroPadding2D(padding=1, input_shape=(28, 28, 1)))
-	model.add(Conv2D(32, (3, 3), activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(28, 28, 1)))
+	model.add(Conv2D(conv_1_filter_num, conv_1_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(28, 28, 1)))
 	#model.add(BatchNormalization())
 	#model.add(MaxPooling2D((2, 2)))
 	#model.add(Flatten())

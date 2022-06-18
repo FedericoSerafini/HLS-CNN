@@ -22,17 +22,17 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
     An array to collect the results of the convolutions:
     KRN_FILTERS result images, one for each filter.
   */
-  float conv1_images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
+  float images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
 
   // Apply a convolution operation for each filter.
   for(uint8_t kf = 0; kf < KRN_FILTERS; ++kf)
-    conv(pad_img, kf, conv1_images[kf]);
+    conv(pad_img, kf, images[kf]);
 
   // Print results.
   for(uint8_t f = 0; f < KRN_FILTERS; ++f)
   {
     printf("Conv layer 1, filter %d.\n", f);
-    print_img(conv1_images[f]);
+    print_img(images[f]);
   }
 
 

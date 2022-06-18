@@ -20,9 +20,9 @@ conv
       for(uint8_t ki = 0; ki < KRN_ROWS; ++ki)
         for(uint8_t kj = 0; kj < KRN_COLS; ++kj)
         {
-          w_sum += conv1_krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
+          w_sum += krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
         }
 
-     img_out[i][j] = relu(w_sum + conv1_krn_biases[filter]);
+     img_out[i][j] = relu(w_sum + krn_biases[filter]);
     }
 }

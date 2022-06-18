@@ -22,19 +22,32 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
     An array to collect the results of the convolutions:
     KRN_FILTERS result images, one for each filter.
   */
-  float images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
+  float conv_images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
 
   // Apply a convolution operation for each filter.
   for(uint8_t kf = 0; kf < KRN_FILTERS; ++kf)
-    conv(pad_img, kf, images[kf]);
+    conv(pad_img, kf, conv_images[kf]);
 
   // Print results.
   for(uint8_t f = 0; f < KRN_FILTERS; ++f)
   {
-    printf("Conv layey filter %d.\n", f);
-    print_img(images[f]);
+    printf("Conv layer filter %d.\n", f);
+    print_img(conv_images[f]);
   }
 
+  /******** Maxpooling layer. ********/
+  float pool_images [KRN_FILTERS][IMG_ROWS / POOL_SIZE][IMG_COLS / POOL_SIZE];
+
+  // Apply a max pooling operation for each filter.
+  for(uint8_t kf = 0; kf < KRN_FILTERS; ++kf)
+    max_pooling(conv_images[kf], pool_images[kf]);
+
+  // Print results.
+  for(uint8_t f = 0; f < KRN_FILTERS; ++f)
+  {
+    printf("Max pool layer filter %d.\n", f);
+    print_pool_img(pool_images[f]);
+  }
 
   /******** Output. ********/
   for(uint8_t i = 0; i < 10; ++i)

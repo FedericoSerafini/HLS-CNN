@@ -16,3 +16,6 @@
 #define KRN_FILTERS	32
 #define	PAD_ROWS (KRN_ROWS - 1)
 #define	PAD_COLS (KRN_COLS - 1)
+
+// Pool layer.
+#define POOL_SIZE 2

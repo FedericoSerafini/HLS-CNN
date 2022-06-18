@@ -44,3 +44,4 @@ Useful info:
     # to install the requirements in the current environment
     pip install -r requirements.txt 
     ```
+

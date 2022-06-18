@@ -31,7 +31,7 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
   // Print results.
   for(uint8_t f = 0; f < KRN_FILTERS; ++f)
   {
-    printf("Conv layer 1, filter %d.\n", f);
+    printf("Conv layey filter %d.\n", f);
     print_img(images[f]);
   }
 

@@ -12,8 +12,10 @@ conv
 {
   float w_sum = 0; // Weighted sum.
 
-  for(int i = 0; i < IMG_ROWS; ++i)
-    for(int j = 0; j < IMG_COLS; ++j)
+
+  for(int i = 0; i < IMG_ROWS; ++i) // stride instead of ++ ? 
+    for(int j = 0; j < IMG_COLS; ++j)  // stride instead of ++ ?
+      // TO ADD: for each filter.
     {
       w_sum = 0;
 
@@ -23,6 +25,6 @@ conv
           w_sum += conv1_krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
         }
 
-     img_out[i][j] = relu(w_sum) + conv1_krn_biases[filter];
+     img_out[i][j] = relu(w_sum + conv1_krn_biases[filter]);
     }
 }

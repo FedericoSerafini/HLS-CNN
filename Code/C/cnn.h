@@ -1,7 +1,6 @@
 #pragma once
 
 #include "definitions.h"
-#include "weights.h"
 
 #include <stdint.h>
 

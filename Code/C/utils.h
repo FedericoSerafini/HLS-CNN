@@ -14,6 +14,8 @@ padding(
   float       img_out [IMG_ROWS + 2][IMG_COLS + 2] // Padded image.
 );
 
+// FIME: remove code below before synthesis.
+
 void
 print_img(const float img[IMG_ROWS][IMG_COLS]);
 

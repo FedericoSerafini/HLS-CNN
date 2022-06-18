@@ -1,6 +1,8 @@
-#include "weights.h"
+#pragma once
 
-const float krn_filters [KRN_FILTERS][KRN_ROWS][KRN_COLS]
+#include "definitions.h"
+
+const float conv1_krn_filters [KRN_FILTERS][KRN_ROWS][KRN_COLS]
   = {
       { // 1 filter.
 
@@ -11,4 +13,4 @@ const float krn_filters [KRN_FILTERS][KRN_ROWS][KRN_COLS]
       }
     };
 
-const float krn_biases [KRN_FILTERS] = { 0 };
+const float conv1_krn_biases [KRN_FILTERS] = { 0 };

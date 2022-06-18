@@ -18,8 +18,6 @@ read_img(const char * file, float img [IMG_ROWS][IMG_COLS])
   return fclose(fp);
 }
 
-// FIXME: remove all print from utils.
-
 int main ()
 {
   // Read the image.

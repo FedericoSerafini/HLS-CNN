@@ -18,10 +18,9 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
   print_pad_img(pad_img);
 
   /******** Convolution layer 1. ********/
-  printf("Conv1 image.\n");
   /*
     An array to collect the results of the convolutions:
-    32 result images, one for each filter.
+    KRN_FILTERS result images, one for each filter.
   */
   float conv1_images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
 
@@ -30,8 +29,11 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
     conv(pad_img, kf, conv1_images[kf]);
 
   // Print results.
-  for(int i = 0; i < KRN_FILTERS; ++i)
-    print_img(conv1_images[i]);
+  for(int f = 0; f < KRN_FILTERS; ++f)
+  {
+    printf("Conv layer 1, filter %d.\n", f);
+    print_img(conv1_images[f]);
+  }
 
 
   /******** Output. ********/

@@ -1,7 +1,7 @@
 #include "conv.h"
 #include "definitions.h"
 #include "activ_fun.h"
-#include "weights.h"
+#include "weight_conv.h"
 
 void
 conv
@@ -20,9 +20,9 @@ conv
       for(int ki = 0; ki < KRN_ROWS; ++ki)
         for(int kj = 0; kj < KRN_COLS; ++kj)
         {
-          w_sum += krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
+          w_sum += conv1_krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
         }
 
-     img_out[i][j] = relu(w_sum) + krn_biases[filter];
+     img_out[i][j] = relu(w_sum) + conv1_krn_biases[filter];
     }
 }

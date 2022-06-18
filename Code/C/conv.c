@@ -12,13 +12,13 @@ conv
 {
   float w_sum = 0; // Weighted sum.
 
-  for(int i = 0; i < IMG_ROWS; ++i)   // Stride instead of ++ ?
-    for(int j = 0; j < IMG_COLS; ++j) // Stride instead of ++ ?
+  for(uint8_t i = 0; i < IMG_ROWS; ++i)   // Stride instead of ++ ?
+    for(uint8_t j = 0; j < IMG_COLS; ++j) // Stride instead of ++ ?
     {
       w_sum = 0;
 
-      for(int ki = 0; ki < KRN_ROWS; ++ki)
-        for(int kj = 0; kj < KRN_COLS; ++kj)
+      for(uint8_t ki = 0; ki < KRN_ROWS; ++ki)
+        for(uint8_t kj = 0; kj < KRN_COLS; ++kj)
         {
           w_sum += conv1_krn_filters[filter][ki][kj] * img_in[i+ki][j+kj];
         }

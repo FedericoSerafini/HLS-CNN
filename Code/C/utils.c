@@ -10,8 +10,8 @@ normalize
   float       img_out [IMG_ROWS][IMG_COLS]
 )
 {
-  for (int i = 0; i < IMG_ROWS; ++i)
-    for(int j = 0; j < IMG_COLS; ++j)
+  for (uint8_t i = 0; i < IMG_ROWS; ++i)
+    for(uint8_t j = 0; j < IMG_COLS; ++j)
       img_out[i][j] = img_in[i][j] / 255.0;
 }
 

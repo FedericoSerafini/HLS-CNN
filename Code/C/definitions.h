@@ -20,7 +20,7 @@
 // Convolutional layer.
 #define KRN_ROWS	3
 #define KRN_COLS	3
-#define KRN_FILTERS	32
+#define FILTERS	32
 
 // Pool layer.
 #define POOL_ROWS	2
@@ -29,4 +29,8 @@
 #define POOL_IMG_COLS (IMG_COLS / POOL_COLS)
 
 // Fatten layer.
-#define FLAT_SIZE (KRN_FILTERS * POOL_IMG_ROWS * POOL_IMG_COLS)
+#define FLAT_SIZE (FILTERS * POOL_IMG_ROWS * POOL_IMG_COLS)
+
+// Dense layers.
+#define DENSE1_SIZE 100
+#define DENSE2_SIZE 10

@@ -47,13 +47,17 @@ int main ()
   }
 
   // Prepare array for output.
-  float pred [10];
+  float prediction [DIGITS];
 
   /**** CNN execution, obtain a prediction. ****/
-  cnn(img, pred);
+  cnn(img, prediction);
 
-  /**** Compare the prediction with Python prediction. ****/
-  // TODO.
+  printf("\nPrediction:\n");
+
+  for (int i = 0; i < DIGITS; ++i)
+  {
+    printf("%d: %.2f\n", i, prediction[i]);
+  }
 
   return 0;
 }

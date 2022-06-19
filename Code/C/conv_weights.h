@@ -7,7 +7,7 @@
 #include "definitions.h"
 
 
-const float krn_filters [KRN_FILTERS][KRN_ROWS][KRN_COLS]
+const float conv_weights [FILTERS][KRN_ROWS][KRN_COLS]
 	= {
 			{
 				{0.18338775634765625, -0.11759597063064575, 0.5926085710525513},
@@ -172,4 +172,4 @@ const float krn_filters [KRN_FILTERS][KRN_ROWS][KRN_COLS]
 		};
 
 
-const float krn_biases [KRN_FILTERS] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+const float conv_biases [FILTERS] = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};

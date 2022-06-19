@@ -137,10 +137,10 @@ def random_mini_batches(X, Y, mini_batch_size = 64, seed = 0):
 
 def forward_propagation(X, parameters):
 
-    conv_filters = { "conv1_s" : 1,
+    conv_conv_weights = { "conv1_s" : 1,
                      "conv2_s" : 1}
 
-    pool_filters = { "pool1_s" : 2,
+    pool_conv_weights = { "pool1_s" : 2,
                      "pool1_f" : 2,
                      "pool2_s" : 2,
                      "pool2_f" : 2}
@@ -153,20 +153,20 @@ def forward_propagation(X, parameters):
 
     #CONV1
 
-    Z1 = tf.nn.conv2d(X, W1, strides = [1, conv_filters["conv1_s"], conv_filters["conv1_s"], 1], padding = 'VALID')# + b1;
+    Z1 = tf.nn.conv2d(X, W1, strides = [1, conv_conv_weights["conv1_s"], conv_conv_weights["conv1_s"], 1], padding = 'VALID')# + b1;
     Z1 = tf.nn.bias_add(Z1, b1)
     A1 = tf.nn.relu(Z1)
 
     #POOL1
-    P1 = tf.nn.max_pool(A1, ksize = [1, pool_filters["pool1_f"], pool_filters["pool1_f"], 1], strides = [1, pool_filters["pool1_s"], pool_filters["pool1_s"], 1], padding = 'VALID')
+    P1 = tf.nn.max_pool(A1, ksize = [1, pool_conv_weights["pool1_f"], pool_conv_weights["pool1_f"], 1], strides = [1, pool_conv_weights["pool1_s"], pool_conv_weights["pool1_s"], 1], padding = 'VALID')
 
     #CONV2
-    Z2 = tf.nn.conv2d(P1, W2, strides = [1, conv_filters["conv2_s"], conv_filters["conv2_s"], 1], padding = 'VALID')# + b2;
+    Z2 = tf.nn.conv2d(P1, W2, strides = [1, conv_conv_weights["conv2_s"], conv_conv_weights["conv2_s"], 1], padding = 'VALID')# + b2;
     Z2 = tf.nn.bias_add(Z2, b2)
     A2 = tf.nn.relu(Z2)
 
     #POOL2
-    P2 = tf.nn.max_pool(A2, ksize = [1, pool_filters["pool2_f"], pool_filters["pool2_f"], 1], strides = [1, pool_filters["pool2_s"], pool_filters["pool2_s"], 1], padding = 'VALID')
+    P2 = tf.nn.max_pool(A2, ksize = [1, pool_conv_weights["pool2_f"], pool_conv_weights["pool2_f"], 1], strides = [1, pool_conv_weights["pool2_s"], pool_conv_weights["pool2_s"], 1], padding = 'VALID')
 
     #Generate the input for the first fully conected layer
     P2 = tf.contrib.layers.flatten(P2)

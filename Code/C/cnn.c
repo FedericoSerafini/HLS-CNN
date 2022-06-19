@@ -4,12 +4,13 @@
 #include "conv.h"
 #include "pool.h"
 #include "flat.h"
+#include "dense.h"
 
 #ifndef __SYNTHESIS__
 # include <stdio.h>
 #endif
 
-void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
+void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
   /******** Normalization. ********/
   #ifndef __SYNTHESIS__
@@ -34,47 +35,48 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float pred[10])
   /******** Convolution layer 1. ********/
   /*
     An array to collect the results of the convolutions:
-    KRN_FILTERS result images, one for each filter.
+    FILTERS resulting feature maps, one for each filter.
   */
-  float conv_images [KRN_FILTERS][IMG_ROWS][IMG_COLS];
+  float conv_image [FILTERS][IMG_ROWS][IMG_COLS];
 
   // Apply a convolution operation for each filter.
-  for(uint8_t kf = 0; kf < KRN_FILTERS; ++kf)
-    conv(pad_img, kf, conv_images[kf]);
+  for(uint8_t kf = 0; kf < FILTERS; ++kf)
+    conv(pad_img, kf, conv_image[kf]);
 
   #ifndef __SYNTHESIS__
   // Print results.
-  for(uint8_t f = 0; f < KRN_FILTERS; ++f)
+  for(uint8_t f = 0; f < FILTERS; ++f)
   {
     printf("Conv layer filter %d.\n", f);
-    print_img(conv_images[f]);
+    print_img(conv_image[f]);
   }
   #endif
 
   /******** Maxpooling layer. ********/
-  float pool_images [KRN_FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
+  float pool_image [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
 
   // Apply a max pooling operation for each filter.
-  for(uint8_t kf = 0; kf < KRN_FILTERS; ++kf)
-    max_pooling(conv_images[kf], pool_images[kf]);
+  for(uint8_t kf = 0; kf < FILTERS; ++kf)
+    max_pooling(conv_image[kf], pool_image[kf]);
 
   #ifndef __SYNTHESIS__
   // Print results.
-  for(uint8_t f = 0; f < KRN_FILTERS; ++f)
+  for(uint8_t f = 0; f < FILTERS; ++f)
   {
     printf("Max pool layer filter %d.\n", f);
-    print_pool_img(pool_images[f]);
+    print_pool_img(pool_image[f]);
   }
   #endif
 
   /******** Flatten layer. ********/
-  float flat_images [FLAT_SIZE];
-  flatten(pool_images, flat_images);
+  float flat_image [FLAT_SIZE];
+  flatten(pool_image, flat_image);
 
-  /******** Output. ********/
-  for(uint8_t i = 0; i < 10; ++i)
-  {
-    pred[i] = 0.0;
-  }
+  /******** Dense layer 1 ********/
+  float dense1_image [DENSE1_SIZE];
+  dense1(flat_image, dense1_image);
+
+  /******** Dense layer 2 ********/
+  dense2(dense1_image, prediction);
 
 }

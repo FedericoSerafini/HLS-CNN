@@ -23,8 +23,8 @@
 #define KRN_FILTERS	32
 
 // Pool layer.
-#define POOL_ROWS 2
-#define POOL_COLS 2
+#define POOL_ROWS	2
+#define POOL_COLS	2
 #define POOL_IMG_ROWS (IMG_ROWS / POOL_ROWS)
 #define POOL_IMG_COLS (IMG_COLS / POOL_COLS)
 

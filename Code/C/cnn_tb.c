@@ -1,6 +1,7 @@
 #include "cnn.h"
 
 #include <stdio.h>
+#include <time.h>
 
 int
 read_img (const char * file, float img [IMG_ROWS][IMG_COLS])
@@ -50,7 +51,9 @@ int main ()
   float prediction [DIGITS];
 
   /**** CNN execution, obtain a prediction. ****/
+  clock_t begin = clock();
   cnn(img, prediction);
+  clock_t end = clock();
 
   printf("\nPrediction:\n");
 
@@ -58,6 +61,10 @@ int main ()
   {
     printf("%d: %.2f\n", i, prediction[i]);
   }
+
+  double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf("\nTime spent: %f (s)\n", time_spent);
+  printf("Clocks per second: %ld\n", CLOCKS_PER_SEC);
 
   return 0;
 }

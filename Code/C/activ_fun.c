@@ -10,20 +10,20 @@ float relu (const float x)
     return 0.0;
 }
 
-void soft_max(const float img_in [DIGITS], float pred[DIGITS])
+void soft_max(const float dense2_array [DIGITS], float pred[DIGITS])
 {
   float sum = 0.0;
 
   soft_for_sum:
   for (uint8_t i = 0; i < DIGITS; ++i)
   {
-    sum += expf(img_in[i]);
+    sum += expf(dense2_array[i]);
   }
 
   soft_for_compute:
   for (uint8_t j = 0; j < DIGITS; ++j)
   {
-    pred[j] = expf(img_in[j]) / sum;
+    pred[j] = expf(dense2_array[j]) / sum;
   }
 
 }

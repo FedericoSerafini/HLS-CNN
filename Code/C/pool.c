@@ -5,8 +5,8 @@
 void
 max_pooling
 (
-  const float img_in[IMG_ROWS][IMG_COLS],
-  float       img_out[POOL_IMG_ROWS][POOL_IMG_COLS]
+  const float feature[IMG_ROWS][IMG_COLS],
+  float       pool_feature[POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
   float pool = 0.0;
@@ -24,11 +24,11 @@ max_pooling
     	max_for_cols:
         for (uint8_t pj = 0; pj < POOL_COLS; ++pj)
         {
-          tmp = img_in[i + pi][j + pj];
+          tmp = feature[i + pi][j + pj];
           if (tmp > pool)
             pool = tmp;
         }
 
-      img_out[i / POOL_ROWS][j / POOL_COLS] = pool;
+      pool_feature[i / POOL_ROWS][j / POOL_COLS] = pool;
     }
 }

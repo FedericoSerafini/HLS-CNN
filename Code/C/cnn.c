@@ -12,7 +12,6 @@
 
 void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
-
   // #pragma HLS pipeline off
 
   /******** Normalization. ********/
@@ -40,12 +39,12 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     An array to collect the results of the convolutions:
     FILTERS resulting feature maps, one for each filter.
   */
-  float conv_image [FILTERS][IMG_ROWS][IMG_COLS];
+  float features [FILTERS][IMG_ROWS][IMG_COLS];
 
   // Apply a convolution operation for each filter.
   cnn_for_conv:
   for(uint8_t f1 = 0; f1 < FILTERS; ++f1)
-    conv(pad_img, f1, conv_image[f1]);
+    conv(pad_img, f1, features[f1]);
 
   #ifndef __SYNTHESIS__
   // Print results.
@@ -53,17 +52,17 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   for(uint8_t f2 = 0; f2 < FILTERS; ++f2)
   {
     printf("Conv layer filter %d.\n", f2);
-    print_img(conv_image[f2]);
+    print_img(features[f2]);
   }
   #endif
 
   /******** Maxpooling layer. ********/
-  float pool_image [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
 
   // Apply a max pooling operation for each filter.
   cnn_for_pool:
   for(uint8_t f3 = 0; f3 < FILTERS; ++f3)
-    max_pooling(conv_image[f3], pool_image[f3]);
+    max_pooling(features[f3], pool_features[f3]);
 
   #ifndef __SYNTHESIS__
   // Print results.
@@ -71,19 +70,22 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   for(uint8_t f4 = 0; f4 < FILTERS; ++f4)
   {
     printf("Max pool layer filter %d.\n", f4);
-    print_pool_img(pool_image[f4]);
+    print_pool_img(pool_features[f4]);
   }
   #endif
 
   /******** Flatten layer. ********/
-  float flat_image [FLAT_SIZE];
-  flatten(pool_image, flat_image);
+  float flat_array [FLAT_SIZE];
+  flatten(pool_features, flat_array);
 
   /******** Dense layer 1 ********/
-  float dense1_image [DENSE1_SIZE];
-  dense1(flat_image, dense1_image);
+  float dense1_array [DENSE1_SIZE];
+  dense1(flat_array, dense1_array);
 
   /******** Dense layer 2 ********/
-  dense2(dense1_image, prediction);
+  float dense2_array [DIGITS];
+  dense2(dense1_array, dense2_array);
+  // Get a prediction applying softmax.
+  soft_max(dense2_array, prediction);
 
 }

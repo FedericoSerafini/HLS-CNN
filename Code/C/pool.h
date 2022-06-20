@@ -5,6 +5,6 @@
 void
 max_pooling
 (
-  const float img_in[IMG_ROWS][IMG_COLS],
-  float       img_out[POOL_IMG_ROWS][POOL_IMG_COLS]
+  const float feature[IMG_ROWS][IMG_COLS],
+  float       pool_feature[POOL_IMG_ROWS][POOL_IMG_COLS]
 );

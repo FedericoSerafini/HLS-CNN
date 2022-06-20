@@ -5,8 +5,8 @@
 void
 dense1
 (
-  const float flat_image   [FLAT_SIZE],
-  float       dense1_image [DENSE1_SIZE]
+  const float flat_array   [FLAT_SIZE],
+  float       dense1_array [DENSE1_SIZE]
 )
 {
   uint32_t index = 0U;
@@ -19,22 +19,21 @@ dense1
     dense1_for_prev_layer:
     for (uint16_t j = 0U; j < FLAT_SIZE; ++j)
     {
-      w_sum += dense1_weights[index] * flat_image[j];
+      w_sum += dense1_weights[index] * flat_array[j];
       ++index;
     }
 
-    dense1_image[i] = relu(dense1_biases[i] + w_sum);
+    dense1_array[i] = relu(dense1_biases[i] + w_sum);
   }
 }
 
 void
 dense2
 (
-  const float dense1_image [DENSE1_SIZE],
-        float prediction   [DIGITS]
+  const float dense1_array [DENSE1_SIZE],
+        float dense2_array [DIGITS]
 )
 {
-  float dense2_image [DENSE2_SIZE]; // To collect tmp results.
   uint32_t index = 0U;
 
   dense2_for_next_layer:
@@ -45,12 +44,11 @@ dense2
     dense2_for_prev_layer:
     for (uint8_t j = 0U; j < DENSE1_SIZE; ++j)
     {
-      w_sum += dense2_weights[index] * dense1_image[j];
+      w_sum += dense2_weights[index] * dense1_array[j];
       ++index;
     }
 
-    dense2_image[i] = dense2_biases[i] + w_sum;
+    dense2_array[i] = dense2_biases[i] + w_sum;
   }
 
-  soft_max(dense2_image, prediction);
 }

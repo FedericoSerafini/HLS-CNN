@@ -4,4 +4,4 @@
 
 float relu (const float x);
 
-void soft_max(const float img_in [DIGITS], float pred[DIGITS]);
+void soft_max(const float dense2_array [DIGITS], float pred[DIGITS]);

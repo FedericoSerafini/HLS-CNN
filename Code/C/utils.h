@@ -22,5 +22,11 @@ void
 print_pad_img(const float img[PAD_IMG_ROWS][PAD_IMG_COLS]);
 
 void
-print_pool_img(const float img[POOL_IMG_ROWS][POOL_IMG_COLS]);
+print_features(const float features[IMG_ROWS][IMG_COLS][FILTERS]);
+
+void
+print_pool_features
+(
+  const float pool_features[POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
+);
 #endif

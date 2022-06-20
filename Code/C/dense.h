@@ -10,6 +10,12 @@ dense1
 );
 
 void
+relu_on_dense1
+(
+  const float dense1_array[DENSE1_SIZE], float dense1_relu[DENSE1_SIZE]
+);
+
+void
 dense2
 (
   const float dense1_array [DENSE1_SIZE],

@@ -5,30 +5,29 @@
 void
 max_pooling
 (
-  const float feature[IMG_ROWS][IMG_COLS],
-  float       pool_feature[POOL_IMG_ROWS][POOL_IMG_COLS]
+  const float features[IMG_ROWS][IMG_COLS][FILTERS],
+  float       pool_features[POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
 )
 {
   float pool = 0.0;
-  float tmp  = 0.0;
 
-  pool_for_rows:
-  for(uint8_t i = 0; i < IMG_ROWS; i += POOL_ROWS)
-	pool_for_cols:
-    for(uint8_t j = 0; j < IMG_COLS; j += POOL_COLS)
+  for (uint8_t f = 0U; f < FILTERS; ++f)
+  {
+    for (uint8_t r = 0; r < IMG_ROWS; r += POOL_ROWS)
     {
-      pool = FLT_MIN;
+      for(uint8_t c = 0; c < IMG_COLS; c += POOL_COLS)
+      {
+        pool = FLT_MIN;
 
-      max_for_rows:
-      for (uint8_t pi = 0; pi < POOL_ROWS; ++pi)
-    	max_for_cols:
-        for (uint8_t pj = 0; pj < POOL_COLS; ++pj)
-        {
-          tmp = feature[i + pi][j + pj];
-          if (tmp > pool)
-            pool = tmp;
-        }
+        for (uint8_t pr = 0U; pr < POOL_ROWS; ++pr)
+          for (uint8_t pc = 0; pc < POOL_COLS; ++pc)
+          {
+            if(features[r + pr][c + pc][f] > pool)
+              pool = features[r + pr][c + pc][f];
+          }
 
-      pool_feature[i / POOL_ROWS][j / POOL_COLS] = pool;
+        pool_features[r / POOL_ROWS][c / POOL_COLS][f] = pool;
+      }
     }
+  }
 }

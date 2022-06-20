@@ -7,24 +7,26 @@ void
 conv
 (
   const float   pad_img[PAD_IMG_ROWS][PAD_IMG_COLS],
-  const uint8_t filter,
-  float         feature[IMG_ROWS][IMG_COLS])
+  float         features[IMG_ROWS][IMG_COLS][FILTERS])
 {
-  float w_sum = 0; // Weighted sum.
+  float w_sum = 0.0; // Weighted sum.
 
-  conv_for_rows:
-  for(uint8_t i = 0; i < IMG_ROWS; ++i)
-	conv_for_cols:
-    for(uint8_t j = 0; j < IMG_COLS; ++j)
+  for (uint8_t f = 0U; f < FILTERS; ++f)
+  {
+    for(uint8_t r = 0; r < IMG_ROWS; ++r)
     {
-      w_sum = 0;
-
-      for(uint8_t ki = 0; ki < KRN_ROWS; ++ki)
-        for(uint8_t kj = 0; kj < KRN_COLS; ++kj)
+      for(uint8_t c = 0; c < IMG_COLS; ++c)
         {
-          w_sum += conv_weights[ki][kj][filter] * pad_img[i+ki][j+kj];
-        }
+          w_sum = 0.0;
 
-     feature[i][j] = relu(w_sum + conv_biases[filter]);
+          for(uint8_t kr = 0; kr < KRN_ROWS; ++kr)
+            for(uint8_t kc = 0; kc < KRN_COLS; ++kc)
+            {
+              w_sum += conv_weights[kr][kc][f] * pad_img[r+kr][c+kc];
+            }
+
+          features[r][c][f] = relu(w_sum + conv_biases[f]);
+        }
     }
+  }
 }

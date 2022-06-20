@@ -3,20 +3,17 @@
 void
 flatten
 (
-  const float pool_image[FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS],
-  float       img_out[FLAT_SIZE]
+  const float pool_features [POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS],
+  float       flat_array[FLAT_SIZE]
 )
 {
-  uint16_t index = 0;
+  uint16_t index = 0U;
 
-  flat_for_filters:
-  for(uint8_t f = 0; f < FILTERS; ++f)
-	flat_for_rows:
-    for(uint8_t i = 0; i < POOL_IMG_ROWS; ++i)
-      flat_for_cols:
-      for(uint8_t j = 0; j < POOL_IMG_COLS; ++j)
+  for(uint8_t r = 0; r < POOL_IMG_ROWS; ++r)
+    for(uint8_t c = 0; c < POOL_IMG_COLS; ++c)
+      for(uint8_t f = 0; f < FILTERS; ++f)
       {
-        img_out[index] = pool_image[f][i][j];
+        flat_array[index] = pool_features[r][c][f];
         ++index;
       }
 }

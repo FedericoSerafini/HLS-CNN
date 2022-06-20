@@ -22,7 +22,7 @@ conv
       for(uint8_t ki = 0; ki < KRN_ROWS; ++ki)
         for(uint8_t kj = 0; kj < KRN_COLS; ++kj)
         {
-          w_sum += conv_weights[filter][ki][kj] * pad_img[i+ki][j+kj];
+          w_sum += conv_weights[ki][kj][filter] * pad_img[i+ki][j+kj];
         }
 
      feature[i][j] = relu(w_sum + conv_biases[filter]);

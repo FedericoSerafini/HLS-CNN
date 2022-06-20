@@ -19,7 +19,7 @@ dense1
     dense1_for_prev_layer:
     for (uint16_t j = 0U; j < FLAT_SIZE; ++j)
     {
-      w_sum += dense1_weights[index] * flat_array[j];
+      w_sum += dense1_weights[j][i] * flat_array[j];
       ++index;
     }
 
@@ -44,7 +44,7 @@ dense2
     dense2_for_prev_layer:
     for (uint8_t j = 0U; j < DENSE1_SIZE; ++j)
     {
-      w_sum += dense2_weights[index] * dense1_array[j];
+      w_sum += dense2_weights[j][i] * dense1_array[j];
       ++index;
     }
 

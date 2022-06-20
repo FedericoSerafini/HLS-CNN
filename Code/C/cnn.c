@@ -42,7 +42,6 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     FILTERS resulting feature maps, one for each filter.
   */
   float features [IMG_ROWS][IMG_COLS][FILTERS] = { 0 };
-
   conv(pad_img, features);
 
   #if 0
@@ -54,7 +53,6 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 
   /******** Maxpooling layer. ********/
   float pool_features [POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS] = { 0 };
-
   max_pooling(features, pool_features);
 
   #if 0
@@ -76,7 +74,5 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   /******** Dense layer 2 ********/
   float dense2_array [DIGITS] = { 0 };
   dense2(dense1_relu, dense2_array);
-  // Get a prediction applying softmax.
   soft_max(dense2_array, prediction);
-
 }

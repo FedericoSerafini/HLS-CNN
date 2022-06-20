@@ -1,3 +1,3 @@
 # HLS-CNN
-Use of High Level Synthesis to create an hardware accellerator for a
-Convolutional Neural Network.
+High Level Synthesis of a trained Convolutional Neural Network for
+handwritten digit recongnition.

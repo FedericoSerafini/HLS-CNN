@@ -38,25 +38,13 @@ dense2
         float dense2_array [DIGITS]
 )
 {
-  uint32_t index = 0U;
-
-  #ifdef __SYNTHESYS__
-  dense2_for_next_layer:
-  #endif
   for (uint8_t i = 0U; i < DENSE2_SIZE; ++i)
   {
-    float w_sum = 0.0F; // Weighted sum.
-
-    #ifdef __SYNTHESYS__
-    dense2_for_prev_layer:
-    #endif
     for (uint8_t j = 0U; j < DENSE1_SIZE; ++j)
     {
-      w_sum += dense2_weights[j][i] * dense1_array[j];
-      ++index;
+      dense2_array[i] += dense2_weights[j][i] * dense1_array[j];
     }
 
-    dense2_array[i] = dense2_biases[i] + w_sum;
+    dense2_array[i] += dense2_biases[i];
   }
-
 }

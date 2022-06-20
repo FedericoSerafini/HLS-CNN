@@ -11,10 +11,12 @@ dense1
 {
   uint32_t index = 0U;
 
+  dense1_for_next_layer:
   for (uint8_t i = 0U; i < DENSE1_SIZE; ++i)
   {
     float w_sum = 0.0; // Weighted sum.
 
+    dense1_for_prev_layer:
     for (uint16_t j = 0U; j < FLAT_SIZE; ++j)
     {
       w_sum += dense1_weights[index] * flat_image[j];
@@ -35,10 +37,12 @@ dense2
   float dense2_image [DENSE2_SIZE]; // To collect tmp results.
   uint32_t index = 0U;
 
+  dense2_for_next_layer:
   for (uint8_t i = 0U; i < DENSE2_SIZE; ++i)
   {
-    float w_sum = 0.0; // Weighted sum.
+    float w_sum = 0.0F; // Weighted sum.
 
+    dense2_for_prev_layer:
     for (uint8_t j = 0U; j < DENSE1_SIZE; ++j)
     {
       w_sum += dense2_weights[index] * dense1_image[j];

@@ -14,14 +14,16 @@ void soft_max(const float img_in [DIGITS], float pred[DIGITS])
 {
   float sum = 0.0;
 
+  soft_for_sum:
   for (uint8_t i = 0; i < DIGITS; ++i)
   {
     sum += expf(img_in[i]);
   }
 
-  for (uint8_t i = 0; i < DIGITS; ++i)
+  soft_for_compute:
+  for (uint8_t j = 0; j < DIGITS; ++j)
   {
-    pred[i] = expf(img_in[i]) / sum;
+    pred[j] = expf(img_in[j]) / sum;
   }
 
 }

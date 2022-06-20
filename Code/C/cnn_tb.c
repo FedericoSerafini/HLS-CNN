@@ -41,7 +41,7 @@ int main ()
 
   /**** Read the image. ****/
   float img [IMG_ROWS][IMG_COLS];
-  if (0 != read_img("../Data/image.txt", img))
+  if (0 != read_img("image.txt", img))
   {
     printf("Error: can't open file.\n");
     return 1;
@@ -65,6 +65,7 @@ int main ()
   double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("\nTime spent: %f (s)\n", time_spent);
   printf("Clocks per second: %ld\n", CLOCKS_PER_SEC);
+  printf("\n");
 
   return 0;
 }

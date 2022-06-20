@@ -12,6 +12,9 @@
 
 void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
+
+  // #pragma HLS pipeline off
+
   /******** Normalization. ********/
   #ifndef __SYNTHESIS__
   printf("Normalized image.\n");
@@ -40,15 +43,17 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   float conv_image [FILTERS][IMG_ROWS][IMG_COLS];
 
   // Apply a convolution operation for each filter.
-  for(uint8_t kf = 0; kf < FILTERS; ++kf)
-    conv(pad_img, kf, conv_image[kf]);
+  cnn_for_conv:
+  for(uint8_t f1 = 0; f1 < FILTERS; ++f1)
+    conv(pad_img, f1, conv_image[f1]);
 
   #ifndef __SYNTHESIS__
   // Print results.
-  for(uint8_t f = 0; f < FILTERS; ++f)
+  cnn_print_conv:
+  for(uint8_t f2 = 0; f2 < FILTERS; ++f2)
   {
-    printf("Conv layer filter %d.\n", f);
-    print_img(conv_image[f]);
+    printf("Conv layer filter %d.\n", f2);
+    print_img(conv_image[f2]);
   }
   #endif
 
@@ -56,15 +61,17 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   float pool_image [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
 
   // Apply a max pooling operation for each filter.
-  for(uint8_t kf = 0; kf < FILTERS; ++kf)
-    max_pooling(conv_image[kf], pool_image[kf]);
+  cnn_for_pool:
+  for(uint8_t f3 = 0; f3 < FILTERS; ++f3)
+    max_pooling(conv_image[f3], pool_image[f3]);
 
   #ifndef __SYNTHESIS__
   // Print results.
-  for(uint8_t f = 0; f < FILTERS; ++f)
+  cnn_for_print:
+  for(uint8_t f4 = 0; f4 < FILTERS; ++f4)
   {
-    printf("Max pool layer filter %d.\n", f);
-    print_pool_img(pool_image[f]);
+    printf("Max pool layer filter %d.\n", f4);
+    print_pool_img(pool_image[f4]);
   }
   #endif
 

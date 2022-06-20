@@ -9,6 +9,7 @@ images size: 28x28
 
 """
 
+from genericpath import isfile
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
@@ -20,11 +21,14 @@ from tensorflow.keras.layers import Flatten
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.optimizers import SGD
 from sklearn.model_selection import KFold
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import load_model
 import numpy as np
 from numpy import mean, size
 from numpy import std
 from matplotlib import pyplot as plt
 from sklearn.model_selection import KFold
+import os
 
 
 conv_1_kernel_size = (3,3)
@@ -156,6 +160,7 @@ def save_param_on_file(model):
 			+ '#define DENSE2_SIZE 10'
 			, file=f
 		)
+		print('written file definitions.h')
 
 	# conv_weights.h
 	with open('../C/conv_weights.h', 'w') as f:
@@ -194,6 +199,7 @@ def save_param_on_file(model):
 			if (i != biases.shape[0]-1):
 				print(', ', file=f, end='')
 		print('};',file=f)
+		print('written file conv_weights.h')
 
 	# dense_weights.h
 	with open('../C/dense_weights.h', 'w') as f:
@@ -236,6 +242,8 @@ def save_param_on_file(model):
 				+ (', ' if x != arr.size-1 else '')
 				,end=' ', file=f)
 		print(' };\n\n', file=f)
+		print('written file dense_weights.h')
+
 
 
 # TO-DO: check if indexing is correct.
@@ -272,14 +280,19 @@ def main() -> None:
 	# normalize input images
 	trainX, testX = prep_pixels(trainX, testX)
 
+	if not os.path.isfile('model.h5'):
+		print('model not found: create and train it')
+		model = define_model()
+		history = model.fit(trainX, trainY, epochs=10, batch_size=32, validation_data=(testX, testY), verbose=1)
+		model.save("model.h5")
+		print('model saved as \'model.h5\'')
+	else:
+		print('found a model: use it.')
+		model = load_model('model.h5')
 
-	model = define_model() # temporary
 	# evaluate model
-	#model, scores, histories = evaluate_model(trainX, trainY)
-	# learning curves
-	#summarize_diagnostics(histories)
-	# summarize estimated performance
-	#summarize_performance(scores)
+	_, acc = model.evaluate(testX, testY, verbose=0)
+	print('> %.3f' % (acc * 100.0))
 
 
 

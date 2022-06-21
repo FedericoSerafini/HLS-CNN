@@ -14,10 +14,10 @@ normalize
   float       img_out [IMG_ROWS][IMG_COLS]
 )
 {
-  for_rows:
+  norm_for_rows:
   for (uint8_t r = 0; r < IMG_ROWS; ++r)
   {
-    for_cols:
+    norm_for_cols:
     for(uint8_t c = 0; c < IMG_COLS; ++c)
       img_out[r][c] = img_in[r][c] / 255.0;
   }
@@ -30,9 +30,9 @@ padding
   float       img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
-  for_rows:
+  pad_for_rows:
   for(uint8_t r = 0; r < PAD_IMG_ROWS; ++r)
-    for_cols:
+    pad_for_cols:
     for(uint8_t c = 0; c < PAD_IMG_COLS; ++c)
     {
       if (r == 0 || r == IMG_ROWS + 1)

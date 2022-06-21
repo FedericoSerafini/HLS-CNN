@@ -12,8 +12,6 @@
 
 void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
-  #pragma HLS pipeline off
-
   /******** Normalization. ********/
   float norm_img [IMG_ROWS][IMG_COLS] = { 0 };
   normalize(img_in, norm_img);

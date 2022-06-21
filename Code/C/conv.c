@@ -13,20 +13,20 @@ conv
 {
   float w_sum = 0.0; // Weighted sum.
 
-  for_filter:
+  conv_for_filter:
   for (uint8_t f = 0U; f < FILTERS; ++f)
   {
-    for_rows:
+    conv_for_rows:
     for(uint8_t r = 0; r < IMG_ROWS; ++r)
     {
-      for_cols:
+      conv_for_cols:
       for(uint8_t c = 0; c < IMG_COLS; ++c)
         {
           w_sum = 0.0;
 
-          for_krn_rows:
+          conv_for_krn_rows:
           for(uint8_t kr = 0; kr < KRN_ROWS; ++kr)
-            for_krn_cols:
+            conv_for_krn_cols:
             for(uint8_t kc = 0; kc < KRN_COLS; ++kc)
             {
               w_sum += conv_weights[kr][kc][f] * pad_img[r+kr][c+kc];

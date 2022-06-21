@@ -11,16 +11,20 @@ dense
   float       dense_array [DENSE_SIZE]
 )
 {
+  float w_sum = 0.0;
+
   dense_for_d:
   for (uint8_t d = 0U; d < DENSE_SIZE; ++d)
   {
+    w_sum = 0.0;
+
     dense_for_f:
     for (uint16_t f = 0U; f < FLAT_SIZE; ++f)
     {
-      dense_array[d] += dense_weights[f][d] * flat_array[f];
+      w_sum += dense_weights[f][d] * flat_array[f];
     }
 
-    dense_array[d] += dense_biases[d];
+    dense_array[d] = w_sum + dense_biases[d];
   }
 }
 

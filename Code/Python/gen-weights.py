@@ -10,7 +10,7 @@ images size: 28x28
 
 """
 
-from genericpath import isfile
+from os import path
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
@@ -24,16 +24,13 @@ from tensorflow.keras.optimizers import SGD
 from sklearn.model_selection import KFold
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-import os
-import tensorflow as tf
-import numpy as np
-from numpy import mean, size
+from numpy import mean
+from numpy import size
 from numpy import std
 from matplotlib import pyplot as plt
-from sklearn.model_selection import KFold
 
 
-# constants
+# Constants.
 conv_1_kernel_size 	= (3,3)
 conv_1_filter_num 	= 4
 pool_1_size 		= (2,2)
@@ -42,28 +39,28 @@ dense_2_size		= 10
 
 
 def load_dataset():
-	# load dataset
+	# Load dataset.
 	(trainX, trainY), (testX, testY) = mnist.load_data()
-	# reshape dataset to have a single channel
+	# Reshape dataset to have a single channel.
 	trainX = trainX.reshape((trainX.shape[0], 28, 28, 1))
 	testX = testX.reshape((testX.shape[0], 28, 28, 1))
-	# one hot encode target values
+	# One hot encode target values.
 	trainY = to_categorical(trainY)
 	testY = to_categorical(testY)
 	return trainX, trainY, testX, testY
 
 def prep_pixels(train, test):
-	# convert from integers to floats
+	# Convert from integers to floats.
 	train_norm = train.astype('float32')
 	test_norm = test.astype('float32')
-	# normalize to range 0-1
+	# Normalize to range 0-1.
 	train_norm = train_norm / 255.0
 	test_norm = test_norm / 255.0
-	# return normalized images
+	# Return normalized images.
 	return train_norm, test_norm
 
 def define_model() -> Sequential:
-	# define model
+	# Define model.
 	model = Sequential()
 	model.add(ZeroPadding2D(padding=1, input_shape=(28, 28, 1)))
 	model.add(Conv2D(conv_1_filter_num, conv_1_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1)))
@@ -73,7 +70,7 @@ def define_model() -> Sequential:
 	#model.add(Dense(100, activation='relu', kernel_initializer='he_uniform'))
 	#model.add(BatchNormalization())
 	model.add(Dense(10, activation='softmax'))
-	# compile model
+	# Compile model.
 	opt = SGD(learning_rate=0.01, momentum=0.9)
 	model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
 	return model
@@ -89,8 +86,8 @@ def gen_conv_params(layer:Conv2D,
 	w, b = layer.weights
 	res = ''
 
-	# weights: (label)_weights[kr][kc][f]
-	res += '// ' + label + ' layer weights.\n'
+	# Weights: (label)_weights[kr][kc][f].
+	res += '// ' + label.capitalize() + ' layer weights.\n'
 	res += 'const float ' + label + '_weights [' + kr + '][' + kc + '][' \
 			+ f + ']\n\t= {\n'
 	for row in range(w.shape[0]):
@@ -111,8 +108,8 @@ def gen_conv_params(layer:Conv2D,
 		res += '\n'
 	res +='\t\t};\n\n'
 
-	# biases: (label)_biases[f]
-	res += '// ' + label + ' layer biases.\n'
+	# Biases: (label)_biases[f].
+	res += '// ' + label.capitalize() + ' layer biases.\n'
 	res += 'const float ' + label + '_biases [' + f + '] = { '
 	for i in range(b.shape[0]):
 		res += str(float(b[i]))
@@ -132,8 +129,8 @@ def gen_dense_params(layer:Dense, label:str, size0: str, size1: str):
 	w, b = layer.weights
 	res = ''
 
-	# weights: (label)_weights[size0][size1]
-	res += '// ' + label + ' layer weights.\n'
+	# Weights: (label)_weights[size0][size1].
+	res += '// ' + label.capitalize() + ' layer weights.\n'
 	res += 'float ' + label + '_weights[' + size0 + '][' + size1 + ']\n\t = {\n'
 	for i in range(w.shape[0]):
 		res += '\t\t\t{ '
@@ -147,8 +144,8 @@ def gen_dense_params(layer:Dense, label:str, size0: str, size1: str):
 		res += '\n'
 	res += '\t\t};\n\n'
 
-	# biases : (label)_biases[size1]
-	res += '// ' + label + ' layer biases.\n'
+	# Biases : (label)_biases[size1].
+	res += '// ' + label.capitalize() + ' layer biases.\n'
 	res += 'const float ' + label + '_biases [' + size1 + '] = { '
 	for i in range(b.shape[0]):
 		res += str(float(b[i]))
@@ -200,8 +197,8 @@ def save_param_on_files(model: Sequential) -> None:
 			, file=f)
 		# dense
 		print('// Dense layers.\n'
-			+ '#define DENSE1_SIZE ' + str(dense_1_size) + '\n'
-			+ '#define DENSE2_SIZE ' + str(dense_2_size)
+			#+ '#define DENSE1_SIZE ' + str(dense_1_size) + '\n'
+			+ '#define DENSE_SIZE ' + str(dense_2_size)
 			, file=f
 		)
 		print('done.')
@@ -236,25 +233,25 @@ def save_param_on_files(model: Sequential) -> None:
 		#print(arrays_def_str, file=f)
 		#print(file=f)
 		# dense 2
-		arrays_def_str = gen_dense_params(dense2_layer, 'dense2',
-			'FLAT_SIZE', 'DENSE2_SIZE')
+		arrays_def_str = gen_dense_params(dense2_layer, 'dense',
+			'FLAT_SIZE', 'DENSE_SIZE')
 		print(arrays_def_str, file=f)
 		print('done.')
 
 def main() -> None:
 
-    # load dataset.
+    # Load dataset.
 	trainX, trainY, testX, testY = load_dataset()
 	print('trainX.shape = ', trainX.shape)
 	print('trainY.shape = ', trainY.shape)
 	print('testX.shape = ', testX.shape)
 	print('testY.shape = ', testY.shape)
-	# normalize input images.
+	# Normalize input images.
 	trainX, testX = prep_pixels(trainX, testX)
 
-	# if a trained model is already available: load it
-	# else: define a new model, train and save it.
-	if not os.path.isfile('model.h5'):
+	# If a trained model is already available: load it.
+	# Else: define a new model, train and save it.
+	if not path.isfile('model.h5'):
 		print('model not found: create and train it')
 		model = define_model()
 		history = model.fit(trainX, trainY, epochs=20, batch_size=32, validation_data=(testX, testY), verbose=1)
@@ -264,13 +261,13 @@ def main() -> None:
 		print('found a model: use it.')
 		model = load_model('model.h5')
 
-	# print summary.
+	# Print summary.
 	print(model.summary())
-	# evaluate model.
+	# Evaluate model.
 	_, acc = model.evaluate(testX, testY, verbose=0)
 	print('Accuracy: %.3f' % (acc * 100.0))
 
-	# save parameters and weights on header files.
+	# Save parameters and weights on header files.
 	save_param_on_files(model)
 
 	# --- SOME OLD STUFF ---

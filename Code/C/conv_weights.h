@@ -7,7 +7,7 @@
 #include "definitions.h"
 
 
-// conv layer weights.
+// Conv layer weights.
 const float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]
 	= {
 			{
@@ -27,5 +27,5 @@ const float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]
 			}
 		};
 
-// conv layer biases.
+// Conv layer biases.
 const float conv_biases [FILTERS] = { 0.6627478003501892, -0.9519861936569214, -0.19315217435359955, -1.1225224733352661 };

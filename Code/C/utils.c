@@ -95,7 +95,7 @@ print_features(const float features[IMG_ROWS][IMG_COLS][FILTERS])
     {
       for (uint8_t c = 0; c < IMG_COLS; ++c)
       {
-        printf("%.0f ", features[r][c][f]);
+        printf("%.0f", features[r][c][f]);
       }
       printf("\n");
     }
@@ -115,7 +115,7 @@ print_pool_features
     {
       for (uint8_t c = 0; c < POOL_IMG_COLS; ++c)
       {
-        printf("%.0f ", pool_features[r][c][f]);
+        printf("%.0f", pool_features[r][c][f]);
       }
       printf("\n");
     }

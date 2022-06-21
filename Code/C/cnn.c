@@ -19,9 +19,9 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   normalize(img_in, norm_img);
 
   #if 0
-  #ifndef __SYNTHESIS__
-    print_img(norm_img);
+    #ifndef __SYNTHESIS__
       printf("Normalized image.\n");
+      print_img(norm_img);
     #endif
   #endif
 
@@ -36,7 +36,7 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     #endif
   #endif
 
-  /******** Convolution layer 1. ********/
+  /******** Convolution layer. ********/
   /*
     An array to collect the convolution results:
     FILTERS resulting feature maps, one for each filter.
@@ -46,8 +46,8 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 
   #if 0
     #ifndef __SYNTHESIS__
-		// Print results.
-		print_features(features);
+      // Print results.
+      print_features(features);
     #endif
   #endif
 
@@ -68,6 +68,5 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   /******** Dense layer ********/
   float dense_array [DENSE_SIZE] = { 0 };
   dense(flat_array, dense_array);
-
   soft_max(dense_array, prediction);
 }

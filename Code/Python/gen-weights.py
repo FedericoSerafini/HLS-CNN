@@ -3,7 +3,8 @@
 This program uses a CNN model built with Tensorflow/Keras to compute
 the weights that will be used by the C/HLS network.
 
-Produces a set of header files as output: definitions.h, weights.h.
+Produces a set of header files as output: definitions.h, conv_weights.h,
+dense_weights.h.
 
 images size: 28x28
 
@@ -23,9 +24,7 @@ from tensorflow.keras.optimizers import SGD
 from sklearn.model_selection import KFold
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-import logging, os
-logging.disable(logging.WARNING)
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+import os
 import tensorflow as tf
 import numpy as np
 from numpy import mean, size
@@ -34,12 +33,10 @@ from matplotlib import pyplot as plt
 from sklearn.model_selection import KFold
 
 
-
-conv_1_kernel_size = (3,3)
-conv_1_filter_num = 32
-pool_1_size = (2,2)
-
-
+# constants
+conv_1_kernel_size 	= (3,3)
+conv_1_filter_num 	= 32
+pool_1_size 		= (2,2)
 
 
 def load_dataset():
@@ -63,7 +60,7 @@ def prep_pixels(train, test):
 	# return normalized images
 	return train_norm, test_norm
 
-def define_model():
+def define_model() -> Sequential:
 	# define model
 	model = Sequential()
 	model.add(ZeroPadding2D(padding=1, input_shape=(28, 28, 1)))
@@ -72,62 +69,103 @@ def define_model():
 	model.add(MaxPooling2D(pool_1_size))
 	model.add(Flatten())
 	model.add(Dense(100, activation='relu', kernel_initializer='he_uniform'))
-#	#model.add(BatchNormalization())
+	#model.add(BatchNormalization())
 	model.add(Dense(10, activation='softmax'))
 	# compile model
 	opt = SGD(learning_rate=0.01, momentum=0.9)
 	model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
 	return model
 
+def gen_conv_params(layer:Conv2D,
+		label:str, kr:str, kc:str, f:str) -> str:
+	'''
+	Takes a Conv2D layer as input and returns a C initialization (as a
+	string) of '(label)_weights[kr][kc][f]' and '(label)_biases[f]'
+	arrays.
+	'''
 
-# evaluate a model using k-fold cross-validation
-def evaluate_model(dataX, dataY, n_folds=5):
-	scores, histories = list(), list()
-	# prepare cross validation
-	kfold = KFold(n_folds, shuffle=True, random_state=1)
-	# enumerate splits
-	for train_ix, test_ix in kfold.split(dataX):
-		# define model
-		model = define_model()
-		# select rows for train and test
-		trainX, trainY, testX, testY = dataX[train_ix], dataY[train_ix], dataX[test_ix], dataY[test_ix]
-		# fit model
-		history = model.fit(trainX, trainY, epochs=3, batch_size=32, validation_data=(testX, testY), verbose=0)
-		# evaluate model
-		_, acc = model.evaluate(testX, testY, verbose=0)
-		print('> %.3f' % (acc * 100.0))
-		# stores scores
-		scores.append(acc)
-		histories.append(history)
-	return model, scores, histories
+	w, b = layer.weights
+	res = ''
 
-# plot diagnostic learning curves
-def summarize_diagnostics(histories):
-	for i in range(len(histories)):
-		# plot loss
-		plt.subplot(2, 1, 1)
-		plt.title('Cross Entropy Loss')
-		plt.plot(histories[i].history['loss'], color='blue', label='train')
-		plt.plot(histories[i].history['val_loss'], color='orange', label='test')
-		# plot accuracy
-		plt.subplot(2, 1, 2)
-		plt.title('Classification Accuracy')
-		plt.plot(histories[i].history['accuracy'], color='blue', label='train')
-		plt.plot(histories[i].history['val_accuracy'], color='orange', label='test')
-	plt.show()
+	# weights: (label)_weights[kr][kc][f]
+	res += '// ' + label + ' layer weights.\n'
+	res += 'const float ' + label + '_weights [' + kr + '][' + kc + '][' \
+			+ f + ']\n\t= {\n'
+	for row in range(w.shape[0]):
+		res += '\t\t\t{\n'
+		for col in range(w.shape[1]):
+			res += '\t\t\t\t{ '
+			for filter in range(w.shape[3]):
+				res += str(float(w[row][col][0][filter]))
+				if (filter != w.shape[3]-1):
+					res += ', '
+			res += ' }'
+			if(col != w.shape[1] -1):
+				res += ','
+			res += '\n'
+		res += '\t\t\t}'
+		if(row != w.shape[0] -1):
+			res += ','
+		res += '\n'
+	res +='\t\t};\n\n'
 
-# summarize model performance
-def summarize_performance(scores):
-	# print summary
-	print('Accuracy: mean=%.3f std=%.3f, n=%d' % (mean(scores)*100, std(scores)*100, len(scores)))
-	# box and whisker plots of results
-	plt.boxplot(scores)
-	plt.show()
+	# biases: (label)_biases[f]
+	res += '// ' + label + ' layer biases.\n'
+	res += 'const float ' + label + '_biases [' + f + '] = { '
+	for i in range(b.shape[0]):
+		res += str(float(b[i]))
+		if (i != b.shape[0]-1):
+			res += ', '
+	res += ' };'
 
+	return res
 
-def save_param_on_file(model):
+def gen_dense_params(layer:Dense, label:str, size0: str, size1: str):
+	'''
+	Takes a Dense layer as input and returns a C initialization (as a
+	string) of '(label)_weights[size0][size1]' and '(label)_biases[size1]'
+	arrays.
+	'''
+
+	w, b = layer.weights
+	res = ''
+
+	# weights: (label)_weights[size0][size1]
+	res += '// ' + label + ' layer weights.\n'
+	res += 'float ' + label + '_weights[' + size0 + '][' + size1 + ']\n\t = {\n'
+	for i in range(w.shape[0]):
+		res += '\t\t\t{ '
+		for j in range(w.shape[1]):
+			res += str(float(w[i][j]))
+			if j != w.shape[1] - 1:
+				res += ', '
+		res += ' }'
+		if i != w.shape[0] - 1:
+			res += ','
+		res += '\n'
+	res += '\t\t};\n\n'
+
+	# biases : (label)_biases[size1]
+	res += '// ' + label + ' layer biases.\n'
+	res += 'const float ' + label + '_biases [' + size1 + '] = { '
+	for i in range(b.shape[0]):
+		res += str(float(b[i]))
+		if (i != b.shape[0]-1):
+			res += ', '
+	res += ' };'
+
+	return res
+
+def save_param_on_files(model: Sequential) -> None:
+	'''
+	Saves model constants and layers parameter of the sequential
+	model 'model'.
+	Writes on 'definitions.h', 'conv_weights.h' ,'dense_weights.h' files.
+	'''
+
 	# definitions.h
 	with open('../C/definitions.h', 'w') as f:
+		print('writing \'definitions.h\' file... ', end='')
 		print('/*\n * This file is auto-generated by gen-weights.py\n */\n',file=f)
 		print('#pragma once', file=f)
 		print('\n#include <stdint.h>\n\n#define DIGITS 10\n\n#define IMG_ROWS 28\n#define IMG_COLS 28\n',file=f)
@@ -164,165 +202,55 @@ def save_param_on_file(model):
 			+ '#define DENSE2_SIZE 10'
 			, file=f
 		)
-		print('written file definitions.h')
+		print('done.')
 
 	# conv_weights.h
-	layers = []
-	for l in model.layers:
-		if(l.name.find('conv')>-1):
-			layers.append(l)
+	conv_layer = model.layers[1]
+	assert(isinstance(conv_layer, Conv2D))
 
-	if layers != []:
-		with open('../C/conv_weights.h', 'w') as f:
-			print('/*\n * This file is auto-generated by gen-weights.py\n */\n',file=f)
-			print('#pragma once\n\n#include "definitions.h"\n\n',file=f)
-			# save conv_1 weights and bias
-			#biases, weights = get_params(model.layers[1])
-			# conv weights
-			w, b = layers[0].weights
-			#print(w.shape)
-			#print(b.shape)
-			print('const float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]\n\t= {',file=f)
-			for row in range(w.shape[0]):
-				print('\t\t\t{', file=f)
-
-				for col in range(w.shape[1]):
-					print('\t\t\t\t{', file=f, end='')
-
-					for filter in range(w.shape[3]):
-						print(float(w[row][col][0][filter]), file=f, end='')
-						if (filter != w.shape[3]-1):
-							print(', ', file=f, end='')
-					print('}', file=f, end='')
-
-					if(col != w.shape[1] -1):
-						print(',', file=f, end='')
-					print(file=f)
-
-				print('\t\t\t}', file=f, end='')
-				if(row != w.shape[0] -1):
-					print(',', file=f, end='')
-				print(file=f)
-			print('\t\t};\n\n',file=f)
-
-			# conv biases
-			print('const float conv_biases [FILTERS] = { ', file=f, end='')
-			for i in range(b.shape[0]):
-				print(float(b[i]), file=f, end='')
-				if (i != b.shape[0]-1):
-					print(', ', file=f, end='')
-			print('};',file=f)
-			print('written file conv_weights.h')
+	with open('../C/conv_weights.h', 'w') as f:
+		print('writing \'conv_weights.h\' file... ', end='')
+		print('/*\n * This file is auto-generated by gen-weights.py\n */\n',file=f)
+		print('#pragma once\n\n#include "definitions.h"\n\n',file=f)
+		arrays_def_str = gen_conv_params(conv_layer, 'conv',
+			'KRN_ROWS', 'KRN_COLS', 'FILTERS')
+		print(arrays_def_str, file=f)
+		print('done.')
 
 	# dense_weights.h
-	dense_layers = []
-	for l in model.layers:
-		if(l.name.find('dense')>-1):
-			dense_layers.append(l)
-	if dense_layers != []:
-		with open('../C/dense_weights.h', 'w') as f:
-			print('/*\n * This file is auto-generated by gen-weights.py\n */\n',file=f)
-			# dense 1
-			print('#pragma once\n\n'
-				+ '#include "definitions.h"\n\n'
-				+ '// dense 1.'
-				, file=f)
-			print('dense weights shape = ', dense_layers[0].weights[0].shape)
-			w, b = dense_layers[0].weights
-			print('float dense1_weights[FLAT_SIZE][DENSE1_SIZE] = {', file=f)
-			for i in range(w.shape[0]):
-				print('\t\t{', file=f, end=' ')
-				for j in range(w.shape[1]):
-					print(float(w[i][j])
-						, end=(', ' if j != w.shape[1]-1 else ''), file=f)
-				print('}', file=f, end=(',\n' if i != w.shape[0]-1 else '\n'))
-			
-			#it = np.nditer(arr, flags=['c_index'])
-			#for x in it:
-			#	print(str(x) + (',' if it.index != size(arr)-1 else ''), file=f, end=' ')
-			print(' };\n', file=f)
-			print('float dense1_biases[DENSE1_SIZE] = {',file=f)
-			for x in range(b.shape[0]):
-				print(str(float(b[x]))
-					+ (', ' if x != b.shape[0]-1 else '')
-					,end=' ', file=f)
-			print(' };\n\n', file=f)
+	dense1_layer = model.layers[4]
+	assert(isinstance(dense1_layer, Dense))
+	dense2_layer = model.layers[5]
+	assert(isinstance(dense2_layer, Dense))
 
-			# dense 2
-			print('// dense 2.', file=f)
-			w, b = dense_layers[1].weights
-			print('float dense2_weights[DENSE1_SIZE][DENSE2_SIZE] = {', file=f)
-			for i in range(w.shape[0]):
-				print('\t\t{', file=f, end=' ')
-				for j in range(w.shape[1]):
-					print(float(w[i][j])
-						, end=(', ' if j != w.shape[1]-1 else ''), file=f)
-				print('}', file=f, end=(',\n' if i != w.shape[0]-1 else '\n'))
-			
-			#it = np.nditer(arr, flags=['c_index'])
-			#for x in it:
-			#	print(str(x) + (',' if it.index != size(arr)-1 else ''), file=f, end=' ')
-			print(' };\n', file=f)
-			print('float dense2_biases[DENSE2_SIZE] = {',file=f)
-			for x in range(b.shape[0]):
-				print(str(float(b[x]))
-					+ (', ' if x != b.shape[0]-1 else '')
-					,end=' ', file=f)
-			print(' };\n\n', file=f)
-			#print('dense weights shape = ', dense_layers[1].weights[0].shape)
-			#arr = np.transpose(dense_layers[1].weights[0])
-			#print('float dense2_weights[FLAT_SIZE * DENSE2_SIZE] = {', file=f)
-			#it = np.nditer(arr, flags=['c_index'])
-			#for x in it:
-			#	print(str(x) + (',' if it.index != size(arr)-1 else ''), file=f, end=' ')
-			#print(' };\n', file=f)
-			#print('float dense2_biases[DENSE2_SIZE] = {',file=f)
-			#arr = np.array(dense_layers[1].weights[1])
-			#for x in range(arr.size):
-			#	print(str(arr[x])
-			#		+ (', ' if x != arr.size-1 else '')
-			#		,end=' ', file=f)
-			#print(' };\n\n', file=f)
-			print('written file dense_weights.h')
-#
-#
-
-# TO-DO: check if indexing is correct.
-def get_params(layer):
-
-	# biases
-	b = np.array(layer.weights[1])
-	# weights
-	w = np.array(layer.weights[0])
-
-	new_w = np.empty(shape=(w.shape[3],w.shape[0],w.shape[1]))
-
-	for r in range(w.shape[0]):
-		for c in range(w.shape[1]):
-			for f in range(w.shape[3]):
-				new_w[f][r][c] = w[r][c][0][f]
-				#new_w[f][c][r] = w[r][c][0][f]
-
-
-	#print("w for each filter")
-	#for f in range(new_w.shape[0]):
-	#		print(new_w[f])
-
-	#print('b: ', b)
-
-	return b, new_w
+	with open('../C/dense_weights.h', 'w') as f:
+		print('writing \'dense_weights.h\' file... ', end='')
+		print('/*\n * This file is auto-generated by gen-weights.py\n */\n',file=f)
+		print('#pragma once\n\n#include "definitions.h"\n\n', file=f)
+		# dense 1
+		arrays_def_str = gen_dense_params(dense1_layer, 'dense1',
+			'FLAT_SIZE', 'DENSE1_SIZE')
+		print(arrays_def_str, file=f)
+		# dense 2
+		arrays_def_str = gen_dense_params(dense2_layer, 'dense2',
+			'DENSE1_SIZE', 'DENSE2_SIZE')
+		print(file=f)
+		print(arrays_def_str, file=f)
+		print('done.')
 
 def main() -> None:
 
-    # load dataset
+    # load dataset.
 	trainX, trainY, testX, testY = load_dataset()
 	print('trainX.shape = ', trainX.shape)
 	print('trainY.shape = ', trainY.shape)
 	print('testX.shape = ', testX.shape)
 	print('testY.shape = ', testY.shape)
-	# normalize input images
+	# normalize input images.
 	trainX, testX = prep_pixels(trainX, testX)
 
+	# if a trained model is already available: load it
+	# else: define a new model, train and save it.
 	if not os.path.isfile('model.h5'):
 		print('model not found: create and train it')
 		model = define_model()
@@ -333,21 +261,18 @@ def main() -> None:
 		print('found a model: use it.')
 		model = load_model('model.h5')
 
-	#model = define_model()
-
-	# print summary
+	# print summary.
 	print(model.summary())
-	# evaluate model
-	#_, acc = model.evaluate(testX, testY, verbose=0)
-	#print('> %.3f' % (acc * 100.0))
+	# evaluate model.
+	_, acc = model.evaluate(testX, testY, verbose=0)
+	print('Accuracy: %.3f' % (acc * 100.0))
 
-	# print weights and biases shapes
-	#for l in model.layers:
-	#	print(l)
-	#	if l.weights != []:
-	#		print(l.weights[0].shape)
-	#		print(l.weights[1].shape)
+	# save parameters and weights on header files.
+	save_param_on_files(model)
 
+	# --- SOME OLD STUFF ---
+
+	# inference on one image
 	#print(testX.shape)
 	#image = testX[1]
 	#print(image.shape)
@@ -356,39 +281,17 @@ def main() -> None:
 	#plt.imshow(pixels, cmap='gray')
 	#plt.title(testY[1])
 	#plt.show()
-#
 	#pred = model.fit(image)
 	#print(pred)
-
 	#res = np.array(model.predict(testX[1]))
 	#res = res.transpose()
-#
+
 	#for i in range(res.shape[0]):
 	#	print('---')
 	#	for j in range(res.shape[2]):
 	#		for k in range(res.shape[3]):
 	#			print(int(res[i][0][k][j]), end='')
 	#		print()
-
-
-	#print("weights:")
-	#layers_number = 1
-	#weights_m=model.get_weights()
-	#for i in range(layers_number*2):
-	#	print(weights_m[i].shape)
-	#	save_conv(weights_m[i])
-
-
-	# save on file
-	#layer_with_weights = {1: "conv_layer1"}
-
-	#
-	#for idx, layer in enumerate(model.layers):
-	#	if(idx in layer_with_weights):
-	#		save_conv_layer(layer, idx)
-
-
-
 
     # train
 #    scores, histories = evaluate_model(trainX,trainY)
@@ -420,54 +323,61 @@ def main() -> None:
 #			print()
 #
 
-	save_param_on_file(model)
-
-
-
-
 
 if __name__ == '__main__':
-
-
-
 	main()
 
 
-	#model = define_model()
-	#print(model.summary())
-	##save_param_on_file(model)
-	#for layer in model.layers:
-	#	print(layer)
-	#	if np.array(layer.weights).size != 0:
-	#		# biases
-	#		b = np.array(layer.weights[1])
-	#		# weights
-	#		w = np.array(layer.weights[0])
-	#		wt = np.array(layer.weights[0]).transpose()
+
+
+
 #
-	#		if(layer.name.find('dense') >- 1):
-	#			for i in range(w.shape[0]):
-	#				# for each flatten
-	#				for j in range(w.shape[1]):
-	#					# for each dense
-	#					assert(w[i][j] == wt[j][i])
+# Functions from original article, not used yet.
+# https://machinelearningmastery.com/how-to-develop-a-convolutional-neural-network-from-scratch-for-mnist-handwritten-digit-classification/
 #
-	#		print("b: ", b.shape)
-	#		print("w: ", w.shape)
 
-# define model
-#	model = Sequential()
-#	model.add(Conv2D(2, (3,3), activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(6, 6, 1)))
-	#model.add(BatchNormalization())
-	#model.add(MaxPooling2D(pool_1_size))
-	#model.add(Flatten())
-	#model.add(Dense(100, activation='relu', kernel_initializer='he_uniform'))
-#	#model.add(BatchNormalization())
-	#model.add(Dense(10, activation='softmax'))
-	# compile model
-#	opt = SGD(learning_rate=0.01, momentum=0.9)
-#	model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
 
-#	print(model.summary())
-#	print(model.layers[0].weights[0].shape)
+# evaluate a model using k-fold cross-validation
+#def evaluate_model(dataX, dataY, n_folds=5):
+#	scores, histories = list(), list()
+#	# prepare cross validation
+#	kfold = KFold(n_folds, shuffle=True, random_state=1)
+#	# enumerate splits
+#	for train_ix, test_ix in kfold.split(dataX):
+#		# define model
+#		model = define_model()
+#		# select rows for train and test
+#		trainX, trainY, testX, testY = dataX[train_ix], dataY[train_ix], dataX[test_ix], dataY[test_ix]
+#		# fit model
+#		history = model.fit(trainX, trainY, epochs=3, batch_size=32, validation_data=(testX, testY), verbose=0)
+#		# evaluate model
+#		_, acc = model.evaluate(testX, testY, verbose=0)
+#		print('> %.3f' % (acc * 100.0))
+#		# stores scores
+#		scores.append(acc)
+#		histories.append(history)
+#	return model, scores, histories
 
+
+# plot diagnostic learning curves
+#def summarize_diagnostics(histories):
+#	for i in range(len(histories)):
+#		# plot loss
+#		plt.subplot(2, 1, 1)
+#		plt.title('Cross Entropy Loss')
+#		plt.plot(histories[i].history['loss'], color='blue', label='train')
+#		plt.plot(histories[i].history['val_loss'], color='orange', label='test')
+#		# plot accuracy
+#		plt.subplot(2, 1, 2)
+#		plt.title('Classification Accuracy')
+#		plt.plot(histories[i].history['accuracy'], color='blue', label='train')
+#		plt.plot(histories[i].history['val_accuracy'], color='orange', label='test')
+#	plt.show()
+
+# summarize model performance
+#def summarize_performance(scores):
+#	# print summary
+#	print('Accuracy: mean=%.3f std=%.3f, n=%d' % (mean(scores)*100, std(scores)*100, len(scores)))
+#	# box and whisker plots of results
+#	plt.boxplot(scores)
+#	plt.show()

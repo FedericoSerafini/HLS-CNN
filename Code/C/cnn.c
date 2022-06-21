@@ -42,7 +42,7 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     FILTERS resulting feature maps, one for each filter.
   */
   float features [IMG_ROWS][IMG_COLS][FILTERS] = { 0 };
-  conv(pad_img, features);
+  conv(pad_img, features); // Convolution with relu as activation function.
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -65,14 +65,9 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   float flat_array [FLAT_SIZE] = { 0 };
   flatten(pool_features, flat_array);
 
-  /******** Dense layer 1 ********/
-  float dense1_array [DENSE1_SIZE] = { 0 };
-  dense1(flat_array, dense1_array);
-  float dense1_relu [DENSE1_SIZE] = { 0 };
-  relu_on_dense1(dense1_array, dense1_relu);
+  /******** Dense layer ********/
+  float dense_array [DENSE_SIZE] = { 0 };
+  dense(flat_array, dense_array);
 
-  /******** Dense layer 2 ********/
-  float dense2_array [DIGITS] = { 0 };
-  dense2(dense1_relu, dense2_array);
-  soft_max(dense2_array, prediction);
+  soft_max(dense_array, prediction);
 }

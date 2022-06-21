@@ -32,5 +32,4 @@
 #define FLAT_SIZE (FILTERS * POOL_IMG_ROWS * POOL_IMG_COLS)
 
 // Dense layers.
-#define DENSE1_SIZE 100
-#define DENSE2_SIZE 10
+#define DENSE_SIZE 10

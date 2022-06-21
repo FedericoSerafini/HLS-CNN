@@ -64,7 +64,6 @@ int main ()
 
   double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("\nTime spent: %f (s)\n", time_spent);
-  printf("Clocks per second: %ld\n", CLOCKS_PER_SEC);
   printf("\n");
 
   return 0;

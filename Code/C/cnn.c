@@ -12,7 +12,7 @@
 
 void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
-  // #pragma HLS pipeline off
+  #pragma HLS pipeline off
 
   /******** Normalization. ********/
   float norm_img [IMG_ROWS][IMG_COLS] = { 0 };
@@ -38,7 +38,7 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 
   /******** Convolution layer 1. ********/
   /*
-    An array to collect the results of the convolutions:
+    An array to collect the convolution results:
     FILTERS resulting feature maps, one for each filter.
   */
   float features [IMG_ROWS][IMG_COLS][FILTERS] = { 0 };
@@ -46,8 +46,8 @@ void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 
   #if 0
     #ifndef __SYNTHESIS__
-    // Print results.
-    print_features(features);
+		// Print results.
+		print_features(features);
     #endif
   #endif
 

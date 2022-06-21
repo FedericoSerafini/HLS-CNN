@@ -5,6 +5,8 @@
 # include <stdio.h>
 #endif
 
+#pragma GCC diagnostic ignored "-Wunused-label"
+
 void
 normalize
 (
@@ -12,16 +14,12 @@ normalize
   float       img_out [IMG_ROWS][IMG_COLS]
 )
 {
-  #ifdef __SYNTHESYS__
-  norm_for_rows:
-  #endif
-  for (uint8_t i = 0; i < IMG_ROWS; ++i)
+  for_rows:
+  for (uint8_t r = 0; r < IMG_ROWS; ++r)
   {
-    #ifdef __SYNTHESYS__
-    norm_for_cols:
-    #endif
-    for(uint8_t j = 0; j < IMG_COLS; ++j)
-      img_out[i][j] = img_in[i][j] / 255.0;
+    for_cols:
+    for(uint8_t c = 0; c < IMG_COLS; ++c)
+      img_out[r][c] = img_in[r][c] / 255.0;
   }
 }
 
@@ -32,35 +30,32 @@ padding
   float       img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
-  #ifdef __SYNTHESYS__
-  norm_pad_rows:
-  #endif
-  for(uint8_t i = 0; i < PAD_IMG_ROWS; ++i)
-    #ifdef __SYNTHESYS__
-	  norm_pad_cols:
-    #endif
-    for(uint8_t j = 0; j < PAD_IMG_COLS; ++j)
+  for_rows:
+  for(uint8_t r = 0; r < PAD_IMG_ROWS; ++r)
+    for_cols:
+    for(uint8_t c = 0; c < PAD_IMG_COLS; ++c)
     {
-      if (i == 0 || i == IMG_ROWS + 1)
+      if (r == 0 || r == IMG_ROWS + 1)
       {
         // Add pagging.
-        img_out[i][j] = 0.0;
+        img_out[r][c] = 0.0;
       }
-      else if (j == 0 || j == IMG_COLS + 1)
+      else if (c == 0 || c == IMG_COLS + 1)
       {
         // Add padding.
-        img_out[i][j] = 0.0;
+        img_out[r][c] = 0.0;
       }
       else
       {
         // Copy.
-        img_out[i][j] = img_in[i-1][j-1];
+        img_out[r][c] = img_in[r-1][c-1];
       }
     }
   return;
 }
 
 #ifndef __SYNTHESIS__
+
 void
 print_img(const float img[IMG_ROWS][IMG_COLS])
 {
@@ -126,4 +121,5 @@ print_pool_features
     }
   }
 }
+
 #endif

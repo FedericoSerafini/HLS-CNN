@@ -88,7 +88,7 @@ def gen_conv_params(layer:Conv2D,
 
 	# Weights: (label)_weights[kr][kc][f].
 	res += '// ' + label.capitalize() + ' layer weights.\n'
-	res += 'const float ' + label + '_weights [' + kr + '][' + kc + '][' \
+	res += 'float ' + label + '_weights [' + kr + '][' + kc + '][' \
 			+ f + ']\n\t= {\n'
 	for row in range(w.shape[0]):
 		res += '\t\t\t{\n'
@@ -110,7 +110,7 @@ def gen_conv_params(layer:Conv2D,
 
 	# Biases: (label)_biases[f].
 	res += '// ' + label.capitalize() + ' layer biases.\n'
-	res += 'const float ' + label + '_biases [' + f + '] = { '
+	res += 'float ' + label + '_biases [' + f + '] = { '
 	for i in range(b.shape[0]):
 		res += str(float(b[i]))
 		if (i != b.shape[0]-1):
@@ -146,7 +146,7 @@ def gen_dense_params(layer:Dense, label:str, size0: str, size1: str):
 
 	# Biases : (label)_biases[size1].
 	res += '// ' + label.capitalize() + ' layer biases.\n'
-	res += 'const float ' + label + '_biases [' + size1 + '] = { '
+	res += 'float ' + label + '_biases [' + size1 + '] = { '
 	for i in range(b.shape[0]):
 		res += str(float(b[i]))
 		if (i != b.shape[0]-1):

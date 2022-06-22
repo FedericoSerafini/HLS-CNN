@@ -4,7 +4,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-label"
 
-float relu (const float x)
+float relu (float x)
 {
   if(x > 0.0)
     return x;
@@ -12,7 +12,7 @@ float relu (const float x)
     return 0.0;
 }
 
-void soft_max(const float dense_array [DIGITS], float pred[DIGITS])
+void soft_max(float dense_array [DIGITS], float pred[DIGITS])
 {
   float sum = 0.0;
 

@@ -10,8 +10,8 @@
 void
 normalize
 (
-  const float img_in  [IMG_ROWS][IMG_COLS],
-  float       img_out [IMG_ROWS][IMG_COLS]
+  float img_in  [IMG_ROWS][IMG_COLS],
+  float img_out [IMG_ROWS][IMG_COLS]
 )
 {
   norm_for_rows:
@@ -26,7 +26,7 @@ normalize
 void
 padding
 (
-  const float img_in [IMG_ROWS][IMG_COLS],
+  float img_in [IMG_ROWS][IMG_COLS],
   float       img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
@@ -57,7 +57,7 @@ padding
 #ifndef __SYNTHESIS__
 
 void
-print_img(const float img[IMG_ROWS][IMG_COLS])
+print_img(float img[IMG_ROWS][IMG_COLS])
 {
   for (uint8_t i = 0; i < IMG_ROWS; ++i)
   {
@@ -71,7 +71,7 @@ print_img(const float img[IMG_ROWS][IMG_COLS])
 }
 
 void
-print_pad_img(const float img[PAD_IMG_ROWS][PAD_IMG_COLS])
+print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 {
   for (uint8_t i = 0; i < PAD_IMG_ROWS; ++i)
   {
@@ -85,7 +85,7 @@ print_pad_img(const float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 }
 
 void
-print_features(const float features[IMG_ROWS][IMG_COLS][FILTERS])
+print_features(float features[IMG_ROWS][IMG_COLS][FILTERS])
 {
   for (uint8_t f = 0U; f < FILTERS; ++f)
   {
@@ -105,7 +105,7 @@ print_features(const float features[IMG_ROWS][IMG_COLS][FILTERS])
 void
 print_pool_features
 (
-  const float pool_features[POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
+  float pool_features[POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
 )
 {
   for (uint8_t f = 0U; f < FILTERS; ++f)

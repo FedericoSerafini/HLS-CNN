@@ -8,8 +8,9 @@
 void
 conv
 (
-  const float   pad_img[PAD_IMG_ROWS][PAD_IMG_COLS],
-  float         features[IMG_ROWS][IMG_COLS][FILTERS])
+  float pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float features [IMG_ROWS][IMG_COLS][FILTERS]
+)
 {
   float w_sum = 0.0; // Weighted sum.
 

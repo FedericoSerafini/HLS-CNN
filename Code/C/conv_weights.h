@@ -8,7 +8,7 @@
 
 
 // Conv layer weights.
-const float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]
+float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]
 	= {
 			{
 				{ -0.2894100844860077, 0.389137327671051, 1.0729731321334839, 0.7207379937171936 },
@@ -28,4 +28,4 @@ const float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]
 		};
 
 // Conv layer biases.
-const float conv_biases [FILTERS] = { 0.6627478003501892, -0.9519861936569214, -0.19315217435359955, -1.1225224733352661 };
+float conv_biases [FILTERS] = { 0.6627478003501892, -0.9519861936569214, -0.19315217435359955, -1.1225224733352661 };

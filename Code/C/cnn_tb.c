@@ -4,7 +4,7 @@
 #include <time.h>
 
 int
-read_img (const char * file, float img [IMG_ROWS][IMG_COLS])
+read_img (char * file, float img [IMG_ROWS][IMG_COLS])
 {
   FILE *fp;
 

@@ -7,8 +7,8 @@
 void
 max_pooling
 (
-  const float features[IMG_ROWS][IMG_COLS][FILTERS],
-  float       pool_features[POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
+  float features      [IMG_ROWS][IMG_COLS][FILTERS],
+  float pool_features [POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
 )
 {
   float pool = 0.0;

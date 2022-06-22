@@ -2,6 +2,6 @@
 
 #include "definitions.h"
 
-float relu (const float x);
+float relu (float x);
 
-void soft_max(const float dense_array [DIGITS], float pred[DIGITS]);
+void soft_max(float dense_array [DIGITS], float pred[DIGITS]);

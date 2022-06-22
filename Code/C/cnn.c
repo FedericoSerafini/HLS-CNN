@@ -10,7 +10,7 @@
 # include <stdio.h>
 #endif
 
-void cnn(const float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
+void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
   /******** Normalization. ********/
   float norm_img [IMG_ROWS][IMG_COLS] = { 0 };

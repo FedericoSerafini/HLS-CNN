@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <stdint.h>
-
 #define DIGITS 10
 
 #define IMG_ROWS 28

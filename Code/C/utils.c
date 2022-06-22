@@ -15,10 +15,10 @@ normalize
 )
 {
   norm_for_rows:
-  for (uint8_t r = 0; r < IMG_ROWS; ++r)
+  for (int r = 0; r < IMG_ROWS; ++r)
   {
     norm_for_cols:
-    for(uint8_t c = 0; c < IMG_COLS; ++c)
+    for(int c = 0; c < IMG_COLS; ++c)
       img_out[r][c] = img_in[r][c] / 255.0;
   }
 }
@@ -31,9 +31,9 @@ padding
 )
 {
   pad_for_rows:
-  for(uint8_t r = 0; r < PAD_IMG_ROWS; ++r)
+  for(int r = 0; r < PAD_IMG_ROWS; ++r)
     pad_for_cols:
-    for(uint8_t c = 0; c < PAD_IMG_COLS; ++c)
+    for(int c = 0; c < PAD_IMG_COLS; ++c)
     {
       if (r == 0 || r == IMG_ROWS + 1)
       {
@@ -59,9 +59,9 @@ padding
 void
 print_img(float img[IMG_ROWS][IMG_COLS])
 {
-  for (uint8_t i = 0; i < IMG_ROWS; ++i)
+  for (int i = 0; i < IMG_ROWS; ++i)
   {
-    for (uint8_t j = 0; j < IMG_COLS; ++j)
+    for (int j = 0; j < IMG_COLS; ++j)
     {
       printf("%.0f", img[i][j]);
     }
@@ -73,9 +73,9 @@ print_img(float img[IMG_ROWS][IMG_COLS])
 void
 print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 {
-  for (uint8_t i = 0; i < PAD_IMG_ROWS; ++i)
+  for (int i = 0; i < PAD_IMG_ROWS; ++i)
   {
-    for (uint8_t j = 0; j < PAD_IMG_COLS; ++j)
+    for (int j = 0; j < PAD_IMG_COLS; ++j)
     {
       printf("%.0f", img[i][j]);
     }
@@ -87,13 +87,13 @@ print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 void
 print_features(float features [FILTERS][IMG_ROWS][IMG_COLS])
 {
-  for (uint8_t f = 0; f < FILTERS; ++f)
+  for (int f = 0; f < FILTERS; ++f)
   {
     printf("Feature map %d:\n", f);
 
-    for (uint8_t r = 0; r < IMG_ROWS; ++r)
+    for (int r = 0; r < IMG_ROWS; ++r)
     {
-      for (uint8_t c = 0; c < IMG_COLS; ++c)
+      for (int c = 0; c < IMG_COLS; ++c)
       {
         printf("%.0f", features[f][r][c]);
       }
@@ -108,12 +108,12 @@ print_pool_features
   float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
-  for (uint8_t f = 0; f < FILTERS; ++f)
+  for (int f = 0; f < FILTERS; ++f)
   {
     printf("Pool feature map %d:\n", f);
-    for (uint8_t r = 0; r < POOL_IMG_ROWS; ++r)
+    for (int r = 0; r < POOL_IMG_ROWS; ++r)
     {
-      for (uint8_t c = 0; c < POOL_IMG_COLS; ++c)
+      for (int c = 0; c < POOL_IMG_COLS; ++c)
       {
         printf("%.0f", pool_features[f][r][c]);
       }

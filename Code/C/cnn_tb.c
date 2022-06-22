@@ -30,11 +30,6 @@ int main ()
     return 1;
   }
 
-  if ((28 > IMG_ROWS) || (28 > IMG_COLS))
-  {
-    printf("Warning: 8 and 16 bit integer types are used, check potential overflows\n");
-  }
-
   // Other checks needed?
   // Will convolution work with KRN_ROWS != KRN_COLS?
   // Same question for IMG_ROWS and COLS.

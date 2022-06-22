@@ -7,26 +7,29 @@
 #include <stdio.h>
 
 void
-dense
+dense_layer
 (
   float flat_array  [FLAT_SIZE],
-  float dense_array [DENSE_SIZE]
+  float prediction [DIGITS]
 )
 {
   float w_sum = 0.0;
+  float dense_array [DENSE_SIZE] = { 0 };
 
   dense_for_d:
-  for (uint8_t d = 0U; d < DENSE_SIZE; ++d)
+  for (int d = 0; d < DENSE_SIZE; ++d)
   {
     w_sum = 0.0;
 
     dense_for_f:
-    for (uint16_t f = 0U; f < FLAT_SIZE; ++f)
+    for (int f = 0; f < FLAT_SIZE; ++f)
     {
       w_sum += dense_weights[f][d] * flat_array[f];
     }
 
     dense_array[d] = w_sum + dense_biases[d];
   }
+
+  soft_max(dense_array, prediction);
 }
 

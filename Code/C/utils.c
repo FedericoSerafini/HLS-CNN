@@ -87,7 +87,7 @@ print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 void
 print_features(float features [FILTERS][IMG_ROWS][IMG_COLS])
 {
-  for (uint8_t f = 0U; f < FILTERS; ++f)
+  for (uint8_t f = 0; f < FILTERS; ++f)
   {
     printf("Feature map %d:\n", f);
 
@@ -108,7 +108,7 @@ print_pool_features
   float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
-  for (uint8_t f = 0U; f < FILTERS; ++f)
+  for (uint8_t f = 0; f < FILTERS; ++f)
   {
     printf("Pool feature map %d:\n", f);
     for (uint8_t r = 0; r < POOL_IMG_ROWS; ++r)

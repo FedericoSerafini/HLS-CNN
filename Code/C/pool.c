@@ -5,36 +5,46 @@
 #pragma GCC diagnostic ignored "-Wunused-label"
 
 void
-max_pooling
+max_pool
+(
+  float feature      [IMG_ROWS][IMG_COLS],
+  float pool_feature [POOL_IMG_ROWS][POOL_IMG_COLS]
+)
+{
+  float pool = 0.0;
+
+  pool_for_rows:
+  for (int r = 0; r < IMG_ROWS; r += POOL_ROWS)
+  {
+    pool_for_cols:
+    for(int c = 0; c < IMG_COLS; c += POOL_COLS)
+    {
+      pool = FLT_MIN;
+
+      pool_for_pr:
+      for (int pr = 0; pr < POOL_ROWS; ++pr)
+        pool_for_pc:
+        for (int pc = 0; pc < POOL_COLS; ++pc)
+        {
+          if(feature[r + pr][c + pc] > pool)
+            pool = feature[r + pr][c + pc];
+        }
+
+      pool_feature[r / POOL_ROWS][c / POOL_COLS] = pool;
+    }
+  }
+}
+
+void
+max_pooling_layer
 (
   float features      [FILTERS][IMG_ROWS][IMG_COLS],
   float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
-  float pool = 0.0;
-
   pool_for_filters:
-  for (uint8_t f = 0U; f < FILTERS; ++f)
+  for (int f = 0; f < FILTERS; ++f)
   {
-    pool_for_rows:
-    for (uint8_t r = 0; r < IMG_ROWS; r += POOL_ROWS)
-    {
-      pool_for_cols:
-      for(uint8_t c = 0; c < IMG_COLS; c += POOL_COLS)
-      {
-        pool = FLT_MIN;
-
-        pool_for_prows:
-        for (uint8_t pr = 0U; pr < POOL_ROWS; ++pr)
-          pool_for_pcols:
-          for (uint8_t pc = 0; pc < POOL_COLS; ++pc)
-          {
-            if(features[f][r + pr][c + pc] > pool)
-              pool = features[f][r + pr][c + pc];
-          }
-
-        pool_features[f][r / POOL_ROWS][c / POOL_COLS] = pool;
-      }
-    }
+    max_pool(features[f], pool_features[f]);
   }
 }

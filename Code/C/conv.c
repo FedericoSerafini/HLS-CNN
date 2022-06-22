@@ -12,15 +12,6 @@ conv
   float features [FILTERS][IMG_ROWS][IMG_COLS]
 )
 {
-  /***************************************************/
-  float conv_weights[FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS] = { 0 };
-
-  for(int i = 0; i < KRN_ROWS; ++i)
-    for(int j = 0; j < KRN_COLS; ++j)
-      for(int f = 0; f < FILTERS; ++f)
-        conv_weights[f][i][j] = conv_weights_old[i][j][f];
-  /*******************************************************/
-
   float w_sum = 0.0; // Weighted sum.
 
   conv_for_filter:

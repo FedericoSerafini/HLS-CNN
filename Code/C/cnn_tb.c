@@ -41,7 +41,7 @@ int main ()
 
   /**** Read the image. ****/
   float img [IMG_ROWS][IMG_COLS];
-  if (0 != read_img("image.txt", img))
+  if (0 != read_img("TestImages/image-2.txt", img))
   {
     printf("Error: can't open file.\n");
     return 1;

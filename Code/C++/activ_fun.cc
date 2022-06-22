@@ -1,6 +1,6 @@
-#include "activ_fun.h"
+#include "activ_fun.hh"
 
-#include <math.h>
+#include <cmath>
 
 #pragma GCC diagnostic ignored "-Wunused-label"
 

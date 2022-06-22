@@ -1,10 +1,8 @@
-#include "dense.h"
-#include "dense_weights.h"
-#include "activ_fun.h"
+#include "dense.hh"
+#include "dense_weights.hh"
+#include "activ_fun.hh"
 
 #pragma GCC diagnostic ignored "-Wunused-label"
-
-#include <stdio.h>
 
 void
 dense_layer

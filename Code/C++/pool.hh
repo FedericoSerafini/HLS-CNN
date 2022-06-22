@@ -1,6 +1,6 @@
 #pragma once
 
-#include "definitions.h"
+#include "definitions.hh"
 
 void
 max_pooling_layer

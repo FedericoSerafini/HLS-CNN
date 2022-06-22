@@ -1,6 +1,6 @@
-#include "pool.h"
+#include "pool.hh"
 
-#include <float.h>
+#include <cfloat>
 
 #pragma GCC diagnostic ignored "-Wunused-label"
 

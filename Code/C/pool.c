@@ -7,8 +7,8 @@
 void
 max_pooling
 (
-  float features      [IMG_ROWS][IMG_COLS][FILTERS],
-  float pool_features [POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
+  float features      [FILTERS][IMG_ROWS][IMG_COLS],
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
   float pool = 0.0;
@@ -29,11 +29,11 @@ max_pooling
           pool_for_pcols:
           for (uint8_t pc = 0; pc < POOL_COLS; ++pc)
           {
-            if(features[r + pr][c + pc][f] > pool)
-              pool = features[r + pr][c + pc][f];
+            if(features[f][r + pr][c + pc] > pool)
+              pool = features[f][r + pr][c + pc];
           }
 
-        pool_features[r / POOL_ROWS][c / POOL_COLS][f] = pool;
+        pool_features[f][r / POOL_ROWS][c / POOL_COLS] = pool;
       }
     }
   }

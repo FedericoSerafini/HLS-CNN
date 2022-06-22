@@ -39,7 +39,7 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     An array to collect the convolution results:
     FILTERS resulting feature maps, one for each filter.
   */
-  float features [IMG_ROWS][IMG_COLS][FILTERS] = { 0 };
+  float features [FILTERS][IMG_ROWS][IMG_COLS] = { 0 };
   conv(pad_img, features); // Convolution with relu as activation function.
 
   #if 0
@@ -50,7 +50,7 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   #endif
 
   /******** Maxpooling layer. ********/
-  float pool_features [POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS] = { 0 };
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS] = { 0 };
   max_pooling(features, pool_features);
 
   #if 0

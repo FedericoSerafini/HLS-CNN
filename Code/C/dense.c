@@ -4,6 +4,8 @@
 
 #pragma GCC diagnostic ignored "-Wunused-label"
 
+#include <stdio.h>
+
 void
 dense
 (
@@ -11,6 +13,21 @@ dense
   float dense_array [DENSE_SIZE]
 )
 {
+  /**********************************************************/
+  float dense_weights [FLAT_SIZE][DENSE_SIZE] = { 0 };
+
+  for(int i = 0; i < POOL_IMG_ROWS; ++i)
+    for(int j = 0; j < POOL_IMG_COLS; ++j)
+      for(int f = 0; f < FILTERS; ++f)
+        for(int d = 0; d < DENSE_SIZE; ++d)
+        {
+          int index_old = (i * POOL_IMG_COLS * FILTERS) + (j * FILTERS) + f;
+          int index_new = (f * POOL_IMG_ROWS * POOL_IMG_COLS) + (i * FILTERS) + j;
+
+          dense_weights[index_new][d] = dense_weights_old[index_old][d];
+        }
+  /*******************************************************************/
+
   float w_sum = 0.0;
 
   dense_for_d:

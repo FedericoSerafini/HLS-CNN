@@ -5,7 +5,7 @@
 void
 flatten
 (
-  float pool_features [POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS],
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS],
   float flat_array    [FLAT_SIZE]
 )
 {
@@ -18,7 +18,7 @@ flatten
       flat_for_filters:
       for(uint8_t f = 0; f < FILTERS; ++f)
       {
-        flat_array[index] = pool_features[r][c][f];
+        flat_array[index] = pool_features[f][r][c];
         ++index;
       }
 }

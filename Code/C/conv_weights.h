@@ -8,7 +8,7 @@
 
 
 // Conv layer weights.
-float conv_weights [KRN_ROWS][KRN_COLS][FILTERS]
+float conv_weights_old [KRN_ROWS][KRN_COLS][FILTERS]
 	= {
 			{
 				{ -0.2894100844860077, 0.389137327671051, 1.0729731321334839, 0.7207379937171936 },

@@ -1,7 +1,7 @@
-#include "conv.h"
-#include "definitions.h"
-#include "activ_fun.h"
-#include "conv_weights.h"
+#include "conv.hh"
+#include "definitions.hh"
+#include "activ_fun.hh"
+#include "conv_weights.hh"
 
 #pragma GCC diagnostic ignored "-Wunused-label"
 

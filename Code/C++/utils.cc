@@ -1,8 +1,8 @@
-#include "definitions.h"
-#include "utils.h"
+#include "definitions.hh"
+#include "utils.hh"
 
 #ifndef __SYNTHESIS__
-# include <stdio.h>
+# include <cstdio>
 #endif
 
 #pragma GCC diagnostic ignored "-Wunused-label"

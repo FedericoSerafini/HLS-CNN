@@ -22,11 +22,11 @@ void
 print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS]);
 
 void
-print_features(float features[IMG_ROWS][IMG_COLS][FILTERS]);
+print_features(float features [FILTERS][IMG_ROWS][IMG_COLS]);
 
 void
 print_pool_features
 (
-  float pool_features[POOL_IMG_ROWS][POOL_IMG_COLS][FILTERS]
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 );
 #endif

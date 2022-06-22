@@ -27,12 +27,12 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS] = { 0 };
   padding(norm_img, pad_img);
 
-  #if 0
+  //#if 0
     #ifndef __SYNTHESIS__
       printf("Padded image.\n");
       print_pad_img(pad_img);
     #endif
-  #endif
+  //#endif
 
   /******** Convolution layer. ********/
   /*
@@ -42,22 +42,22 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   float features [FILTERS][IMG_ROWS][IMG_COLS] = { 0 };
   conv(pad_img, features); // Convolution with relu as activation function.
 
-  #if 0
+  //#if 0
     #ifndef __SYNTHESIS__
       // Print results.
       print_features(features);
     #endif
-  #endif
+  //#endif
 
   /******** Maxpooling layer. ********/
   float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS] = { 0 };
   max_pooling(features, pool_features);
 
-  #if 0
+  //#if 0
     #ifndef __SYNTHESIS__
       print_pool_features(pool_features);
     #endif
-  #endif
+  //#endif
 
   /******** Flatten layer. ********/
   float flat_array [FLAT_SIZE] = { 0 };

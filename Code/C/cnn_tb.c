@@ -59,7 +59,7 @@ int main ()
 
   for (int i = 0; i < DIGITS; ++i)
   {
-    printf("%d: %.2f\n", DIGITS -1 - i, prediction[i]);
+    printf("%d: %.2f\n", i, prediction[i]);
   }
 
   double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

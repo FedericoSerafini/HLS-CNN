@@ -3,7 +3,7 @@
 #include "definitions.hh"
 
 void
-normalize (
+normalization (
   float img_in  [IMG_ROWS][IMG_COLS], // Input image.
   float img_out [IMG_ROWS][IMG_COLS]  // Normalized image.
 );

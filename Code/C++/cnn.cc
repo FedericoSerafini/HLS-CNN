@@ -14,7 +14,7 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
   /******** Normalization. ********/
   float norm_img [IMG_ROWS][IMG_COLS] = { 0 };
-  normalize(img_in, norm_img);
+  normalization(img_in, norm_img);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -41,7 +41,7 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   */
   float features [FILTERS][IMG_ROWS][IMG_COLS] = { 0 };
   // Convolution wi.hh relu as activation function.
-  conv_layer(pad_img, features);
+  convolutional_layer(pad_img, features);
 
   #if 0
     #ifndef __SYNTHESIS__

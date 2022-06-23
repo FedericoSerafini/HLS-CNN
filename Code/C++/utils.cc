@@ -8,7 +8,7 @@
 #pragma GCC diagnostic ignored "-Wunused-label"
 
 void
-normalize
+normalization
 (
   float img_in  [IMG_ROWS][IMG_COLS],
   float img_out [IMG_ROWS][IMG_COLS]

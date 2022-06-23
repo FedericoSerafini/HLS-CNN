@@ -7,12 +7,12 @@
 void
 dense_layer
 (
-  float flat_array  [FLAT_SIZE],
-  float prediction [DIGITS]
+  float              flat_array [FLAT_SIZE],
+  hls::stream<float> prediction [DIGITS]
 )
 {
   float w_sum = 0.0;
-  float dense_array [DENSE_SIZE] = { 0 };
+  hls::stream<float> dense_array [DENSE_SIZE];
 
   dense_for_d:
   for (int d = 0; d < DENSE_SIZE; ++d)
@@ -25,7 +25,7 @@ dense_layer
       w_sum += dense_weights[f][d] * flat_array[f];
     }
 
-    dense_array[d] = w_sum + dense_biases[d];
+    dense_array[d].write(w_sum + dense_biases[d]);
   }
 
   soft_max(dense_array, prediction);

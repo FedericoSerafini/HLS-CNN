@@ -10,10 +10,16 @@
 # include <cstdio>
 #endif
 
-void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
+void cnn
+(
+  float              img_in     [IMG_ROWS][IMG_COLS],
+  hls::stream<float> prediction [DIGITS]
+)
 {
+  #pragma HLS interface ap_ctrl_chain port=return
+
   /******** Normalization. ********/
-  float norm_img [IMG_ROWS][IMG_COLS] = { 0 };
+  hls::stream<float> norm_img [IMG_ROWS][IMG_COLS];
   normalize(img_in, norm_img);
 
   #if 0
@@ -23,8 +29,9 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     #endif
   #endif
 
+
   /******** Padding. ********/
-  float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS] = { 0 };
+  float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
   padding(norm_img, pad_img);
 
   #if 0
@@ -39,7 +46,7 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
     An array to collect .hhe convolution results:
     FILTERS resulting feature maps, one for ea.hh filter.
   */
-  float features [FILTERS][IMG_ROWS][IMG_COLS] = { 0 };
+  hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS];
   // Convolution wi.hh relu as activation function.
   conv_layer(pad_img, features);
 
@@ -51,7 +58,7 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   #endif
 
   /******** Maxpooling layer. ********/
-  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS] = { 0 };
+  hls::stream<float> pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
   max_pooling_layer(features, pool_features);
 
   #if 0
@@ -61,9 +68,10 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   #endif
 
   /******** Flatten layer. ********/
-  float flat_array [FLAT_SIZE] = { 0 };
+  float flat_array [FLAT_SIZE];
   flattening_layer(pool_features, flat_array);
 
   /******** Dense layer ********/
   dense_layer(flat_array, prediction);
+
 }

@@ -12,20 +12,27 @@ float relu (float x)
     return 0.0;
 }
 
-void soft_max(float dense_array [DIGITS], float pred[DIGITS])
+void soft_max
+(
+  hls::stream<float> dense_array [DIGITS],
+  hls::stream<float> pred[DIGITS]
+)
 {
   float sum = 0.0;
+
+  float tmp [DIGITS];
 
   for_exp_sum:
   for (int i = 0; i < DIGITS; ++i)
   {
-    sum += expf(dense_array[i]);
+    tmp[i] = expf(dense_array[i].read());
+    sum += tmp[i];
   }
 
   for_prediction:
   for (int j = 0; j < DIGITS; ++j)
   {
-    pred[j] = expf(dense_array[j]) / sum;
+    pred[j].write(tmp[j] / sum);
   }
 
 }

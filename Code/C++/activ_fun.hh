@@ -2,6 +2,13 @@
 
 #include "definitions.hh"
 
+#include "hls_stream.h"
+
 float relu (float x);
 
-void soft_max(float dense_array [DIGITS], float pred[DIGITS]);
+void
+soft_max
+(
+  hls::stream<float> dense_array [DIGITS],
+  hls::stream<float> pred[DIGITS]
+);

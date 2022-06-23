@@ -16,8 +16,6 @@ void cnn
   hls::stream<float> prediction [DIGITS]
 )
 {
-  #pragma HLS interface ap_ctrl_chain port=return
-
   /******** Normalization. ********/
   hls::stream<float> norm_img [IMG_ROWS][IMG_COLS];
   normalize(img_in, norm_img);
@@ -43,11 +41,11 @@ void cnn
 
   /******** Convolution layer. ********/
   /*
-    An array to collect .hhe convolution results:
-    FILTERS resulting feature maps, one for ea.hh filter.
+    An array to collect the convolution results:
+    FILTERS resulting feature maps, one for each filter.
   */
   hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS];
-  // Convolution wi.hh relu as activation function.
+  // Convolution with relu as activation function.
   conv_layer(pad_img, features);
 
   #if 0

@@ -7,7 +7,6 @@
 void
 dense_layer
 (
-  // flat_array [FLAT_SIZE].
-  hls::stream<float> & stream_flat_to_dense,
-  float                prediction [DIGITS]
+  hls::stream<float> flat_to_dense_streams[FILTERS],
+  float              prediction [DIGITS]
 );

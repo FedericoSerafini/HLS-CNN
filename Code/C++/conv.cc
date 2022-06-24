@@ -49,16 +49,18 @@ convolution
 }
 
 void
-conv_layer
+convolutional_layer
 (
-  float              clones [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS],
+  float                pad_img [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float                pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float                pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float                pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS],
   //float features [FILTERS][IMG_ROWS][IMG_COLS]
   hls::stream<float> conv_to_pool_streams [FILTERS]
 )
 {
-  conv_layer_for:
-  for (int f = 0; f < FILTERS; ++f)
-  {
-    convolution(clones[f], f, conv_to_pool_streams[f]);
-  }
+  convolution(pad_img,  0, conv_to_pool_streams[0]);
+  convolution(pad_img1, 1, conv_to_pool_streams[1]);
+  convolution(pad_img2, 2, conv_to_pool_streams[2]);
+  convolution(pad_img3, 3, conv_to_pool_streams[3]);
 }

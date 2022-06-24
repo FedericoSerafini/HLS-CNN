@@ -43,9 +43,8 @@ max_pooling_layer
   hls::stream<float> pool_to_flat_streams[FILTERS]
 )
 {
-  pool_layer_for:
-  for (int f = 0; f < FILTERS; ++f)
-  {
-    max_pooling(conv_to_pool_streams[f], pool_to_flat_streams[f]);
-  }
+    max_pooling(conv_to_pool_streams[0], pool_to_flat_streams[0]);
+    max_pooling(conv_to_pool_streams[1], pool_to_flat_streams[1]);
+    max_pooling(conv_to_pool_streams[2], pool_to_flat_streams[2]);
+    max_pooling(conv_to_pool_streams[3], pool_to_flat_streams[3]);
 }

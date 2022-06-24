@@ -12,42 +12,16 @@
 # include <cstdio>
 #endif
 
-void cnn
+void
+dataflow_section
 (
-  float img_in     [IMG_ROWS][IMG_COLS],
+  float pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float prediction [DIGITS]
 )
 {
-  #pragma HLS DATAFLOW
-  #pragma HLS INTERFACE ap_ctrl_chain port=return
-
-  /******** Normalization. ********/
-  float norm_img [IMG_ROWS][IMG_COLS];
-  normalize(img_in, norm_img);
-
-  #if 0
-    #ifndef __SYNTHESIS__
-      printf("Normalized image.\n");
-      print_img(norm_img);
-    #endif
-  #endif
-
-
-  /******** Padding. ********/
-  float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
-  padding(norm_img, pad_img);
-
-  #if 0
-    #ifndef __SYNTHESIS__
-      printf("Padded image.\n");
-      print_pad_img(pad_img);
-    #endif
-  #endif
-
-  /**** Allow parallalism cloning the padded image. ****/
-  float clones [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS];
-  clone(pad_img, clones);
-
   /******** Convolution layer. ********/
   /*
     An array to collect the convolution results:
@@ -57,7 +31,7 @@ void cnn
   // float features [FILTERS][IMG_ROWS][IMG_COLS];
   hls::stream<float> conv_to_pool_streams [FILTERS];
   // Convolution with relu as activation function.
-  conv_layer(clones, conv_to_pool_streams);
+  convolutional_layer(pad_img, pad_img1, pad_img2, pad_img3, conv_to_pool_streams);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -74,16 +48,59 @@ void cnn
 
   #if 0
     #ifndef __SYNTHESIS__
-      print_pool_features(pool_features);
+      print_pool_features(pool_to_flat_streams);
     #endif
   #endif
 
   /******** Flatten layer. ********/
   //float flat_array [FLAT_SIZE];
-  hls::stream<float> stream_flat_to_dense;
-  flattening_layer(pool_to_flat_streams, stream_flat_to_dense);
+  hls::stream<float> flat_to_dense_streams [FILTERS];
+  flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
   /******** Dense layer ********/
-  dense_layer(stream_flat_to_dense, prediction);
+  dense_layer(flat_to_dense_streams, prediction);
+}
+
+
+void cnn
+(
+  float img_in     [IMG_ROWS][IMG_COLS],
+  float prediction [DIGITS]
+)
+{
+  /******** Preprocessing data. ********/
+
+  /* Normalization. */
+  float norm_img [IMG_ROWS][IMG_COLS];
+  normalize(img_in, norm_img);
+
+  #if 0
+    #ifndef __SYNTHESIS__
+      printf("Normalized image.\n");
+      print_img(norm_img);
+    #endif
+  #endif
+
+  /* Padding. */
+  float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
+  padding(norm_img, pad_img);
+
+  #if 0
+    #ifndef __SYNTHESIS__
+      printf("Padded image.\n");
+      print_pad_img(pad_img);
+    #endif
+  #endif
+
+  /* Allow parallelism cloning the padded image. */
+  float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  clone(pad_img, pad_img1);
+  clone(pad_img, pad_img2);
+  clone(pad_img, pad_img3);
+
+  /* Parallel execution starts here. */
+  dataflow_section(pad_img, pad_img1, pad_img2, pad_img3, prediction);
 
 }

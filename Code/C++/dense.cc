@@ -7,7 +7,7 @@
 void
 dense_layer
 (
-  hls::stream<float> & stream_flat_to_dense, // Flat array.
+  hls::stream<float>   flat_to_dense_streams[FILTERS], // Flat array.
   float                prediction [DIGITS]
 )
 {
@@ -15,14 +15,15 @@ dense_layer
   float dense_array [DENSE_SIZE] = { 0 };
 
   dense_for_f:
-  for (int f = 0; f < FLAT_SIZE; ++f)
+  for (int f = 0; f < FILTERS; ++f)
   {
-    float flat_value = stream_flat_to_dense.read();
-
-    dense_for_d:
-    for (int d = 0; d < DENSE_SIZE; ++d)
+    dense_for_p:
+    for (int p = 0; p < FLAT_SIZE / FILTERS; ++p)
     {
-      dense_array[d] += dense_weights[f][d] * flat_value;
+      float flat_value = flat_to_dense_streams[f].read();
+
+      for (int d = 0; d < DENSE_SIZE; ++d)
+        dense_array[d] += dense_weights[f][d] * flat_value;
     }
   }
 

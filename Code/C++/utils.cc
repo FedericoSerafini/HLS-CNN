@@ -58,16 +58,15 @@ padding
 void
 clone
 (
-  float img_in [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float images [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS]
+  float img_in  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
-  for (int f = 0; f < FILTERS; ++f)
-    for (int r = 0; r < PAD_IMG_ROWS; ++r)
-      for (int c = 0; c < PAD_IMG_COLS; ++c)
-      {
-        images[f][r][c] = img_in[r][c];
-      }
+  for (int r = 0; r < PAD_IMG_ROWS; ++r)
+    for (int c = 0; c < PAD_IMG_COLS; ++c)
+    {
+      img_out[r][c] = img_in[r][c];
+    }
 }
 
 #ifndef __SYNTHESIS__
@@ -121,7 +120,7 @@ print_features(float features [FILTERS][IMG_ROWS][IMG_COLS])
 void
 print_pool_features
 (
-  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
+  hls::stream<float> pool_to_flat_streams[FILTERS]
 )
 {
   for (int f = 0; f < FILTERS; ++f)
@@ -131,7 +130,7 @@ print_pool_features
     {
       for (int c = 0; c < POOL_IMG_COLS; ++c)
       {
-        printf("%.0f", pool_features[f][r][c]);
+        printf("%.0f", pool_to_flat_streams[f].read());
       }
       printf("\n");
     }

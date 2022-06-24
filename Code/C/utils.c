@@ -5,21 +5,7 @@
 #include <stdio.h>
 
 void
-normalization
-(
-  float img_in  [IMG_ROWS][IMG_COLS],
-  float img_out [IMG_ROWS][IMG_COLS]
-)
-{
-  for (int r = 0; r < IMG_ROWS; ++r)
-  {
-    for(int c = 0; c < IMG_COLS; ++c)
-      img_out[r][c] = img_in[r][c] / 255.0;
-  }
-}
-
-void
-padding
+normalization_and_padding
 (
   float img_in  [IMG_ROWS][IMG_COLS],
   float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
@@ -40,11 +26,10 @@ padding
       }
       else
       {
-        // Copy.
-        img_out[r][c] = img_in[r-1][c-1];
+        // Normalize.
+        img_out[r][c] = img_in[r-1][c-1] / 255.0;
       }
     }
-  return;
 }
 
 #ifndef __SYNTHESIS__

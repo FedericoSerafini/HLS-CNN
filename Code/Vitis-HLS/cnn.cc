@@ -70,22 +70,10 @@ void cnn
   float prediction [DIGITS]
 )
 {
-  /******** Preprocessing data. ********/
+  /******** Pre-processing data. ********/
 
-  /* Normalization. */
-  float norm_img [IMG_ROWS][IMG_COLS];
-  normalize(img_in, norm_img);
-
-  #if 0
-    #ifndef __SYNTHESIS__
-      printf("Normalized image.\n");
-      print_img(norm_img);
-    #endif
-  #endif
-
-  /* Padding. */
   float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
-  padding(norm_img, pad_img);
+  normalization_and_padding(img_in, pad_img);
 
   #if 0
     #ifndef __SYNTHESIS__

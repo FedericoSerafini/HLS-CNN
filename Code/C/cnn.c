@@ -10,20 +10,9 @@
 
 void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
-  /******** Normalization. ********/
-  float norm_img [IMG_ROWS][IMG_COLS] = { 0 };
-  normalization(img_in, norm_img);
-
-  #if 0
-    #ifndef __SYNTHESIS__
-      printf("Normalized image.\n");
-      print_img(norm_img);
-    #endif
-  #endif
-
-  /******** Padding. ********/
+  /******** Normalization and padding. ********/
   float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS] = { 0 };
-  padding(norm_img, pad_img);
+  normalization_and_padding(img_in, pad_img);
 
   #if 0
     #ifndef __SYNTHESIS__

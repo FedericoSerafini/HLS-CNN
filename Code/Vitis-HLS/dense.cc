@@ -1,29 +1,31 @@
 #include "dense.hh"
-#include "dense_weights.hh"
 #include "activ_fun.hh"
+#include "../Headers/dense_weights.h"
 
-#pragma GCC diagnostic ignored "-Wunused-label"
 
 void
 dense_layer
 (
-  hls::stream<float>   flat_to_dense_streams[FILTERS], // Flat array.
+  hls::stream<float>   flat_to_dense_streams[FILTERS],
   float                prediction [DIGITS]
 )
 {
   float w_sum = 0.0;
   float dense_array [DENSE_SIZE] = { 0 };
+  int index = 0;
 
-  dense_for_f:
+  dense_for_filter:
   for (int f = 0; f < FILTERS; ++f)
   {
-    dense_for_p:
-    for (int p = 0; p < FLAT_SIZE / FILTERS; ++p)
+    dense_for_flat:
+    for (int i = 0; i < FLAT_SIZE / FILTERS; ++i)
     {
       float flat_value = flat_to_dense_streams[f].read();
 
       for (int d = 0; d < DENSE_SIZE; ++d)
-        dense_array[d] += dense_weights[f][d] * flat_value;
+        dense_array[d] += dense_weights[index][d] * flat_value;
+
+      ++index;
     }
   }
 

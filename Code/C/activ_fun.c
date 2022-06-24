@@ -2,8 +2,6 @@
 
 #include <math.h>
 
-#pragma GCC diagnostic ignored "-Wunused-label"
-
 float relu (float x)
 {
   if(x > 0.0)

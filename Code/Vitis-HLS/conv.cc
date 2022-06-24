@@ -1,9 +1,7 @@
 #include "conv.hh"
-#include "definitions.hh"
 #include "activ_fun.hh"
-#include "conv_weights.hh"
-
-#pragma GCC diagnostic ignored "-Wunused-label"
+#include "../Headers/conv_weights.h"
+#include "../Headers/definitions.h"
 
 void
 convolution

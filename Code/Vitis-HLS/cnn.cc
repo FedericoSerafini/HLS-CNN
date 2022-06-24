@@ -100,7 +100,7 @@ void cnn
   clone(pad_img, pad_img2);
   clone(pad_img, pad_img3);
 
-  /* Parallel execution starts here. */
+  /* Parallel executions start here. */
   dataflow_section(pad_img, pad_img1, pad_img2, pad_img3, prediction);
 
 }

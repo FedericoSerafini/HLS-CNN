@@ -1,11 +1,9 @@
-#include "definitions.hh"
+#include "../Headers/definitions.h"
 #include "utils.hh"
 
 #ifndef __SYNTHESIS__
 # include <cstdio>
 #endif
-
-#pragma GCC diagnostic ignored "-Wunused-label"
 
 void
 normalize

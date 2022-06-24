@@ -1,7 +1,5 @@
 #include "flat.hh"
 
-#pragma GCC diagnostic ignored "-Wunused-label"
-
 void
 flattening
 (

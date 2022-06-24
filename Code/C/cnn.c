@@ -1,10 +1,10 @@
-#include "cnn.hh"
-#include "utils.hh"
-#include "activ_fun.hh"
-#include "conv.hh"
-#include "pool.hh"
-#include "flat.hh"
-#include "dense.hh"
+#include "cnn.h"
+#include "utils.h"
+#include "activ_fun.h"
+#include "conv.h"
+#include "pool.h"
+#include "flat.h"
+#include "dense.h"
 
 #ifndef __SYNTHESIS__
 # include <cstdio>
@@ -36,11 +36,11 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 
   /******** Convolution layer. ********/
   /*
-    An array to collect .hhe convolution results:
-    FILTERS resulting feature maps, one for ea.hh filter.
+    An array to collect .he convolution results:
+    FILTERS resulting feature maps, one for ea.h filter.
   */
   float features [FILTERS][IMG_ROWS][IMG_COLS] = { 0 };
-  // Convolution wi.hh relu as activation function.
+  // Convolution wi.h relu as activation function.
   convolutional_layer(pad_img, features);
 
   #if 0

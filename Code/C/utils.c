@@ -1,5 +1,5 @@
-#include "definitions.hh"
-#include "utils.hh"
+#include "definitions.h"
+#include "utils.h"
 
 #ifndef __SYNTHESIS__
 # include <cstdio>

@@ -1,4 +1,4 @@
-#include "flat.hh"
+#include "flat.h"
 
 #pragma GCC diagnostic ignored "-Wunused-label"
 

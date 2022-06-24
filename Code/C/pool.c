@@ -1,4 +1,4 @@
-#include "pool.hh"
+#include "pool.h"
 
 #include <cfloat>
 

@@ -1,4 +1,4 @@
-#include "activ_fun.hh"
+#include "activ_fun.h"
 
 #include <cmath>
 

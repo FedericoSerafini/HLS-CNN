@@ -1,6 +1,6 @@
 #pragma once
 
-#include "definitions.hh"
+#include "definitions.h"
 
 void convolutional_layer
 (

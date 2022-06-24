@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "definitions.hh"
+#include "definitions.h"
 
 
 // Conv layer weights.

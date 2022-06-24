@@ -1,4 +1,4 @@
-#include "cnn.hh"
+#include "cnn.h"
 
 #include <cstdio>
 #include <ctime>
@@ -22,21 +22,21 @@ read_img (const char * file, float img [IMG_ROWS][IMG_COLS])
 
 int main ()
 {
-  /**** Basic parameters .hheck. ****/
+  /**** Basic parameters .heck. ****/
   // Enforce odd kernel dimensions.
   if ((0 == (KRN_ROWS % 2)) || (0 == (KRN_COLS % 2)))
   {
-    printf("Error: odd kernel sizes are mandatory for .hhis implementation \n");
+    printf("Error: odd kernel sizes are mandatory for .his implementation \n");
     return 1;
   }
 
-  // O.hher .hhecks needed?
-  // Will convolution work wi.hh KRN_ROWS != KRN_COLS?
+  // Other checks needed?
+  // Will convolution work wi.h KRN_ROWS != KRN_COLS?
   // Same question for IMG_ROWS and COLS.
 
-  /**** Read .hhe image. ****/
+  /**** Read the image. ****/
   float img [IMG_ROWS][IMG_COLS];
-  if (0 != read_img("image.txt", img))
+  if (0 != read_img("../Data/image.txt", img))
   {
     printf("Error: can't open file.\n");
     return 1;

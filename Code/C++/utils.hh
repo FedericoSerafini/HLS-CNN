@@ -14,6 +14,13 @@ padding(
   float img_out [PAD_IMG_ROWS][PAD_IMG_COLS] // Paded out.
 );
 
+void
+clone
+(
+  float img_in [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float images [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS]
+);
+
 #ifndef __SYNTHESIS__
 void
 print_img(float img[IMG_ROWS][IMG_COLS]);

@@ -7,8 +7,6 @@
 void
 flattening_layer
 (
-  // pool_features [FILTERS][PAD_IMG_COLS][PAD_IMG_ROWS].
-  hls::stream<float> & stream_pool_to_flat,
-  // flat_array [FLAT_SIZE].
-  hls::stream<float> & stream_flat_to_dense
+  hls::stream<float>   pool_to_flat_streams[FILTERS],
+  hls::stream<float> & flat_to_dense_stream
 );

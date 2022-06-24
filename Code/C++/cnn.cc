@@ -18,6 +18,8 @@ void cnn
   float prediction [DIGITS]
 )
 {
+  #pragma HLS DATAFLOW
+  #pragma HLS INTERFACE ap_ctrl_chain port=return
 
   /******** Normalization. ********/
   float norm_img [IMG_ROWS][IMG_COLS];
@@ -42,6 +44,10 @@ void cnn
     #endif
   #endif
 
+  /**** Allow parallalism cloning the padded image. ****/
+  float clones [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS];
+  clone(pad_img, clones);
+
   /******** Convolution layer. ********/
   /*
     An array to collect the convolution results:
@@ -49,9 +55,9 @@ void cnn
   */
 
   // float features [FILTERS][IMG_ROWS][IMG_COLS];
-  hls::stream<float> stream_conv_to_pool;
+  hls::stream<float> conv_to_pool_streams [FILTERS];
   // Convolution with relu as activation function.
-  conv_layer(pad_img, stream_conv_to_pool);
+  conv_layer(clones, conv_to_pool_streams);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -63,8 +69,8 @@ void cnn
   /******** Maxpooling layer. ********/
 
   // float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
-  hls::stream<float> stream_pool_to_flat;
-  max_pooling_layer(stream_conv_to_pool, stream_pool_to_flat);
+  hls::stream<float> pool_to_flat_streams[FILTERS];
+  max_pooling_layer(conv_to_pool_streams, pool_to_flat_streams);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -75,7 +81,7 @@ void cnn
   /******** Flatten layer. ********/
   //float flat_array [FLAT_SIZE];
   hls::stream<float> stream_flat_to_dense;
-  flattening_layer(stream_pool_to_flat, stream_flat_to_dense);
+  flattening_layer(pool_to_flat_streams, stream_flat_to_dense);
 
   /******** Dense layer ********/
   dense_layer(stream_flat_to_dense, prediction);

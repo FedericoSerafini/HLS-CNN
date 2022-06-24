@@ -6,7 +6,7 @@
 
 void conv_layer
 (
-  float                pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float              clones [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS],
   //float features [FILTERS][IMG_ROWS][IMG_COLS].
-  hls::stream<float> & stream_conv_to_pool
+  hls::stream<float> conv_to_pool_streams [FILTERS]
 );

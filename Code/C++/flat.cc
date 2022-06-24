@@ -5,8 +5,8 @@
 void
 flattening_layer
 (
-  hls::stream<float> & stream_pool_to_flat,
-  hls::stream<float> & stream_flat_to_dense
+  hls::stream<float>   pool_to_flat_streams[FILTERS],
+  hls::stream<float> & flat_to_dense_stream
 )
 {
   int index = 0;
@@ -20,7 +20,7 @@ flattening_layer
       flat_for_cols:
       for(int c = 0; c < POOL_IMG_COLS; ++c)
       {
-        stream_flat_to_dense.write(stream_pool_to_flat.read());
+        flat_to_dense_stream.write(pool_to_flat_streams[f].read());
         ++index;
       }
     }

@@ -7,6 +7,6 @@
 void
 max_pooling_layer
 (
-  hls::stream<float> & stream_conv_to_pool,
-  hls::stream<float> & stream_pool_to_flat
+  hls::stream<float> conv_to_pool_streams[FILTERS],
+  hls::stream<float> pool_to_flat_streams[FILTERS]
 );

@@ -29,7 +29,7 @@ void
 padding
 (
   float img_in  [IMG_ROWS][IMG_COLS],
-  float              img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
+  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
   pad_for_rows:
@@ -53,7 +53,21 @@ padding
         img_out[r][c] = img_in[r-1][c-1];
       }
     }
-  return;
+}
+
+void
+clone
+(
+  float img_in [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float images [FILTERS][PAD_IMG_ROWS][PAD_IMG_COLS]
+)
+{
+  for (int f = 0; f < FILTERS; ++f)
+    for (int r = 0; r < PAD_IMG_ROWS; ++r)
+      for (int c = 0; c < PAD_IMG_COLS; ++c)
+      {
+        images[f][r][c] = img_in[r][c];
+      }
 }
 
 #ifndef __SYNTHESIS__

@@ -10,8 +10,8 @@
 void
 normalize
 (
-  float              img_in  [IMG_ROWS][IMG_COLS],
-  hls::stream<float> img_out [IMG_ROWS][IMG_COLS]
+  float img_in  [IMG_ROWS][IMG_COLS],
+  float img_out [IMG_ROWS][IMG_COLS]
 )
 {
   norm_for_rows:
@@ -20,8 +20,7 @@ normalize
     norm_for_cols:
     for(int c = 0; c < IMG_COLS; ++c)
     {
-      float value = img_in[r][c] / 255.0;
-      img_out[r][c].write(value);
+      img_out[r][c] = img_in[r][c] / 255.0;
     }
   }
 }
@@ -29,7 +28,7 @@ normalize
 void
 padding
 (
-  hls::stream<float> img_in  [IMG_ROWS][IMG_COLS],
+  float img_in  [IMG_ROWS][IMG_COLS],
   float              img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
@@ -51,7 +50,7 @@ padding
       else
       {
         // Copy.
-        img_out[r][c] = img_in[r-1][c-1].read();
+        img_out[r][c] = img_in[r-1][c-1];
       }
     }
   return;
@@ -60,13 +59,13 @@ padding
 #ifndef __SYNTHESIS__
 
 void
-print_img(hls::stream<float> img[IMG_ROWS][IMG_COLS])
+print_img(float img[IMG_ROWS][IMG_COLS])
 {
   for (int i = 0; i < IMG_ROWS; ++i)
   {
     for (int j = 0; j < IMG_COLS; ++j)
     {
-      printf("%.0f", img[i][j].read());
+      printf("%.0f", img[i][j]);
     }
 
     printf("\n");
@@ -88,7 +87,7 @@ print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 }
 
 void
-print_features(hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS])
+print_features(float features [FILTERS][IMG_ROWS][IMG_COLS])
 {
   for (int f = 0; f < FILTERS; ++f)
   {
@@ -98,7 +97,7 @@ print_features(hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS])
     {
       for (int c = 0; c < IMG_COLS; ++c)
       {
-        printf("%.0f", features[f][r][c].read());
+        printf("%.0f", features[f][r][c]);
       }
       printf("\n");
     }
@@ -108,7 +107,7 @@ print_features(hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS])
 void
 print_pool_features
 (
-  hls::stream<float> pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
   for (int f = 0; f < FILTERS; ++f)
@@ -118,7 +117,7 @@ print_pool_features
     {
       for (int c = 0; c < POOL_IMG_COLS; ++c)
       {
-        printf("%.0f", pool_features[f][r][c].read());
+        printf("%.0f", pool_features[f][r][c]);
       }
       printf("\n");
     }

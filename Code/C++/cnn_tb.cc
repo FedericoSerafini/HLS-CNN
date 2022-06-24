@@ -1,7 +1,5 @@
 #include "cnn.hh"
 
-#include "hls_stream.h"
-
 #include <cstdio>
 #include <ctime>
 
@@ -45,7 +43,7 @@ int main ()
   }
 
   // Prepare array for output.
-  hls::stream<float> prediction [DIGITS];
+  float prediction [DIGITS];
 
   /**** CNN execution, obtain a prediction. ****/
   clock_t begin = clock();
@@ -56,7 +54,7 @@ int main ()
 
   for (int i = 0; i < DIGITS; ++i)
   {
-    printf("%d: %.2f\n", i, prediction[i].read());
+    printf("%d: %.2f\n", i, prediction[i]);
   }
 
   double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

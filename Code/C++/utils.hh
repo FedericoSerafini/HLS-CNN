@@ -2,18 +2,16 @@
 
 #include "definitions.hh"
 
-#include "hls_stream.h"
-
 void
 normalize (
-  float              img_in  [IMG_ROWS][IMG_COLS], // Input image.
-  hls::stream<float> img_out [IMG_ROWS][IMG_COLS]  // Normalized image.
+  float img_in  [IMG_ROWS][IMG_COLS], // Input image.
+  float img_out [IMG_ROWS][IMG_COLS]  // Normalized image.
 );
 
 void
 padding(
-  hls::stream<float> img_in  [IMG_ROWS][IMG_COLS],        // Input image.
-  float              img_out [PAD_IMG_ROWS][PAD_IMG_COLS] // Paded out.
+  float img_in  [IMG_ROWS][IMG_COLS],        // Input image.
+  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS] // Paded out.
 );
 
 #ifndef __SYNTHESIS__
@@ -24,11 +22,11 @@ void
 print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS]);
 
 void
-print_features(hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS]);
+print_features(float features [FILTERS][IMG_ROWS][IMG_COLS]);
 
 void
 print_pool_features
 (
-  hls::stream<float> pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 );
 #endif

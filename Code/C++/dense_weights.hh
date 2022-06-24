@@ -6,7 +6,6 @@
 
 #include "definitions.hh"
 
-
 // Dense layer weights.
 float dense_weights[FLAT_SIZE][DENSE_SIZE]
 	 = {

@@ -6,7 +6,6 @@
 
 #include "definitions.hh"
 
-
 // Conv layer weights.
 float conv_weights [FILTERS][KRN_ROWS][KRN_COLS]
 	= {

@@ -12,12 +12,12 @@
 
 void cnn
 (
-  float              img_in     [IMG_ROWS][IMG_COLS],
-  hls::stream<float> prediction [DIGITS]
+  float img_in     [IMG_ROWS][IMG_COLS],
+  float prediction [DIGITS]
 )
 {
   /******** Normalization. ********/
-  hls::stream<float> norm_img [IMG_ROWS][IMG_COLS];
+  float norm_img [IMG_ROWS][IMG_COLS];
   normalize(img_in, norm_img);
 
   #if 0
@@ -44,7 +44,7 @@ void cnn
     An array to collect the convolution results:
     FILTERS resulting feature maps, one for each filter.
   */
-  hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS];
+  float features [FILTERS][IMG_ROWS][IMG_COLS];
   // Convolution with relu as activation function.
   conv_layer(pad_img, features);
 
@@ -56,7 +56,7 @@ void cnn
   #endif
 
   /******** Maxpooling layer. ********/
-  hls::stream<float> pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
   max_pooling_layer(features, pool_features);
 
   #if 0

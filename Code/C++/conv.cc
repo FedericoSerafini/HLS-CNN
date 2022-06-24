@@ -8,8 +8,8 @@
 void
 conv_layer
 (
-  float              pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
-  hls::stream<float> features [FILTERS][IMG_ROWS][IMG_COLS]
+  float pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float features [FILTERS][IMG_ROWS][IMG_COLS]
 )
 {
   conv_for:
@@ -38,8 +38,7 @@ conv_layer
             }
           }
 
-          float value = relu(w_sum + conv_biases[f]);
-          features[f][r][c].write(value);
+          features[f][r][c] = relu(w_sum + conv_biases[f]);
         }
     }
   }

@@ -1,14 +1,12 @@
 #include "pool.hh"
 
-#include <cfloat>
-
 #pragma GCC diagnostic ignored "-Wunused-label"
 
 void
 max_pooling_layer
 (
-  hls::stream<float> features      [FILTERS][IMG_ROWS][IMG_COLS],
-  hls::stream<float> pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
+  float features      [FILTERS][IMG_ROWS][IMG_COLS],
+  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
 )
 {
   pool_for_filters:
@@ -22,19 +20,19 @@ max_pooling_layer
       pool_for_cols:
       for(int c = 0; c < IMG_COLS; c += POOL_COLS)
       {
-        pool = FLT_MIN;
+        pool = features[f][r][c];
 
         pool_for_pr:
         for (int pr = 0; pr < POOL_ROWS; ++pr)
           pool_for_pc:
           for (int pc = 0; pc < POOL_COLS; ++pc)
           {
-            float value = features[f][r + pr][c + pc].read();
+            float value = features[f][r + pr][c + pc];
             if(value > pool)
               pool = value;
           }
 
-        pool_features[f][r / POOL_ROWS][c / POOL_COLS].write(pool);
+        pool_features[f][r / POOL_ROWS][c / POOL_COLS] = pool;
       }
     }
   }

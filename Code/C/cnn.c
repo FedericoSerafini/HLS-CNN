@@ -6,9 +6,7 @@
 #include "flat.h"
 #include "dense.h"
 
-#ifndef __SYNTHESIS__
-# include <stdio.h>
-#endif
+#include <stdio.h>
 
 void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 {
@@ -36,11 +34,11 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
 
   /******** Convolution layer. ********/
   /*
-    An array to collect .he convolution results:
-    FILTERS resulting feature maps, one for ea.h filter.
+    An array to collect the convolution results:
+    FILTERS resulting feature maps, one for each filter.
   */
   float features [FILTERS][IMG_ROWS][IMG_COLS] = { 0 };
-  // Convolution wi.h relu as activation function.
+  // Convolution with relu as activation function.
   convolutional_layer(pad_img, features);
 
   #if 0

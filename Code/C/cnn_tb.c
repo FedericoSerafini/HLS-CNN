@@ -22,16 +22,16 @@ read_img (const char * file, float img [IMG_ROWS][IMG_COLS])
 
 int main ()
 {
-  /**** Basic parameters .heck. ****/
+  /**** Basic parameters check. ****/
   // Enforce odd kernel dimensions.
   if ((0 == (KRN_ROWS % 2)) || (0 == (KRN_COLS % 2)))
   {
-    printf("Error: odd kernel sizes are mandatory for .his implementation \n");
+    printf("Error: odd kernel sizes are mandatory for this implementation \n");
     return 1;
   }
 
   // Other checks needed?
-  // Will convolution work wi.h KRN_ROWS != KRN_COLS?
+  // Will convolution work with KRN_ROWS != KRN_COLS?
   // Same question for IMG_ROWS and COLS.
 
   /**** Read the image. ****/

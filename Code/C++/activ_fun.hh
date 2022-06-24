@@ -8,5 +8,5 @@ void
 soft_max
 (
   float dense_array [DIGITS],
-  float pred[DIGITS]
+  float pred        [DIGITS]
 );

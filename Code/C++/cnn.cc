@@ -6,6 +6,8 @@
 #include "flat.hh"
 #include "dense.hh"
 
+#include "hls_stream.h"
+
 #ifndef __SYNTHESIS__
 # include <cstdio>
 #endif
@@ -16,6 +18,7 @@ void cnn
   float prediction [DIGITS]
 )
 {
+
   /******** Normalization. ********/
   float norm_img [IMG_ROWS][IMG_COLS];
   normalize(img_in, norm_img);
@@ -44,9 +47,11 @@ void cnn
     An array to collect the convolution results:
     FILTERS resulting feature maps, one for each filter.
   */
-  float features [FILTERS][IMG_ROWS][IMG_COLS];
+
+  // float features [FILTERS][IMG_ROWS][IMG_COLS];
+  hls::stream<float> stream_conv_to_pool;
   // Convolution with relu as activation function.
-  conv_layer(pad_img, features);
+  conv_layer(pad_img, stream_conv_to_pool);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -56,8 +61,10 @@ void cnn
   #endif
 
   /******** Maxpooling layer. ********/
-  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
-  max_pooling_layer(features, pool_features);
+
+  // float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
+  hls::stream<float> stream_pool_to_flat;
+  max_pooling_layer(stream_conv_to_pool, stream_pool_to_flat);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -66,10 +73,11 @@ void cnn
   #endif
 
   /******** Flatten layer. ********/
-  float flat_array [FLAT_SIZE];
-  flattening_layer(pool_features, flat_array);
+  //float flat_array [FLAT_SIZE];
+  hls::stream<float> stream_flat_to_dense;
+  flattening_layer(stream_pool_to_flat, stream_flat_to_dense);
 
   /******** Dense layer ********/
-  dense_layer(flat_array, prediction);
+  dense_layer(stream_flat_to_dense, prediction);
 
 }

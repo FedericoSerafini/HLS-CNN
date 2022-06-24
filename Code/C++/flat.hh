@@ -2,9 +2,13 @@
 
 #include "definitions.hh"
 
+#include "hls_stream.h"
+
 void
 flattening_layer
 (
-  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS],
-  float flat_array    [FLAT_SIZE]
+  // pool_features [FILTERS][PAD_IMG_COLS][PAD_IMG_ROWS].
+  hls::stream<float> & stream_pool_to_flat,
+  // flat_array [FLAT_SIZE].
+  hls::stream<float> & stream_flat_to_dense
 );

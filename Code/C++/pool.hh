@@ -2,9 +2,11 @@
 
 #include "definitions.hh"
 
+#include "hls_stream.h"
+
 void
 max_pooling_layer
 (
-  float features      [FILTERS][IMG_ROWS][IMG_COLS],
-  float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS]
+  hls::stream<float> & stream_conv_to_pool,
+  hls::stream<float> & stream_pool_to_flat
 );

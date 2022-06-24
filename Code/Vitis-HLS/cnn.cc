@@ -28,10 +28,12 @@ dataflow_section
     FILTERS resulting feature maps, one for each filter.
   */
 
-  // float features [FILTERS][IMG_ROWS][IMG_COLS];
-  hls::stream<float> conv_to_pool_streams [FILTERS];
+  hls::stream<float, IMG_ROWS * IMG_COLS>
+  conv_to_pool_streams [FILTERS];
+
   // Convolution with relu as activation function.
-  convolutional_layer(pad_img, pad_img1, pad_img2, pad_img3, conv_to_pool_streams);
+  convolutional_layer(pad_img, pad_img1, pad_img2, pad_img3,
+                      conv_to_pool_streams);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -42,8 +44,9 @@ dataflow_section
 
   /******** Maxpooling layer. ********/
 
-  // float pool_features [FILTERS][POOL_IMG_ROWS][POOL_IMG_COLS];
-  hls::stream<float> pool_to_flat_streams[FILTERS];
+  hls::stream<float, POOL_IMG_ROWS * POOL_IMG_COLS>
+  pool_to_flat_streams[FILTERS];
+
   max_pooling_layer(conv_to_pool_streams, pool_to_flat_streams);
 
   #if 0
@@ -53,8 +56,7 @@ dataflow_section
   #endif
 
   /******** Flatten layer. ********/
-  //float flat_array [FLAT_SIZE];
-  hls::stream<float> flat_to_dense_streams [FILTERS];
+  hls::stream<float, FLAT_SIZE> flat_to_dense_streams [FILTERS];
   flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
   /******** Dense layer ********/

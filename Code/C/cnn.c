@@ -7,7 +7,7 @@
 #include "dense.h"
 
 #ifndef __SYNTHESIS__
-# include <cstdio>
+# include <stdio.h>
 #endif
 
 void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])

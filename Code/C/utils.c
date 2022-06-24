@@ -2,7 +2,7 @@
 #include "utils.h"
 
 #ifndef __SYNTHESIS__
-# include <cstdio>
+# include <stdio.h>
 #endif
 
 #pragma GCC diagnostic ignored "-Wunused-label"

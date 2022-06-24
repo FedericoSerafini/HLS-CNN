@@ -1,7 +1,7 @@
 #include "cnn.h"
 
-#include <cstdio>
-#include <ctime>
+#include <stdio.h>
+#include <time.h>
 
 int
 read_img (const char * file, float img [IMG_ROWS][IMG_COLS])

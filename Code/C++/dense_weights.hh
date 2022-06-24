@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "definitions.hhh"
+#include "definitions.hh"
 
 
 // Dense layer weights.

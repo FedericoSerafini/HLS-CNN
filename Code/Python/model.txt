@@ -2,17 +2,17 @@ Model: "sequential"
 _________________________________________________________________
  Layer (type)                Output Shape              Param #
 =================================================================
- zero_padding2d (ZeroPadding  (None, 30, 30, 1)        0
- 2D)
+ zero_padding2d_layer (ZeroP  (None, 30, 30, 1)        0
+ adding2D)
 
- conv2d (Conv2D)             (None, 28, 28, 4)         40
+ conv2d_layer (Conv2D)       (None, 28, 28, 4)         40
 
- max_pooling2d (MaxPooling2D  (None, 14, 14, 4)        0
- )
+ max_pooling2d_layer (MaxPoo  (None, 14, 14, 4)        0
+ ling2D)
 
- flatten (Flatten)           (None, 784)               0
+ flatten_layer (Flatten)     (None, 784)               0
 
- dense (Dense)               (None, 10)                7850
+ dense_layer (Dense)         (None, 10)                7850
 
 =================================================================
 Total params: 7,890
@@ -20,4 +20,4 @@ Trainable params: 7,890
 Non-trainable params: 0
 _________________________________________________________________
 
-Accuracy on test set: 97.660
+Accuracy on test set: 97.470

@@ -69,14 +69,14 @@ def prep_pixels(train, test) -> tuple:
 def define_model() -> Sequential:
 	# Define model.
 	model = Sequential()
-	model.add(ZeroPadding2D(padding=1, input_shape=(input_size[0], input_size[1], 1)))
-	model.add(Conv2D(conv_1_filter_num, conv_1_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1)))
+	model.add(ZeroPadding2D(padding=1, input_shape=(input_size[0], input_size[1], 1), name='zero_padding2d_layer'))
+	model.add(Conv2D(conv_1_filter_num, conv_1_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1), name='conv2d_layer'))
 	#model.add(BatchNormalization())
-	model.add(MaxPooling2D(pool_1_size))
-	model.add(Flatten())
+	model.add(MaxPooling2D(pool_1_size, name='max_pooling2d_layer'))
+	model.add(Flatten(name='flatten_layer'))
 	#model.add(Dense(100, activation='relu', kernel_initializer='he_uniform'))
 	#model.add(BatchNormalization())
-	model.add(Dense(10, activation='softmax'))
+	model.add(Dense(10, activation='softmax', name='dense_layer'))
 	# Compile model.
 	opt = SGD(learning_rate=0.01, momentum=0.9)
 	model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
@@ -86,19 +86,19 @@ def plot_history(history: dict) -> None:
 	# Summarize history for accuracy.
 	plt.plot(history.history['accuracy'])
 	plt.plot(history.history['val_accuracy'])
-	plt.title('model accuracy')
-	plt.ylabel('accuracy')
-	plt.xlabel('epoch')
-	plt.legend(['train', 'validation'], loc='upper left')
+	plt.title('Model accuracy')
+	plt.ylabel('Accuracy')
+	plt.xlabel('Epoch')
+	plt.legend(['Train', 'Validation'], loc='center right')
 	plt.savefig('history_accuracy.png')
 	# Summarize history for loss.
 	plt.cla()
 	plt.plot(history.history['loss'])
 	plt.plot(history.history['val_loss'])
-	plt.title('model loss')
-	plt.ylabel('loss')
-	plt.xlabel('epoch')
-	plt.legend(['train', 'validation'], loc='upper left')
+	plt.title('Model loss')
+	plt.ylabel('Loss')
+	plt.xlabel('Epoch')
+	plt.legend(['Train', 'Validation'], loc='center right')
 	plt.savefig('history_loss.png')
 
 

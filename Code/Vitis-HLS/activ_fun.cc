@@ -1,7 +1,5 @@
 #include "activ_fun.hh"
 
-#include <cmath>
-
 float relu (float x)
 {
   if(x > 0.0)
@@ -12,8 +10,8 @@ float relu (float x)
 
 void soft_max
 (
-  float dense_array [DIGITS],
-  float pred[DIGITS]
+  hls::stream<float> & dense_to_softmax_stream,
+  float                prediction[DIGITS]
 )
 {
   float sum = 0.0;
@@ -23,14 +21,13 @@ void soft_max
   for_exp_sum:
   for (int i = 0; i < DIGITS; ++i)
   {
-    tmp[i] = expf(dense_array[i]);
+    tmp[i] = dense_to_softmax_stream.read();
     sum += tmp[i];
   }
 
   for_prediction:
   for (int j = 0; j < DIGITS; ++j)
   {
-    pred[j] = tmp[j] / sum;
+    prediction[j] = tmp[j] / sum;
   }
-
 }

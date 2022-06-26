@@ -14,6 +14,7 @@ ADAM:		Accuracy=97.080
 
 from os import path
 from random import shuffle
+from tabnanny import verbose
 from turtle import shape
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
@@ -34,6 +35,7 @@ from numpy import size
 from numpy import std
 from numpy import empty
 from matplotlib import pyplot as plt
+import time
 
 
 # Constants.
@@ -69,10 +71,10 @@ def prep_pixels(train, test) -> tuple:
 def define_model() -> Sequential:
 	# Define model.
 	model = Sequential()
-	model.add(ZeroPadding2D(padding=1, input_shape=(input_size[0], input_size[1], 1), name='zero_padding2d_layer'))
-	model.add(Conv2D(conv_1_filter_num, conv_1_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1), name='conv2d_layer'))
+	model.add(ZeroPadding2D(padding=1, input_shape=(input_size[0], input_size[1], 1), name='padding_layer'))
+	model.add(Conv2D(conv_1_filter_num, conv_1_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1), name='convolution_layer'))
 	#model.add(BatchNormalization())
-	model.add(MaxPooling2D(pool_1_size, name='max_pooling2d_layer'))
+	model.add(MaxPooling2D(pool_1_size, name='max_pooling_layer'))
 	model.add(Flatten(name='flatten_layer'))
 	#model.add(Dense(100, activation='relu', kernel_initializer='he_uniform'))
 	#model.add(BatchNormalization())
@@ -308,7 +310,7 @@ def main() -> None:
 		print('model not found: create and train it')
 		model = define_model()
 		#history = model.fit(trainX, trainY, epochs=5, batch_size=32, validation_data=(testX, testY), verbose=1)
-		history = model.fit(trainX,trainY, epochs=20, batch_size=32, validation_split=0.33, shuffle=True, verbose=1)
+		history = model.fit(trainX,trainY, epochs=20, batch_size=32, validation_split=0.2, shuffle=True, verbose=1)
 		plot_history(history)
 		model.save("model.h5")
 		print('model saved as \'model.h5\'')
@@ -323,6 +325,20 @@ def main() -> None:
 	_, acc = model.evaluate(testX, testY, verbose=0)
 	print('Accuracy: %.3f' % (acc * 100.0))
 
+	# Computation time of a prediction.
+	time_ms_sum = 0
+	num_predictions = int(testX.shape[0]/100)
+	for i in range(num_predictions):
+		print('Making some prediction to measure time taken...'
+			+ str(i+1) + '/' + str(num_predictions), end='\r')
+		start = time.time()
+		model.predict(testX[i].reshape(1, 28, 28, 1),verbose=0)
+		end = time.time()
+		time_ms_sum += (end - start) * 1000
+	time_ms = time_ms_sum / num_predictions
+	print()
+	print('Mean time taken for a prediction: ' + str(round(time_ms, 4)) + ' ms')
+
 	# Plot model in model.png.
 	plot_model(model, 'model.png', show_layer_activations=True,
 		show_shapes=True, show_dtype=True, rankdir='TB', dpi=100)
@@ -330,8 +346,9 @@ def main() -> None:
 	# Save model summary and accuracy in model.txt.
 	with open('model.txt', 'w') as f:
 		model.summary(print_fn=lambda x: f.write(x + '\n'))
-		print(file=f)
-		print('Accuracy on test set: %.3f' % (acc * 100.0), file=f)
+		print('\nAccuracy on test set: %.3f' % (acc * 100.0), file=f)
+		print('\nMean time taken for a prediction: ' + str(round(time_ms, 4))
+			+ ' ms', file=f)
 
 	# Save parameters and weights on header files.
 	save_param_on_files(model)

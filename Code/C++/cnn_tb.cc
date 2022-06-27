@@ -120,5 +120,7 @@ int main ()
 
   // Test is considered successfull if % of correct predictions
   // is more than 95%.
-  return (correct_predictions_perc >= 95.00);
+  if (correct_predictions_perc >= 95.00)
+	  return 0;
+  return -1;
 }

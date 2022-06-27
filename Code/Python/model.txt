@@ -20,6 +20,6 @@ Trainable params: 7,890
 Non-trainable params: 0
 _________________________________________________________________
 
-Accuracy on test set: 97.600
+Accuracy on test set: 97.440
 
-Mean time taken for a prediction: 54.2849 ms
+Mean time taken for a prediction: 36.4181 ms

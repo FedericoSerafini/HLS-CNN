@@ -51,6 +51,6 @@ void cnn(float img_in [IMG_ROWS][IMG_COLS], float prediction[DIGITS])
   float flat_array [FLAT_SIZE] = { 0 };
   flattening_layer(pool_features, flat_array);
 
-  /******** Dense layer ********/
+  /******** Dense layer. ********/
   dense_layer(flat_array, prediction);
 }

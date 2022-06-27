@@ -5,15 +5,15 @@
 ############################################################
 open_project Project
 set_top cnn
-add_files utils.cc
-add_files pool.cc
-add_files flat.cc
-add_files dense.cc
-add_files conv.cc
-add_files cnn.cc
 add_files activ_fun.cc
-add_files -tb ../Data/image.txt -cflags "-Wno-unknown-pragmas" -csimflags "-Wno-unknown-pragmas"
-add_files -tb cnn_tb.cc -cflags "-Wno-unknown-pragmas" -csimflags "-Wno-unknown-pragmas"
+add_files cnn.cc
+add_files conv.cc
+add_files dense.cc
+add_files flat.cc
+add_files pool.cc
+add_files utils.cc
+add_files -tb cnn_tb.cc -cflags "-Wno-unknown-pragmas"
+add_files -tb ../Data
 open_solution "solution1" -flow_target vivado
 set_part {xc7a35ti-cpg236-1L}
 create_clock -period 10 -name default

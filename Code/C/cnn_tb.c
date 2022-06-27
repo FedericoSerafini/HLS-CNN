@@ -1,5 +1,6 @@
 #include "cnn.h"
 
+#include <string.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -30,35 +31,42 @@ int main ()
     return 1;
   }
 
-  // Other checks needed?
-  // Will convolution work with KRN_ROWS != KRN_COLS?
-  // Same question for IMG_ROWS and COLS.
-
-  /**** Read the image. ****/
-  float img [IMG_ROWS][IMG_COLS];
-  if (0 != read_img("../Data/image.txt", img))
-  {
-    printf("Error: can't open file.\n");
-    return 1;
-  }
-
-  // Prepare array for output.
-  float prediction [DIGITS];
-
-  /**** CNN execution, obtain a prediction. ****/
-  clock_t begin = clock();
-  cnn(img, prediction);
-  clock_t end = clock();
-
-  printf("\nPrediction:\n");
+  double latency = 0.0;
+  float images [DIGITS][IMG_ROWS][IMG_COLS];
 
   for (int i = 0; i < DIGITS; ++i)
   {
-    printf("%d: %.2f\n", i, prediction[i]);
+
+    /**** Read the image. ****/
+
+    char file_path [32] = "../Data/image";
+    char str [8];
+    sprintf(str, "%d.txt", i);
+    strcat(file_path, str);
+
+    if (0 != read_img(file_path, images[i]))
+    {
+      printf("Error: can't open file.\n");
+      return 1;
+    }
+
+    // Prepare array for output.
+    float prediction [DIGITS];
+
+    /**** CNN execution, obtain a prediction. ****/
+    clock_t begin = clock();
+    cnn(images[i], prediction);
+    clock_t end = clock();
+
+    printf("\nPrediction %d:\n", i);
+    for (int j = 0; j < DIGITS; ++j)
+    printf("%d: %.2f\n", j, prediction[j]);
+
+    latency += (double)(end - begin) / CLOCKS_PER_SEC;
   }
 
-  double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf("\nTime spent: %f (s)\n", time_spent);
+  latency = latency / DIGITS;
+  printf("\nAverage latency: %f (s)\n", latency);
   printf("\n");
 
   return 0;

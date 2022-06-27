@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <time.h>
 
-// ATTENTION: N cannot be set greater than the # of images (and labels)
-// actually in in.dat and out.dat files.
-// ATTENTION 2: with N = 10000 (all dataset) program goes to stack-
-// overflow error.
+/*
+ * N cannot be greater than the total numbero of images (and labels)
+ * in in.dat and out.dat files:
+ * with N = 10000 (all dataset) program goes to stack-overflow error.
+ */
 #define N 2500
 
 int
@@ -27,7 +28,8 @@ read_images (const char * file, float images [N][IMG_ROWS][IMG_COLS])
   return fclose(fp);
 }
 
-int read_labels(const char * file, int labels[N])
+int
+read_labels(const char * file, int labels[N])
 {
   FILE *fp;
 
@@ -60,19 +62,15 @@ int main ()
   // Enforce odd kernel dimensions.
   if ((0 == (KRN_ROWS % 2)) || (0 == (KRN_COLS % 2)))
   {
-    printf("Error: odd kernel sizes are mandatory for .hhis implementation \n");
+    printf("Error: odd kernel sizes are mandatory for this implementation \n");
     return 1;
   }
-
-  // Other checks needed?
-  // Will convolution work wi.hh KRN_ROWS != KRN_COLS?
-  // Same question for IMG_ROWS and COLS.
 
   /**** Read the images. ****/
   float images[N][IMG_ROWS][IMG_COLS];
   if (0 != read_images("../Data/in.dat", images))
   {
-    printf("Error: can't open ../Data/in.dat file.\n");
+    printf("Error: can't open file ``../Data/in.dat''\n");
     return 1;
   }
 
@@ -80,19 +78,17 @@ int main ()
   int labels[N];
   if (0 != read_labels("../Data/out.dat", labels))
   {
-    printf("Error: can't open ../Data/out.dat file.\n");
+    printf("Error: can't open file ``../Data/out.dat''\n");
     return 1;
   }
 
   /**** Do N predictions. ****/
-  double times_sum = 0;
+  double time = 0;
   int correct_predictions = 0;
+  float prediction [DIGITS];
 
   for (int i = 0; i < N; ++i)
   {
-    // Prepare array for output.
-    float prediction [DIGITS];
-
     // CNN execution, obtain a prediction.
     clock_t begin = clock();
     cnn(images[i], prediction);
@@ -105,17 +101,20 @@ int main ()
 
     // Sum up time spent.
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    times_sum += time_spent;
+    time += time_spent;
   }
 
-  double correct_predictions_perc = correct_predictions * 100 / N;
-  printf("Images tested: %d\n", N);
-  printf("Correct predictions (%%): %.2f\n", correct_predictions_perc);
-  printf("Time spent avg (ms): %f\n", (times_sum / N) * 1000);
+  double correct_predictions_perc = correct_predictions * 100.0 / (double)N;
+  printf("Total predictions: %d\n", N);
+  printf("Correct predictions: %.2f %%\n", correct_predictions_perc);
+  printf("Average latency: %f (ms)\n", (time / N) * 1000);
 
-  // Test is considered successfull if % of correct predictions
-  // is more than 95%.
-  if (correct_predictions_perc >= 95.00)
+  /*
+   * Test is considered successfull if the percentage of correct predictions is
+   * greater than 95%.
+   */
+  if (correct_predictions_perc >= 95.0)
 	  return 0;
-  return -1;
+
+  return 1;
 }

@@ -21,14 +21,15 @@ from tensorflow.keras.datasets import mnist
 import matplotlib.pyplot as plt
 import numpy as np
 
-N = 100
-
 # Load dataset.
 (_, _), (test_X, test_y) = mnist.load_data()
 print('X_test:  '  + str(test_X.shape))
 print('Y_test:  '  + str(test_y.shape))
 
-# Take first N images and labels.
+# Number of samples into test set.
+N = test_X.shape[0]
+
+# Take all images and labels.
 images = test_X[:N]
 labels = test_y[:N]
 
@@ -46,11 +47,11 @@ for i in range(N):
     in_dat += '\n'
     out_dat += str(label) + '\n'
 
-with open('in.dat', 'w') as f:
+with open('../Data/in.dat', 'w') as f:
     print(in_dat, file=f, end='')
-    print('Written ' + str(N) + ' images in in.dat')
+    print('Written ' + str(N) + ' images in ../Data/in.dat')
 
-with open('out.dat', 'w') as f:
+with open('../Data/out.dat', 'w') as f:
     print(out_dat, file=f, end='')
-    print('Written ' + str(N) + ' labels in out.dat')
+    print('Written ' + str(N) + ' labels in ../Data/out.dat')
 

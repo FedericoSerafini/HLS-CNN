@@ -10,13 +10,6 @@ normalization_and_padding(
   float img_out [PAD_IMG_ROWS][PAD_IMG_COLS] // Paded out.
 );
 
-void
-clone
-(
-  float img_in  [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
-);
-
 #ifndef __SYNTHESIS__
 
 void

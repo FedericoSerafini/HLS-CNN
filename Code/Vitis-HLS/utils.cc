@@ -35,20 +35,6 @@ normalization_and_padding
     }
 }
 
-void
-clone
-(
-  float img_in  [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
-)
-{
-  for (int r = 0; r < PAD_IMG_ROWS; ++r)
-    for (int c = 0; c < PAD_IMG_COLS; ++c)
-    {
-      img_out[r][c] = img_in[r][c];
-    }
-}
-
 #ifndef __SYNTHESIS__
 
 void

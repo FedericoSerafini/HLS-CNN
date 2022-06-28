@@ -14,21 +14,19 @@ dense_layer
 {
   float w_sum = 0.0;
   float dense_array [DENSE_SIZE] = { 0 };
-  int index = 0;
   float flat_value;
 
-  dense_for_filter:
-  for (int f = 0; f < FILTERS; ++f)
+
+  dense_for_flat:
+  for (int i = 0; i < FLAT_SIZE / FILTERS; ++i)
   {
-    dense_for_flat:
-    for (int i = 0; i < FLAT_SIZE / FILTERS; ++i)
+    dense_for_filter:
+    for (int f = 0; f < FILTERS; ++f)
     {
       flat_value = flat_to_dense_streams[f].read();
 
       for (int d = 0; d < DENSE_SIZE; ++d)
-        dense_array[d] += dense_weights[index][d] * flat_value;
-
-      ++index;
+        dense_array[d] += dense_weights[f * (FLAT_SIZE / FILTERS) + i][d] * flat_value;
     }
   }
 

@@ -65,7 +65,7 @@ dataflow_section
   flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
   /******** Dense layer. ********/
-  hls::stream<float, DIGITS> dense_to_softmax_stream;
+  hls::stream<float, DENSE_SIZE> dense_to_softmax_stream;
   dense_layer(flat_to_dense_streams, dense_to_softmax_stream);
   soft_max(dense_to_softmax_stream, prediction);
 
@@ -98,13 +98,20 @@ void cnn
   float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS];
   float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS];
   float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  clone(pad_img, pad_img1);
-  clone(pad_img, pad_img2);
-  clone(pad_img, pad_img3);
-  clone(pad_img, pad_img4);
-  clone(pad_img, pad_img5);
-  clone(pad_img, pad_img6);
-  clone(pad_img, pad_img7);
+
+  float value;
+  for (int i = 0; i < PAD_IMG_ROWS; ++i)
+    for (int j = 0; j < PAD_IMG_COLS; ++j)
+    {
+      value = pad_img[i][j];
+      pad_img1[i][j] = value;
+      pad_img2[i][j] = value;
+      pad_img3[i][j] = value;
+      pad_img4[i][j] = value;
+      pad_img5[i][j] = value;
+      pad_img6[i][j] = value;
+      pad_img7[i][j] = value;
+    }
 
   /* Parallel executions start here. */
   dataflow_section(pad_img, pad_img1, pad_img2, pad_img3,

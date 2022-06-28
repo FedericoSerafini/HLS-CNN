@@ -13,6 +13,7 @@ ADAM:		Accuracy=97.080
 """
 
 from os import path
+import pickle
 from random import shuffle
 from tabnanny import verbose
 from turtle import shape
@@ -41,10 +42,10 @@ import time
 # Constants.
 input_size			= (28,28)
 conv_kernel_size 	= (3,3)
-conv_filter_num 	= 4
-pool_1_size 		= (2,2)
+conv_filter_num 	= 8
+pool_size 			= (2,2)
 dense_size			= 10
-training_epochs		= 20
+training_epochs		= 10
 
 def load_dataset() -> tuple:
 	# Load dataset.
@@ -72,7 +73,7 @@ def define_model() -> Sequential:
 	model = Sequential()
 	model.add(ZeroPadding2D(padding=1, input_shape=(input_size[0], input_size[1], 1), name='padding_layer'))
 	model.add(Conv2D(conv_filter_num, conv_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1), name='convolution_layer'))
-	model.add(MaxPooling2D(pool_1_size, name='max_pooling_layer'))
+	model.add(MaxPooling2D(pool_size, name='max_pooling_layer'))
 	model.add(Flatten(name='flatten_layer'))
 	model.add(Dense(10, activation='softmax', name='dense_layer'))
 	# Compile model.
@@ -83,24 +84,26 @@ def define_model() -> Sequential:
 
 def plot_history(history: dict) -> None:
 	# Summarize history for accuracy.
-	plt.grid()
-	plt.plot(history.history['accuracy'])
-	plt.plot(history.history['val_accuracy'])
+	#plt.grid()
+	plt.gca().yaxis.grid(True)
+	plt.plot(history['accuracy'])
+	plt.plot(history['val_accuracy'])
 	plt.title('Model accuracy')
 	plt.ylabel('Accuracy')
 	plt.xlabel('Epoch')
-	plt.xticks(range(training_epochs))
+	plt.xticks(range(0, training_epochs, 1))
 	plt.legend(['Train', 'Validation'], loc='center right')
 	plt.savefig('history_accuracy.png')
 	# Summarize history for loss.
 	plt.cla()
-	plt.grid()
-	plt.plot(history.history['loss'])
-	plt.plot(history.history['val_loss'])
+	#plt.grid()
+	plt.gca().yaxis.grid(True)
+	plt.plot(history['loss'])
+	plt.plot(history['val_loss'])
 	plt.title('Model loss')
 	plt.ylabel('Loss')
 	plt.xlabel('Epoch')
-	plt.xticks(range(training_epochs))
+	plt.xticks(range(0, training_epochs, 1))
 	plt.legend(['Train', 'Validation'], loc='center right')
 	plt.savefig('history_loss.png')
 
@@ -169,8 +172,8 @@ def gen_dense_params(layer:Dense,
 	res = ''
 
 	# Conversion of weights array.
-	pool_img_r = int(input_size[0]/pool_1_size[0])
-	pool_img_c = int(input_size[1]/pool_1_size[1])
+	pool_img_r = int(input_size[0]/pool_size[0])
+	pool_img_c = int(input_size[1]/pool_size[1])
 
 	tmp = empty(shape=(pool_img_r, pool_img_c, conv_filter_num, dense_size))
 	index = 0
@@ -248,8 +251,8 @@ def save_param_on_files(model: Sequential) -> None:
 		print(conv_filter_num, file=f, end='\n\n')
 		# Pool.
 		print('// Pool layer.\n'
-			+ '#define POOL_ROWS\t' + str(pool_1_size[0]) + '\n'
-			+ '#define POOL_COLS\t' + str(pool_1_size[1]) + '\n'
+			+ '#define POOL_ROWS\t' + str(pool_size[0]) + '\n'
+			+ '#define POOL_COLS\t' + str(pool_size[1]) + '\n'
 			+ '#define POOL_IMG_ROWS (IMG_ROWS / POOL_ROWS)\n'
 			+ '#define POOL_IMG_COLS (IMG_COLS / POOL_COLS)\n'
 			, file=f)
@@ -310,8 +313,12 @@ def main() -> None:
 		model = define_model()
 		#history = model.fit(trainX, trainY, epochs=5, batch_size=32, validation_data=(testX, testY), verbose=1)
 		history = model.fit(trainX,trainY, epochs=training_epochs, batch_size=32, validation_split=0.2, shuffle=True, verbose=1)
-		plot_history(history)
+		# Save model.
 		model.save("model.h5")
+		# Save training history.
+		with open('train_history_dict', 'wb') as f:
+			pickle.dump(history.history, f)
+
 		print('model saved as \'model.h5\'')
 	else:
 		print('found a model: use it.')
@@ -348,6 +355,10 @@ def main() -> None:
 		print('\nAccuracy on test set: %.3f' % (acc * 100.0), file=f)
 		print('\nMean time taken for a prediction: ' + str(round(time_ms, 4))
 			+ ' ms', file=f)
+
+	# Load training history and plot.
+	history = pickle.load(open('train_history_dict', "rb"))
+	plot_history(history)
 
 	# Save parameters and weights on header files.
 	save_param_on_files(model)

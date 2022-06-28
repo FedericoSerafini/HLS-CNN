@@ -18,7 +18,7 @@
 // Convolutional layer.
 #define KRN_ROWS	3
 #define KRN_COLS	3
-#define FILTERS	4
+#define FILTERS	8
 
 // Pool layer.
 #define POOL_ROWS	2

@@ -5,21 +5,21 @@ _________________________________________________________________
  padding_layer (ZeroPadding2  (None, 30, 30, 1)        0
  D)
 
- convolution_layer (Conv2D)  (None, 28, 28, 4)         40
+ convolution_layer (Conv2D)  (None, 28, 28, 8)         80
 
- max_pooling_layer (MaxPooli  (None, 14, 14, 4)        0
+ max_pooling_layer (MaxPooli  (None, 14, 14, 8)        0
  ng2D)
 
- flatten_layer (Flatten)     (None, 784)               0
+ flatten_layer (Flatten)     (None, 1568)              0
 
- dense_layer (Dense)         (None, 10)                7850
+ dense_layer (Dense)         (None, 10)                15690
 
 =================================================================
-Total params: 7,890
-Trainable params: 7,890
+Total params: 15,770
+Trainable params: 15,770
 Non-trainable params: 0
 _________________________________________________________________
 
-Accuracy on test set: 97.440
+Accuracy on test set: 97.760
 
-Mean time taken for a prediction: 36.4181 ms
+Mean time taken for a prediction: 49.7089 ms

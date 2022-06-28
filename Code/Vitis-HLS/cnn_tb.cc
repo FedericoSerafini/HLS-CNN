@@ -3,12 +3,7 @@
 #include <cstdio>
 #include <ctime>
 
-/*
- * N cannot be greater than the total numbero of images (and labels)
- * in in.dat and out.dat files:
- * with N = 10000 (all dataset) program goes to stack-overflow error.
- */
-#define N 2500
+#define N 10
 
 int
 read_images (const char * file, float images [N][IMG_ROWS][IMG_COLS])

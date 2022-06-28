@@ -8,8 +8,8 @@
 void
 dense_layer
 (
-  hls::stream<float>     flat_to_dense_streams   [FILTERS],
-  hls::stream<float>   & dense_to_softmax_stream
+  hls::stream<float> flat_to_dense_streams [FILTERS],
+  hls::stream<float> & dense_to_softmax_stream
 )
 {
   float w_sum = 0.0;

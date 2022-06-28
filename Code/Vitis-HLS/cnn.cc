@@ -59,7 +59,7 @@ dataflow_section
   hls::stream<float, FLAT_SIZE> flat_to_dense_streams [FILTERS];
   flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
-  /******** Dense layer ********/
+  /******** Dense layer. ********/
   hls::stream<float, DIGITS> dense_to_softmax_stream;
   dense_layer(flat_to_dense_streams, dense_to_softmax_stream);
   soft_max(dense_to_softmax_stream, prediction);

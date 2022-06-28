@@ -19,7 +19,7 @@ normalization_and_padding
     {
       if (r == 0 || r == IMG_ROWS + 1)
       {
-        // Add pagging.
+        // Add padding.
         img_out[r][c] = 0.0;
       }
       else if (c == 0 || c == IMG_COLS + 1)

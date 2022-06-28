@@ -19,6 +19,10 @@ dataflow_section
   float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float prediction [DIGITS]
 )
 {
@@ -33,6 +37,7 @@ dataflow_section
 
   // Convolution with relu as activation function.
   convolutional_layer(pad_img, pad_img1, pad_img2, pad_img3,
+                      pad_img4, pad_img5, pad_img6, pad_img7,
                       conv_to_pool_streams);
 
   #if 0
@@ -56,13 +61,14 @@ dataflow_section
   #endif
 
   /******** Flatten layer. ********/
-  hls::stream<float, FLAT_SIZE> flat_to_dense_streams [FILTERS];
+  hls::stream<float, FLAT_SIZE / FILTERS> flat_to_dense_streams [FILTERS];
   flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
   /******** Dense layer. ********/
   hls::stream<float, DIGITS> dense_to_softmax_stream;
   dense_layer(flat_to_dense_streams, dense_to_softmax_stream);
   soft_max(dense_to_softmax_stream, prediction);
+
 }
 
 
@@ -88,11 +94,20 @@ void cnn
   float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS];
   float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS];
   float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS];
   clone(pad_img, pad_img1);
   clone(pad_img, pad_img2);
   clone(pad_img, pad_img3);
+  clone(pad_img, pad_img4);
+  clone(pad_img, pad_img5);
+  clone(pad_img, pad_img6);
+  clone(pad_img, pad_img7);
 
   /* Parallel executions start here. */
-  dataflow_section(pad_img, pad_img1, pad_img2, pad_img3, prediction);
-
+  dataflow_section(pad_img, pad_img1, pad_img2, pad_img3,
+                   pad_img4, pad_img5, pad_img6, pad_img7,
+                   prediction);
 }

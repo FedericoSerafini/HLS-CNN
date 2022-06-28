@@ -29,4 +29,8 @@ flattening_layer
   flattening(pool_to_flat_streams[1], flat_to_dense_streams[1]);
   flattening(pool_to_flat_streams[2], flat_to_dense_streams[2]);
   flattening(pool_to_flat_streams[3], flat_to_dense_streams[3]);
+  flattening(pool_to_flat_streams[4], flat_to_dense_streams[4]);
+  flattening(pool_to_flat_streams[5], flat_to_dense_streams[5]);
+  flattening(pool_to_flat_streams[6], flat_to_dense_streams[6]);
+  flattening(pool_to_flat_streams[7], flat_to_dense_streams[7]);
 }

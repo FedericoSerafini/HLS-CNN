@@ -42,7 +42,7 @@ dataflow_section
   #if 0
     #ifndef __SYNTHESIS__
       // Print results.
-      print_features(features);
+      print_features(conv_to_pool_streams);
     #endif
   #endif
 

@@ -6,17 +6,23 @@
 
 void
 normalization_and_padding(
-  float img_in  [IMG_ROWS][IMG_COLS],        // Input image.
-  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS] // Paded out.
+  float img_in  [IMG_ROWS][IMG_COLS],
+  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 );
 
 #ifndef __SYNTHESIS__
 
 void
-print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS]);
+print_pad_img
+(
+  float img[PAD_IMG_ROWS][PAD_IMG_COLS]
+);
 
 void
-print_features(float features [FILTERS][IMG_ROWS][IMG_COLS]);
+print_features
+(
+  hls::stream<float> conv_to_pool_streams[FILTERS]
+);
 
 void
 print_pool_features

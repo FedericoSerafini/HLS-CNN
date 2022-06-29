@@ -52,7 +52,10 @@ print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 }
 
 void
-print_features(float features [FILTERS][IMG_ROWS][IMG_COLS])
+print_features
+(
+  hls::stream<float> conv_to_pool_streams[FILTERS]
+)
 {
   for (int f = 0; f < FILTERS; ++f)
   {
@@ -62,7 +65,7 @@ print_features(float features [FILTERS][IMG_ROWS][IMG_COLS])
     {
       for (int c = 0; c < IMG_COLS; ++c)
       {
-        printf("%.0f", features[f][r][c]);
+        printf("%.0f", conv_to_pool_streams[f].read());
       }
       printf("\n");
     }
@@ -78,6 +81,7 @@ print_pool_features
   for (int f = 0; f < FILTERS; ++f)
   {
     printf("Pool feature map %d:\n", f);
+
     for (int r = 0; r < POOL_IMG_ROWS; ++r)
     {
       for (int c = 0; c < POOL_IMG_COLS; ++c)

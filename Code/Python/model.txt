@@ -1,19 +1,19 @@
 Model: "sequential"
 _________________________________________________________________
- Layer (type)                Output Shape              Param #
+ Layer (type)                Output Shape              Param #   
 =================================================================
- padding_layer (ZeroPadding2  (None, 30, 30, 1)        0
- D)
-
- convolution_layer (Conv2D)  (None, 28, 28, 8)         80
-
- max_pooling_layer (MaxPooli  (None, 14, 14, 8)        0
- ng2D)
-
- flatten_layer (Flatten)     (None, 1568)              0
-
- dense_layer (Dense)         (None, 10)                15690
-
+ padding_layer (ZeroPadding2  (None, 30, 30, 1)        0         
+ D)                                                              
+                                                                 
+ convolution_layer (Conv2D)  (None, 28, 28, 8)         80        
+                                                                 
+ max_pooling_layer (MaxPooli  (None, 14, 14, 8)        0         
+ ng2D)                                                           
+                                                                 
+ flatten_layer (Flatten)     (None, 1568)              0         
+                                                                 
+ dense_layer (Dense)         (None, 10)                15690     
+                                                                 
 =================================================================
 Total params: 15,770
 Trainable params: 15,770
@@ -22,4 +22,4 @@ _________________________________________________________________
 
 Accuracy on test set: 97.760
 
-Mean time taken for a prediction: 49.7089 ms
+Mean time taken for a prediction: 34.8693 ms

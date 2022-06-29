@@ -106,9 +106,11 @@ int main ()
   }
 
   double correct_predictions_perc = correct_predictions * 100.0 / (double)N;
+  printf("\n");
   printf("Total predictions: %d\n", N);
   printf("Correct predictions: %.2f %%\n", correct_predictions_perc);
   printf("Average latency: %f (ms)\n", (time / N) * 1000);
+  printf("\n");
 
   return 0;
 }

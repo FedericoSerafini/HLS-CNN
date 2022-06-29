@@ -1,40 +1,78 @@
 #include "dense.hh"
-#include "activ_fun.hh"
 #include "../Headers/dense_weights.h"
 
-#include "hls_stream.h"
 #include <cmath>
+#include "hls_stream.h"
+
+void dense_layer_soft_max
+(
+  hls::stream<float>   dense_to_softmax_streams [FILTERS],
+  float                prediction               [DIGITS]
+)
+{
+  float sum;
+  float exp_sum = 0.0;
+
+  for (int d = 0; d < DENSE_SIZE; ++d)
+  {
+    sum = dense_biases[d];
+
+    for (int f = 0; f < FILTERS; ++f)
+    {
+      sum += dense_to_softmax_streams[f].read();
+    }
+
+    exp_sum += prediction[d] = expf(sum);
+  }
+
+  for (int p = 0; p < DIGITS; ++p)
+  {
+    prediction[p] = prediction[p] / exp_sum;
+  }
+}
 
 void
-dense_layer
+dense
 (
-  hls::stream<float> flat_to_dense_streams [FILTERS],
+  hls::stream<float> & flat_to_dense_stream,
+  int                  filter,
   hls::stream<float> & dense_to_softmax_stream
 )
 {
-  float w_sum = 0.0;
-  float dense_array [DENSE_SIZE] = { 0 };
   float flat_value;
-
+  float dense_array[DENSE_SIZE] = { 0 };
 
   dense_for_flat:
   for (int i = 0; i < FLAT_SIZE / FILTERS; ++i)
   {
-    dense_for_filter:
-    for (int f = 0; f < FILTERS; ++f)
-    {
-      flat_value = flat_to_dense_streams[f].read();
+    flat_value = flat_to_dense_stream.read();
 
-      for (int d = 0; d < DENSE_SIZE; ++d)
-        dense_array[d] += dense_weights[f * (FLAT_SIZE / FILTERS) + i][d] * flat_value;
+    for (int d = 0; d < DENSE_SIZE; ++d)
+    {
+      int index = filter * (FLAT_SIZE / FILTERS) + i;
+        dense_array[d] += dense_weights[index][d] * flat_value;
     }
   }
 
-  dense_bias_for:
-  for (int b = 0; b < DENSE_SIZE; ++b)
+  for (int j = 0; j < DENSE_SIZE; ++j)
   {
-    dense_to_softmax_stream.write(expf(dense_array[b] + dense_biases[b]));
+    dense_to_softmax_stream.write(dense_array[j]);
   }
-
 }
 
+void
+dense_layer
+(
+  hls::stream<float> flat_to_dense_streams    [FILTERS],
+  hls::stream<float> dense_to_softmax_streams [FILTERS]
+)
+{
+  dense(flat_to_dense_streams[0], 0, dense_to_softmax_streams[0]);
+  dense(flat_to_dense_streams[1], 1, dense_to_softmax_streams[1]);
+  dense(flat_to_dense_streams[2], 2, dense_to_softmax_streams[2]);
+  dense(flat_to_dense_streams[3], 3, dense_to_softmax_streams[3]);
+  dense(flat_to_dense_streams[4], 4, dense_to_softmax_streams[4]);
+  dense(flat_to_dense_streams[5], 5, dense_to_softmax_streams[5]);
+  dense(flat_to_dense_streams[6], 6, dense_to_softmax_streams[6]);
+  dense(flat_to_dense_streams[7], 7, dense_to_softmax_streams[7]);
+}

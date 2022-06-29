@@ -1,7 +1,14 @@
 #include "conv.hh"
-#include "activ_fun.hh"
 #include "../Headers/conv_weights.h"
 #include "../Headers/definitions.h"
+
+float relu (float x)
+{
+  if(x > 0.0)
+    return x;
+  else
+    return 0.0;
+}
 
 void
 convolution
@@ -37,9 +44,7 @@ convolution
               w_sum +=  w * pixel;
             }
           }
-          #if 0
-            features[f][r][c] = relu(w_sum + conv_biases[f]);
-          #endif
+
           conv_to_pool_stream.write(relu(w_sum + conv_biases[filter]));
         }
     }

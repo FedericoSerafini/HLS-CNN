@@ -18,7 +18,7 @@ read_images (const char * file, float images [N][IMG_ROWS][IMG_COLS])
   for (int i = 0; i < N; ++i)
     for (int x = 0; x < IMG_ROWS; ++x)
       for (int y = 0; y < IMG_COLS; ++y)
-        fscanf(fp, "%f", & images[i][x][y]);
+        (void) fscanf(fp, "%f", & images[i][x][y]);
 
   return fclose(fp);
 }
@@ -34,7 +34,7 @@ read_labels(const char * file, int labels[N])
     return -1;
 
   for (int i = 0; i < N; ++i)
-    fscanf(fp, "%d", & labels[i]);
+    (void)fscanf(fp, "%d", & labels[i]);
 
   return fclose(fp);
 }

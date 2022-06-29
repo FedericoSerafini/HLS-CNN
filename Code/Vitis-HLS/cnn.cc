@@ -1,6 +1,5 @@
 #include "cnn.hh"
 #include "utils.hh"
-#include "activ_fun.hh"
 #include "conv.hh"
 #include "pool.hh"
 #include "flat.hh"
@@ -65,12 +64,12 @@ dataflow_section
   flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
   /******** Dense layer. ********/
-  hls::stream<float, DENSE_SIZE> dense_to_softmax_stream;
-  dense_layer(flat_to_dense_streams, dense_to_softmax_stream);
-  soft_max(dense_to_softmax_stream, prediction);
+  hls::stream<float, DENSE_SIZE> dense_to_softmax_streams [FILTERS];
+  dense_layer(flat_to_dense_streams, dense_to_softmax_streams);
 
+  /******** Softmax. ********/
+  dense_layer_soft_max(dense_to_softmax_streams, prediction);
 }
-
 
 void cnn
 (

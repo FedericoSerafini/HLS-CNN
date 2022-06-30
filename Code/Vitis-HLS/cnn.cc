@@ -99,7 +99,10 @@ void cnn
   float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS];
 
   float value;
+
+  clone_for_rows:
   for (int i = 0; i < PAD_IMG_ROWS; ++i)
+    clone_for_cols:
     for (int j = 0; j < PAD_IMG_COLS; ++j)
     {
       value = pad_img[i][j];

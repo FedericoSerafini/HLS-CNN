@@ -1,4 +1,5 @@
 #include "cnn.h"
+#include "utils.h"
 
 #include <stdio.h>
 #include <time.h>
@@ -18,7 +19,7 @@ read_images (const char * file, float images [N][IMG_ROWS][IMG_COLS])
   for (int i = 0; i < N; ++i)
     for (int x = 0; x < IMG_ROWS; ++x)
       for (int y = 0; y < IMG_COLS; ++y)
-        (void) fscanf(fp, "%f", & images[i][x][y]);
+        (void)fscanf(fp, "%f", & images[i][x][y]);
 
   return fclose(fp);
 }
@@ -96,6 +97,10 @@ int main ()
     else
     {
       printf("\nExpected: %d\n", labels[i]);
+      float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
+      normalization_and_padding(images[i], pad_img);
+      print_pad_img(pad_img);
+      printf("Prediction:\n");
       for (int j = 0; j < DIGITS; ++j)
         printf("%d: %f\n", j, prediction[j]);
       printf("\n");

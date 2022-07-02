@@ -13,10 +13,12 @@ void dense_layer_soft_max
   float sum;
   float exp_sum = 0.0;
 
+  dense_soft_max_for_dense_size:
   for (int d = 0; d < DENSE_SIZE; ++d)
   {
     sum = dense_biases[d];
 
+    dense_soft_max_for_filters:
     for (int f = 0; f < FILTERS; ++f)
     {
       sum += dense_to_softmax_streams[f].read();
@@ -25,6 +27,7 @@ void dense_layer_soft_max
     exp_sum += prediction[d] = expf(sum);
   }
 
+  dense_soft_max_for_digits:
   for (int p = 0; p < DIGITS; ++p)
   {
     prediction[p] = prediction[p] / exp_sum;

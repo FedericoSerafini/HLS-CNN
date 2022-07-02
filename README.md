@@ -4,7 +4,7 @@ handwritten digit recongnition.
 
 ## Project workflow
 
-Refer to [presentation](/HLS-CNN-presentation-FS.pdf)
+Refer to [presentation](/HLS-CNN-presentation-FS.pdf).
 
 ## Python code
 

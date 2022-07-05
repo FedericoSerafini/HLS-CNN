@@ -1,15 +1,17 @@
 #include "pool.hh"
 
 #include <cfloat>
+#include "../Headers/type_definitions.h"
+
 
 void
 max_pooling
 (
-  hls::stream<float> & conv_to_pool_stream,
-  hls::stream<float> & pool_to_flat_stream
+  hls::stream<float24_t> & conv_to_pool_stream,
+  hls::stream<float24_t> & pool_to_flat_stream
 )
 {
-  float pool = 0.0;
+  float24_t pool = 0.0;
 
   pool_for_rows:
   for (int r = 0; r < IMG_ROWS; r += POOL_ROWS)
@@ -24,7 +26,7 @@ max_pooling
         pool_for_pc:
         for (int pc = 0; pc < POOL_COLS; ++pc)
         {
-          float value = conv_to_pool_stream.read();
+          float24_t value = conv_to_pool_stream.read();
           if(value > pool)
             pool = value;
         }
@@ -37,8 +39,8 @@ max_pooling
 void
 max_pooling_layer
 (
-  hls::stream<float> conv_to_pool_streams[FILTERS],
-  hls::stream<float> pool_to_flat_streams[FILTERS]
+  hls::stream<float24_t> conv_to_pool_streams[FILTERS],
+  hls::stream<float24_t> pool_to_flat_streams[FILTERS]
 )
 {
     max_pooling(conv_to_pool_streams[0], pool_to_flat_streams[0]);

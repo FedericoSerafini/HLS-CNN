@@ -1,4 +1,6 @@
 #include "../Headers/definitions.h"
+#include "../Headers/type_definitions.h"
+
 #include "utils.hh"
 
 #ifndef __SYNTHESIS__
@@ -8,8 +10,8 @@
 void
 normalization_and_padding
 (
-  float img_in  [IMG_ROWS][IMG_COLS],
-  float img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
+  float24_t  img_in  [IMG_ROWS][IMG_COLS],
+  float24_t  img_out [PAD_IMG_ROWS][PAD_IMG_COLS]
 )
 {
   pad_for_rows:
@@ -30,7 +32,7 @@ normalization_and_padding
       else
       {
         // Normalize.
-        img_out[r][c] = img_in[r-1][c-1] / 255.0;
+        img_out[r][c] = img_in[r-1][c-1] / (float24_t)255.0;
       }
     }
 }
@@ -38,13 +40,13 @@ normalization_and_padding
 #ifndef __SYNTHESIS__
 
 void
-print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
+print_pad_img(float24_t  img[PAD_IMG_ROWS][PAD_IMG_COLS])
 {
   for (int i = 0; i < PAD_IMG_ROWS; ++i)
   {
     for (int j = 0; j < PAD_IMG_COLS; ++j)
     {
-      printf("%.0f", img[i][j]);
+      printf("%s", img[i][j].to_string(10).c_str());
     }
 
     printf("\n");
@@ -54,7 +56,7 @@ print_pad_img(float img[PAD_IMG_ROWS][PAD_IMG_COLS])
 void
 print_features
 (
-  hls::stream<float> conv_to_pool_streams[FILTERS]
+  hls::stream<float24_t > conv_to_pool_streams[FILTERS]
 )
 {
   for (int f = 0; f < FILTERS; ++f)
@@ -75,7 +77,7 @@ print_features
 void
 print_pool_features
 (
-  hls::stream<float> pool_to_flat_streams[FILTERS]
+  hls::stream<float24_t > pool_to_flat_streams[FILTERS]
 )
 {
   for (int f = 0; f < FILTERS; ++f)

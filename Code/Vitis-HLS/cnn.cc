@@ -4,6 +4,7 @@
 #include "pool.hh"
 #include "flat.hh"
 #include "dense.hh"
+#include "../Headers/type_definitions.h"
 
 #include "hls_stream.h"
 
@@ -14,15 +15,15 @@
 void
 dataflow_section
 (
-  float pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float prediction [DIGITS]
+  float24_t pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float24_t prediction [DIGITS]
 )
 {
   /******** Convolution layer. ********/
@@ -31,7 +32,7 @@ dataflow_section
     FILTERS resulting feature maps, one for each filter.
   */
 
-  hls::stream<float, IMG_ROWS * IMG_COLS>
+  hls::stream<float24_t, IMG_ROWS * IMG_COLS>
   conv_to_pool_streams [FILTERS];
 
   // Convolution with relu as activation function.
@@ -48,7 +49,7 @@ dataflow_section
 
   /******** Maxpooling layer. ********/
 
-  hls::stream<float, POOL_IMG_ROWS * POOL_IMG_COLS>
+  hls::stream<float24_t, POOL_IMG_ROWS * POOL_IMG_COLS>
   pool_to_flat_streams[FILTERS];
 
   max_pooling_layer(conv_to_pool_streams, pool_to_flat_streams);
@@ -60,11 +61,11 @@ dataflow_section
   #endif
 
   /******** Flatten layer. ********/
-  hls::stream<float, FLAT_SIZE / FILTERS> flat_to_dense_streams [FILTERS];
+  hls::stream<float24_t, FLAT_SIZE / FILTERS> flat_to_dense_streams [FILTERS];
   flattening_layer(pool_to_flat_streams, flat_to_dense_streams);
 
   /******** Dense layer. ********/
-  hls::stream<float, DENSE_SIZE> dense_to_softmax_streams [FILTERS];
+  hls::stream<float24_t, DENSE_SIZE> dense_to_softmax_streams [FILTERS];
   dense_layer(flat_to_dense_streams, dense_to_softmax_streams);
 
   /******** Softmax. ********/
@@ -73,13 +74,13 @@ dataflow_section
 
 void cnn
 (
-  float img_in     [IMG_ROWS][IMG_COLS],
-  float prediction [DIGITS]
+  float24_t img_in     [IMG_ROWS][IMG_COLS],
+  float24_t prediction [DIGITS]
 )
 {
   /******** Pre-processing data. ********/
 
-  float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
   normalization_and_padding(img_in, pad_img);
 
   #if 0
@@ -90,17 +91,15 @@ void cnn
   #endif
 
   /* Allow parallelism cloning the padded image. */
-  float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS];
+  float24_t pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS];
 
-  float value;
-
-  clone_for_rows:
+  float24_t value;
   for (int i = 0; i < PAD_IMG_ROWS; ++i)
     clone_for_cols:
     for (int j = 0; j < PAD_IMG_COLS; ++j)

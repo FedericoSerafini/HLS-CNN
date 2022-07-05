@@ -1,10 +1,12 @@
 #include "flat.hh"
+#include "../Headers/type_definitions.h"
+
 
 void
 flattening
 (
-  hls::stream<float> &  pool_to_flat_stream,
-  hls::stream<float> &  flat_to_dense_stream
+  hls::stream<float24_t> &  pool_to_flat_stream,
+  hls::stream<float24_t> &  flat_to_dense_stream
 )
 {
   flat_for_rows:
@@ -21,8 +23,8 @@ flattening
 void
 flattening_layer
 (
-  hls::stream<float> pool_to_flat_streams[FILTERS],
-  hls::stream<float> flat_to_dense_streams[FILTERS]
+  hls::stream<float24_t> pool_to_flat_streams[FILTERS],
+  hls::stream<float24_t> flat_to_dense_streams[FILTERS]
 )
 {
   flattening(pool_to_flat_streams[0], flat_to_dense_streams[0]);

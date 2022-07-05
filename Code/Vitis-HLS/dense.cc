@@ -1,17 +1,18 @@
 #include "dense.hh"
 #include "../Headers/dense_weights.h"
+#include "../Headers/type_definitions.h"
+
 
 #include <cmath>
-#include "hls_stream.h"
 
 void dense_layer_soft_max
 (
-  hls::stream<float>   dense_to_softmax_streams [FILTERS],
-  float                prediction               [DIGITS]
+  hls::stream<float24_t>   dense_to_softmax_streams [FILTERS],
+  float24_t                prediction               [DIGITS]
 )
 {
-  float sum;
-  float exp_sum = 0.0;
+  float24_t sum;
+  float24_t exp_sum = 0.0;
 
   dense_soft_max_for_dense_size:
   for (int d = 0; d < DENSE_SIZE; ++d)
@@ -37,13 +38,13 @@ void dense_layer_soft_max
 void
 dense
 (
-  hls::stream<float> & flat_to_dense_stream,
+  hls::stream<float24_t> & flat_to_dense_stream,
   int                  filter,
-  hls::stream<float> & dense_to_softmax_stream
+  hls::stream<float24_t> & dense_to_softmax_stream
 )
 {
-  float flat_value;
-  float dense_array[DENSE_SIZE] = { 0 };
+  float24_t flat_value;
+  float24_t dense_array[DENSE_SIZE] = { 0 };
 
   dense_for_flat:
   for (int i = 0; i < FLAT_SIZE / FILTERS; ++i)
@@ -66,8 +67,8 @@ dense
 void
 dense_layer
 (
-  hls::stream<float> flat_to_dense_streams    [FILTERS],
-  hls::stream<float> dense_to_softmax_streams [FILTERS]
+  hls::stream<float24_t> flat_to_dense_streams    [FILTERS],
+  hls::stream<float24_t> dense_to_softmax_streams [FILTERS]
 )
 {
   dense(flat_to_dense_streams[0], 0, dense_to_softmax_streams[0]);

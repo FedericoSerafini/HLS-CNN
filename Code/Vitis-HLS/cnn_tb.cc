@@ -153,9 +153,9 @@ int main ()
     else
     {
       printf("\nExpected: %d\n", labels[i]);
-      //float24_t pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
-      //normalization_and_padding(images[i], pad_img);
-      //print_pad_img(pad_img);
+      float24_t pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
+      normalization_and_padding(images[i], pad_img);
+      print_pad_img(pad_img);
       printf("Prediction:\n");
       for (int j = 0; j < DIGITS; ++j)
         printf("%d: %s\n", j, prediction[j].to_string(10).c_str());
@@ -175,5 +175,5 @@ int main ()
   printf("Average latency: %f (ms)\n", (time / N) * 1000);
   printf("\n");
 
-  return 0;
+  return correct_predictions_perc < 95.0;
 }

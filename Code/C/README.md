@@ -1,11 +1,11 @@
-### Debug code.
+### Debug code
 
 ```
 make dbg_cnn # Compilation.
 ./dbg_cnn    # Execution.
 ```
 
-### Optimized code.
+### Optimized code
 
 ```
 make cnn # Compilation.

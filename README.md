@@ -26,4 +26,4 @@ The main difference is that our implementation is written for Vitis HLS version 
 
 [Vitis HLS](Code/Vitis-HLS):
 
-5.  adaptation of the C code to C++ code to take advantage of Vitis HLS syntax constructs and libraries.
+5.  C to C++ code adaptation to take advantage of Vitis HLS syntax constructs and libraries.

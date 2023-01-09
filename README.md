@@ -1,6 +1,13 @@
 # HLS-CNN
-High Level Synthesis of a trained Convolutional Neural Network for
-handwritten digit recongnition.
+High Level Synthesis of a trained Convolutional Neural Network for handwritten digit recongnition.
+
+## Related work:
+This project uses many concepts coming from a previous work that can be found here [here](https://www.amiq.com/consulting/2018/12/14/how-to-implement-a-convolutional-neural-network-using-high-level-synthesis).
+The main differece is that our implementation is written for Vitis HLS version 2020.2 instead of Vivado HLS version 2018.3.
+
+## Project summary:
+
+[FS presentation](/HLS-CNN-presentation-FS.pdf) and [GB presentation](HLS-CNN-presentation-GB.pdf).
 
 ## Project structure:
 
@@ -20,5 +27,3 @@ handwritten digit recongnition.
 [Vitis HLS](Code/Vitis-HLS):
 
 -  replication of the network in C++ using Vitis HLS syntax constructs and libraries.
-
-For additional information look at [FS presentation](/HLS-CNN-presentation-FS.pdf) and [GB presentation](HLS-CNN-presentation-GB.pdf).

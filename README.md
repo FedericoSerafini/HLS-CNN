@@ -22,7 +22,7 @@ The main difference is that our implementation is written for Vitis HLS version 
 
 [C](Code/C):
 
-4.  replication of the network in C (using weights generated before).
+4.  replication of the trained network in C (using previously-generated headers).
 
 [Vitis HLS](Code/Vitis-HLS):
 

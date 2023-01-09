@@ -9,21 +9,21 @@ The main difference is that our implementation is written for Vitis HLS version 
 
 [FS presentation](/HLS-CNN-presentation-FS.pdf) and [GB presentation](HLS-CNN-presentation-GB.pdf).
 
-## Project structure:
+## Workflow and project structure:
 
 [Python](Code/Python):
   
--  model definition, training and evaluation;
--  export of (trained) network weights and architecture using C header files.
+1.  model definition, training and evaluation;
+2.  export of (trained) network weights and architecture through C header files.
 
 [Headers](Code/Headers):
 
--  C header files containing network architecture and weights.
+3.  C header files containing network architecture and weights.
 
 [C](Code/C):
 
--  replication of the network in C.
+4.  replication of the network in C (using weights generated before).
 
 [Vitis HLS](Code/Vitis-HLS):
 
--  replication of the network in C++ using Vitis HLS syntax constructs and libraries.
+5.  replication of the network in C++ using Vitis HLS syntax constructs and libraries.

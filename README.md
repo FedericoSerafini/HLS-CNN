@@ -31,5 +31,5 @@ Project presentation for the "Embedded Systems" Master course in University of P
 
 ## Warning
 C/C++ code of this project is designed to generate an RTL description that meets ambitious performance requirements through pipelining and parallelism;
-to achieve this objective, we write specific and non-parametric code,
+to achieve this objective, we wrote specific and non-parametric code,
 meaning that most of the changes that can be applied to the network architecture are **not automatically** propagated to the rest of the project.

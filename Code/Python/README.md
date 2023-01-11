@@ -1,4 +1,26 @@
-## gen-weights.py
+# Python
+
+## Pre-requisites
+
+- (Optionally) Create new virtual environment (e.g. named `my-venv`):
+    ```
+    python3 -m venv my-venv
+    ```
+    and activate it:
+    ```
+    source my-venv/bin/activate
+    ```
+    To deactivate the virtual environment:
+    ```
+    deactivate
+    ```
+
+- Install Python's packages required:
+    ```
+    pip install -r requirements.txt
+    ```
+
+## Train network and export weights: `gen-weights.py`
 
 This program uses a CNN model built with Tensorflow/Keras to compute
 the weights that will be used by the HLS network.
@@ -21,71 +43,42 @@ Also, this program produces/saves:
 python3 gen-weights.py
 ```
 
-## gen-tb.py
+## Generate input/output for HLS testbench: `gen-tb.py`
 
-This program generates in.dat and out.dat (in the current directory) for
-cnn_tb.c starting from first N images of **MNIST test set**.
+This program generates the files `in.dat` and `out.dat` (in the current
+directory) for the HLS test-bench (`cnn_tb.c`). It takes the
+[MNIST-tensorflow](https://www.tensorflow.org/datasets/catalog/mnist)
+test-set and generate the files in this format:
 
-- in.dat:
-```
+- `in.dat`:
+    ```
     image_0
     (blank line)
     image_1
     (blank line)
     ....
     image_N
-```
-where each image is a list of pixel with integer value from 0 to 255:
-```
-pixel_0_0   pixel_0_1   ... pixel_0_28
-pixel_1_0   pixel_1_1   ... pixel_1_28
-...         ...         ...
-pixel_28_0  pixel_28_1  ... pixel_28_28
-```
+    ```
 
-- out.dat:
-```
+    where each image is a list of pixel with integer value from 0 to 255:
+
+    ```
+    pixel_0_0   pixel_0_1   ... pixel_0_28
+    pixel_1_0   pixel_1_1   ... pixel_1_28
+    ...         ...         ...
+    pixel_28_0  pixel_28_1  ... pixel_28_28
+    ```
+
+- `out.dat`:
+    ```
     label_y_0
     label_y_1
     ...
     label_y_N
-```
+    ```
 
 ### Usage
 
 ```
 python3 gen-tb.py
 ```
-## Useful info
-
-- To generate new `requirements.txt` file (when `.py` files are modified)
-
-
-    (if you don't already have `pipreqs` installed)
-    ```
-    pip install pipreqs
-    ```
-    Then, in this directory:
-    ```
-    pipreqs --force
-    ```
-
-- To create a virtual environment starting from `requirements.txt` to
-run these programs:
-
-    (if you don't already have `virtualenv` installed)
-    ```
-    pip install virtualenv
-    ```
-    Then,
-    ```bash
-    # creates new environment (called 'venv' here)
-    virtualenv venv
-
-    # to enter the virtual environment
-    source venv/bin/activate
-
-    # to install the requirements in the current environment
-    pip install -r requirements.txt
-    ```
-

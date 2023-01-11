@@ -14,9 +14,6 @@ ADAM:		Accuracy=97.080
 
 from os import path
 import pickle
-from random import shuffle
-from tabnanny import verbose
-from turtle import shape
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.utils import plot_model
@@ -26,14 +23,9 @@ from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.optimizers import SGD
-from sklearn.model_selection import KFold
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
-from numpy import mean
-from numpy import size
-from numpy import std
 from numpy import empty
 from matplotlib import pyplot as plt
 import time

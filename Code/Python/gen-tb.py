@@ -1,6 +1,6 @@
 '''
 This program generates in.dat and out.dat for cnn_tb.c starting from
-first N images of MNIST test set.
+the images of MNIST test set.
 
 out.dat:
     label_y_0
@@ -18,7 +18,6 @@ in.dat:
 '''
 
 from tensorflow.keras.datasets import mnist
-import matplotlib.pyplot as plt
 import numpy as np
 
 # Load dataset.

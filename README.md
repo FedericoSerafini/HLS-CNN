@@ -7,7 +7,7 @@ The main difference is that our implementation is written for Vitis HLS version 
 
 ## Summary
 
-Project presentation for the "Embedded Systems" Master course in University of Parma:
+Project presentations for the "Embedded Systems" Master course at University of Parma:
 [FS presentation](/HLS-CNN-presentation-FS.pdf) and [GB presentation](HLS-CNN-presentation-GB.pdf).
 
 ## Workflow and project structure
@@ -21,15 +21,15 @@ Project presentation for the "Embedded Systems" Master course in University of P
 
 3.  C header files containing network architecture and weights.
 
-[C](Code/C):
+[C](Code/C)
 
 4.  replication of the trained network in C (using previously-generated headers).
 
 [Vitis HLS](Code/Vitis-HLS)
 
-5.  C to C++ code adaptation to take advantage of Vitis HLS syntax constructs and libraries.
+5.  translation from C to C++ and code refactoring to take advantage of Vitis HLS pragma and directives.
 
 ## Warning
 C/C++ code of this project is designed to generate an RTL description that meets ambitious performance requirements through pipelining and parallelism;
-to achieve this objective, we wrote specific and non-parametric code,
-meaning that most of the changes that can be applied to the network architecture are **not automatically** propagated to the rest of the project.
+to achieve this, we wrote specific and non-parametric code,
+meaning that changes to the network architecture are **not automatically** propagated to the rest of the project.

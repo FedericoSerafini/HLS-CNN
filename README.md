@@ -12,20 +12,20 @@ Project presentations for the "Embedded Systems" Master course at University of 
 
 ## Workflow and project structure
 
-[Python](Code/Python)
+### Python
   
 1.  model definition, training and evaluation;
 2.  export of (trained) network weights and architecture through C header files.
 
-[Headers](Code/Headers)
+### Headers
 
 3.  C header files containing network architecture and weights.
 
-[C](Code/C)
+### C
 
 4.  replication of the trained network in C (using previously-generated headers).
 
-[Vitis HLS](Code/Vitis-HLS)
+### Vitis HLS
 
 5.  translation from C to C++ and code refactoring to take advantage of Vitis HLS pragma and directives.
 

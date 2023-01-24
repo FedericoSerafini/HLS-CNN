@@ -10,22 +10,26 @@ The main difference is that our implementation is written for Vitis HLS version 
 Project presentations for the "Embedded Systems" Master course at University of Parma:
 [FS presentation](Paper/HLS-CNN-presentation-FS.pdf) and [GB presentation](Paper/HLS-CNN-presentation-GB.pdf).
 
-## Workflow and project structure
+## Workflow and code structure
 
-### Python
+### Data:
+
+0. Input images.
+
+### Python:
   
 1.  model definition, training and evaluation;
 2.  export of (trained) network weights and architecture through C header files.
 
-### Headers
+### Headers:
 
 3.  C header files containing network architecture and weights.
 
-### C
+### C:
 
 4.  replication of the trained network in C (using previously-generated headers).
 
-### Vitis HLS
+### Vitis HLS:
 
 5.  translation from C to C++ and code refactoring to take advantage of Vitis HLS pragma and directives.
 

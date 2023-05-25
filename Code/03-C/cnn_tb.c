@@ -102,10 +102,11 @@ int main ()
       float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
       normalization_and_padding(images[i], pad_img);
       print_pad_img(pad_img);
-      printf("Prediction:\n");
+      printf("Wrong prediction:\n");
       for (int j = 0; j < DIGITS; ++j)
         printf("%d: %f\n", j, prediction[j]);
       printf("\n");
+      printf("******************************\n");
     }
 
     // Sum up time spent.
@@ -115,8 +116,9 @@ int main ()
 
   double
   correct_predictions_perc = (double)correct_predictions * 100.0 / (double)N;
-  printf("Total predictions: %d\n", N);
+  printf("\nTotal predictions: %d\n", N);
   printf("Correct predictions: %.2f %%\n", correct_predictions_perc);
+  printf("Wrong predictions printed above.\n");
   printf("Average latency: %f (ms)\n", (time / N) * 1000);
 
   return 0;

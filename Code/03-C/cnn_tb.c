@@ -66,17 +66,17 @@ int main ()
 
   /**** Read the images. ****/
   float images[N][IMG_ROWS][IMG_COLS];
-  if (0 != read_images("../Data/in.dat", images))
+  if (0 != read_images("../00-Data/in.dat", images))
   {
-    printf("Error: can't open file ``../Data/in.dat''\n");
+    printf("Error: can't open file ``../00-Data/in.dat''\n");
     return 1;
   }
 
   /**** Read expected labels. ****/
   int labels[N];
-  if (0 != read_labels("../Data/out.dat", labels))
+  if (0 != read_labels("../00-Data/out.dat", labels))
   {
-    printf("Error: can't open file ``../Data/out.dat''\n");
+    printf("Error: can't open file ``../00-Data/out.dat''\n");
     return 1;
   }
 

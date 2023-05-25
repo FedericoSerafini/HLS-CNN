@@ -12,7 +12,7 @@ add_files flat.cc
 add_files pool.cc
 add_files utils.cc
 add_files -tb cnn_tb.cc
-add_files -tb ../Data
+add_files -tb ../00-Data
 open_solution "solution1" -flow_target vivado
 set_part {xc7a200tfbg484-1}
 create_clock -period 10 -name default

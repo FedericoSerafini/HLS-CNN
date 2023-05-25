@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../02-Headers/definitions.h"
+#include "../Headers/definitions.h"
 
 #include "hls_stream.h"
 

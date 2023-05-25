@@ -1,4 +1,4 @@
-#include "../02-Headers/definitions.h"
+#include "../Headers/definitions.h"
 #include "utils.hh"
 
 #ifndef __SYNTHESIS__

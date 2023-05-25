@@ -1,5 +1,5 @@
 #include "dense.hh"
-#include "../02-Headers/dense_weights.h"
+#include "../Headers/dense_weights.h"
 
 #include <cmath>
 #include "hls_stream.h"

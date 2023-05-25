@@ -46,11 +46,11 @@ for i in range(N):
     in_dat += '\n'
     out_dat += str(label) + '\n'
 
-with open('../00-Data/in.dat', 'w') as f:
+with open('../Data/in.dat', 'w') as f:
     print(in_dat, file=f, end='')
-    print('Written ' + str(N) + ' images in ../00-Data/in.dat')
+    print('Written ' + str(N) + ' images in ../Data/in.dat')
 
-with open('../00-Data/out.dat', 'w') as f:
+with open('../Data/out.dat', 'w') as f:
     print(out_dat, file=f, end='')
-    print('Written ' + str(N) + ' labels in ../00-Data/out.dat')
+    print('Written ' + str(N) + ' labels in ../Data/out.dat')
 

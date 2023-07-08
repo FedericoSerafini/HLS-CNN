@@ -8,7 +8,7 @@ The main difference is that our implementation is written for Vitis HLS version 
 ## Summary
 
 Project presentations for the "Embedded Systems" Master course at University of Parma:
-[FS presentation](Paper/HLS-CNN-presentation-FS.pdf) and [GB presentation](Paper/HLS-CNN-presentation-GB.pdf).
+[FS presentation](Paper/Latex/HLS-CNN-presentation-FS.pdf) and [GB presentation](Paper/Latex/HLS-CNN-presentation-GB.pdf).
 
 ## Code structure and workflow
 

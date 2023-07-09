@@ -1,6 +1,6 @@
 #include "conv.hh"
-#include "../Headers/conv_weights.h"
-#include "../Headers/definitions.h"
+#include "../03-Headers/conv_weights.h"
+#include "../03-Headers/definitions.h"
 
 float relu (float x)
 {

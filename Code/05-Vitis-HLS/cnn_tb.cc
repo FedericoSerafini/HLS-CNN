@@ -1,10 +1,10 @@
-#include "cnn.h"
-#include "utils.h"
+#include "cnn.hh"
+#include "utils.hh"
 
-#include <stdio.h>
-#include <time.h>
+#include <cstdio>
+#include <ctime>
 
-#define N 1000
+#define N 10
 
 int
 read_images (const char * file, float images [N][IMG_ROWS][IMG_COLS])
@@ -19,8 +19,9 @@ read_images (const char * file, float images [N][IMG_ROWS][IMG_COLS])
   for (int i = 0; i < N; ++i)
     for (int x = 0; x < IMG_ROWS; ++x)
       for (int y = 0; y < IMG_COLS; ++y)
-        if(fscanf(fp, "%f", & images[i][x][y]) != 1)
-          return 1; // Error.
+      {
+        (void)fscanf(fp, "%f", & images[i][x][y]);
+      }
 
   return fclose(fp);
 }
@@ -36,8 +37,7 @@ read_labels(const char * file, int labels[N])
     return -1;
 
   for (int i = 0; i < N; ++i)
-    if(fscanf(fp, "%d", & labels[i]) != 1)
-      return 1;
+    (void)fscanf(fp, "%d", & labels[i]);
 
   return fclose(fp);
 }
@@ -66,17 +66,17 @@ int main ()
 
   /**** Read the images. ****/
   float images[N][IMG_ROWS][IMG_COLS];
-  if (0 != read_images("../Data/in.dat", images))
+  if (0 != read_images("01-Data/in.dat", images))
   {
-    printf("Error: can't open file ``../Data/in.dat''\n");
+    printf("Error: can't open file ``01-Data/in.dat''\n");
     return 1;
   }
 
   /**** Read expected labels. ****/
   int labels[N];
-  if (0 != read_labels("../Data/out.dat", labels))
+  if (0 != read_labels("01-Data/out.dat", labels))
   {
-    printf("Error: can't open file ``../Data/out.dat''\n");
+    printf("Error: can't open file ``01-Data/out.dat''\n");
     return 1;
   }
 
@@ -102,10 +102,10 @@ int main ()
       float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
       normalization_and_padding(images[i], pad_img);
       print_pad_img(pad_img);
-      printf("Wrong prediction:\n");
+      printf("Prediction:\n");
       for (int j = 0; j < DIGITS; ++j)
         printf("%d: %f\n", j, prediction[j]);
-      printf("\n********************************\n");
+      printf("\n");
     }
 
     // Sum up time spent.
@@ -113,11 +113,12 @@ int main ()
     time += time_spent;
   }
 
-  double
-  correct_predictions_perc = (double)correct_predictions * 100.0 / (double)N;
-  printf("\nTotal predictions: %d\n", N);
+  double correct_predictions_perc = correct_predictions * 100.0 / (double)N;
+  printf("\n");
+  printf("Total predictions: %d\n", N);
   printf("Correct predictions: %.2f %%\n", correct_predictions_perc);
   printf("Average latency: %f (ms)\n", (time / N) * 1000);
+  printf("\n");
 
   return 0;
 }

@@ -14,24 +14,24 @@ Project presentations for the "Embedded Systems" Master course at University of 
 
 ### Data:
 
-0. Input images.
+-  Input images.
 
 ### Python:
   
-1.  model definition, training and evaluation;
-2.  export of (trained) network weights and architecture through C header files.
+-  Model definition, training and evaluation.
+-  Export of (trained) network weights and architecture through C header files.
 
 ### Headers:
 
-3.  C header files containing network architecture and weights.
+-  C header files containing network architecture and weights.
 
 ### C:
 
-4.  replication of the trained network in C (using previously-generated headers).
+-  Replication of the trained network in C (using previously-generated headers).
 
 ### Vitis HLS:
 
-5.  translation from C to C++ and code refactoring to take advantage of Vitis HLS pragma and directives.
+-  Translation from C to C++ and code refactoring to take advantage of Vitis HLS pragma and directives.
 
 ## Warning
 C/C++ code of this project is designed to generate an RTL description that meets ambitious performance requirements through pipelining and parallelism;

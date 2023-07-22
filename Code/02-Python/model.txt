@@ -22,4 +22,4 @@ _________________________________________________________________
 
 Accuracy on test set: 97.760
 
-Mean time taken for a prediction: 34.8693 ms
+Mean time taken for a prediction: 29.7415 ms

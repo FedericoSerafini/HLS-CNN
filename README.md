@@ -14,20 +14,24 @@ Project presentations for the "Embedded Systems" Master course at University of 
 
 ### Data:
 
--  Input images.
+-  Input images (generated using Python).
 
 ### Python:
-  
+
+Contains Python source code to do:
 -  Model definition, training and evaluation.
--  Export of (trained) network weights and architecture through C header files.
+-  Exportation of (trained) network weights and architecture through C header files.
+-  Generation of input and expected output for HLS testbench.
+
+The use of Python code is not strictly necessary: the output of these steps is already present in ```Code/01-Data``` and ```Code/03-Headers``` folders.
 
 ### Headers:
 
--  C header files containing network architecture and weights.
+-  C header files containing network architecture and weights (generated using Python).
 
 ### C:
 
--  Replication of the trained network in C (using previously-generated headers).
+-  Replication of the trained network in C (using headers in ```Code/03-Headers```).
 
 ### Vitis HLS:
 

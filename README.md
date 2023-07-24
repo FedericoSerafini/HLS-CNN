@@ -39,5 +39,5 @@ The use of Python code is not strictly necessary: the output of these steps is a
 
 ## Warning
 C/C++ code of this project is designed to generate an RTL description that meets ambitious performance requirements through pipelining and parallelism;
-to achieve this, we wrote specific and non-parametric code,
-meaning that changes to the network architecture are **not automatically** propagated to the rest of the project.
+to achieve this, we wrote specific and non-parametric code;
+meaning that it non-trvial changes to the network architecture (such as adding or removing layers) are **not automatically** propagated to the rest of the project.

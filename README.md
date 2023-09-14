@@ -36,7 +36,7 @@ Contains Python source code to do:
 
 -  Replication of the trained network in C (using headers in ```Code/03-Headers```).
 
-### ```Code/05-Vitis HLS```:
+### ```Code/05-Vitis-HLS```:
 
 -  Translation from C to C++ and code refactoring to take advantage of Vitis HLS pragma and directives.
 

@@ -45,7 +45,7 @@ python3 gen-weights.py
 
 ## Generate input/output for HLS testbench: `gen-tb.py`
 
-This program generates the files `in.dat` and `out.dat` in `../01-Data/`
+This program generates the files `in.dat` and `out.dat` in `../02-Data/`
 directory for the HLS test-bench (`cnn_tb.c`). It takes the
 [MNIST-tensorflow](https://www.tensorflow.org/datasets/catalog/mnist)
 test-set and generate the files in this format:

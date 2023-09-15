@@ -25,7 +25,7 @@
 This program uses a CNN model built with Tensorflow/Keras to compute
 the weights that will be used by the HLS network.
 
-Produces a set of header files in `Headers/` directory:
+Produces a set of header files in `03-Headers/` directory:
 - `conv_weights.h`
 - `dense_weights.h`
 - `definitions.h`

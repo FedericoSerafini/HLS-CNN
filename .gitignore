@@ -1,3 +1,11 @@
+# Vitis HLS project and files.
+/Code/05-Vitis-HLS/Project/
+*.str
+
+# Python VENVs.
+/Code/01-Python/venv
+/Code/01-Python/my-venv
+
 # C executable file.
 Code/04-C/cnn
 Code/04-C/dbg_cnn

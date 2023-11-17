@@ -2,12 +2,13 @@ all:
 	make dbg_cnn cnn
 
 SOURCES = utils.c activ_fun.c conv.c pool.c flat.c dense.c cnn.c cnn_tb.c
+INCLUDE_DIR = ../03-Headers
 
-dbg_cnn: $(SOURCES)
-	gcc -Wall -Wextra -O0 -g -fsanitize=address -I../03-Headers $(SOURCES) -lm -o dbg_cnn
+dbg_cnn: $(SOURCES) $(wildcard $(INCLUDE_DIR)/*.h)
+	gcc -Wall -Wextra -O0 -g -fsanitize=address -I$(INCLUDE_DIR) $(SOURCES) -lm -o dbg_cnn
 
-cnn: $(SOURCES)
-	gcc -O3 -I../03-Headers $(SOURCES) -lm -o cnn
+cnn: $(SOURCES) $(wildcard $(INCLUDE_DIR)/*.h)
+	gcc -O3 -I$(INCLUDE_DIR) $(SOURCES) -lm -o cnn
 
-clean :
+clean:
 	rm -f dbg_cnn cnn

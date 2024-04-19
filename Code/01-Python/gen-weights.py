@@ -32,12 +32,12 @@ import time
 
 
 # Constants.
-input_size			= (28,28)
-conv_kernel_size 	= (3,3)
-conv_filter_num 	= 8
-pool_size 			= (2,2)
-dense_size			= 10
-training_epochs		= 10
+input_size       = (28,28)
+conv_kernel_size = (7,7)
+conv_filter_num  = 4
+pool_size        = (3,3)
+dense_size       = 10
+training_epochs  = 10
 
 def load_dataset() -> tuple:
 	# Load dataset.

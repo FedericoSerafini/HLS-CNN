@@ -20,6 +20,11 @@
     pip install -r requirements.txt
     ```
 
+- Install graphviz:
+    ```
+    sudo apt install graphviz
+    ```
+
 ## Train network and export weights: `gen-weights.py`
 
 This program uses a CNN model built with Tensorflow/Keras to compute

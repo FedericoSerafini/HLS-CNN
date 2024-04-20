@@ -14,14 +14,10 @@
 void
 dataflow_section
 (
-  float pad_img  [PAD_IMG_ROWS][PAD_IMG_COLS],
+  float pad_img0 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS],
-  float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS],
   float prediction [DIGITS]
 )
 {
@@ -35,8 +31,7 @@ dataflow_section
   conv_to_pool_streams [FILTERS];
 
   // Convolution with relu as activation function.
-  convolutional_layer(pad_img, pad_img1, pad_img2, pad_img3,
-                      pad_img4, pad_img5, pad_img6, pad_img7,
+  convolutional_layer(pad_img0, pad_img1, pad_img2, pad_img3,
                       conv_to_pool_streams);
 
   #if 0
@@ -79,8 +74,8 @@ void cnn
 {
   /******** Pre-processing data. ********/
 
-  float pad_img [PAD_IMG_ROWS][PAD_IMG_COLS];
-  normalization_and_padding(img_in, pad_img);
+  float pad_img0 [PAD_IMG_ROWS][PAD_IMG_COLS] = { 0 };
+  normalization_and_padding(img_in, pad_img0);
 
   #if 0
     #ifndef __SYNTHESIS__
@@ -93,10 +88,6 @@ void cnn
   float pad_img1 [PAD_IMG_ROWS][PAD_IMG_COLS];
   float pad_img2 [PAD_IMG_ROWS][PAD_IMG_COLS];
   float pad_img3 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img4 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img5 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img6 [PAD_IMG_ROWS][PAD_IMG_COLS];
-  float pad_img7 [PAD_IMG_ROWS][PAD_IMG_COLS];
 
   float value;
 
@@ -105,18 +96,12 @@ void cnn
     clone_for_cols:
     for (int j = 0; j < PAD_IMG_COLS; ++j)
     {
-      value = pad_img[i][j];
-      pad_img1[i][j] = value;
-      pad_img2[i][j] = value;
-      pad_img3[i][j] = value;
-      pad_img4[i][j] = value;
-      pad_img5[i][j] = value;
-      pad_img6[i][j] = value;
-      pad_img7[i][j] = value;
+      pad_img1[i][j] = pad_img0[i][j];
+      pad_img2[i][j] = pad_img0[i][j];
+      pad_img3[i][j] = pad_img0[i][j];
     }
 
   /* Parallel executions start here. */
-  dataflow_section(pad_img, pad_img1, pad_img2, pad_img3,
-                   pad_img4, pad_img5, pad_img6, pad_img7,
+  dataflow_section(pad_img0, pad_img1, pad_img2, pad_img3,
                    prediction);
 }

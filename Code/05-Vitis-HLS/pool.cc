@@ -45,8 +45,4 @@ max_pooling_layer
     max_pooling(conv_to_pool_streams[1], pool_to_flat_streams[1]);
     max_pooling(conv_to_pool_streams[2], pool_to_flat_streams[2]);
     max_pooling(conv_to_pool_streams[3], pool_to_flat_streams[3]);
-    max_pooling(conv_to_pool_streams[4], pool_to_flat_streams[4]);
-    max_pooling(conv_to_pool_streams[5], pool_to_flat_streams[5]);
-    max_pooling(conv_to_pool_streams[6], pool_to_flat_streams[6]);
-    max_pooling(conv_to_pool_streams[7], pool_to_flat_streams[7]);
 }

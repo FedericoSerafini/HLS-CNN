@@ -74,8 +74,4 @@ dense_layer
   dense(flat_to_dense_streams[1], 1, dense_to_softmax_streams[1]);
   dense(flat_to_dense_streams[2], 2, dense_to_softmax_streams[2]);
   dense(flat_to_dense_streams[3], 3, dense_to_softmax_streams[3]);
-  dense(flat_to_dense_streams[4], 4, dense_to_softmax_streams[4]);
-  dense(flat_to_dense_streams[5], 5, dense_to_softmax_streams[5]);
-  dense(flat_to_dense_streams[6], 6, dense_to_softmax_streams[6]);
-  dense(flat_to_dense_streams[7], 7, dense_to_softmax_streams[7]);
 }

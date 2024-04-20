@@ -13,24 +13,13 @@ normalization_and_padding
 )
 {
   pad_for_rows:
-  for(int r = 0; r < PAD_IMG_ROWS; ++r)
+  for(int r = 0; r < IMG_ROWS; ++r)
     pad_for_cols:
-    for(int c = 0; c < PAD_IMG_COLS; ++c)
+    for(int c = 0; c < IMG_COLS; ++c)
     {
-      if (r == 0 || r == IMG_ROWS + 1)
-      {
-        // Add padding.
-        img_out[r][c] = 0.0;
-      }
-      else if (c == 0 || c == IMG_COLS + 1)
-      {
-        // Add padding.
-        img_out[r][c] = 0.0;
-      }
-      else
       {
         // Normalize.
-        img_out[r][c] = img_in[r-1][c-1] / 255.0;
+        img_out[r + PAD_ROWS / 2][c + PAD_ROWS / 2] = img_in[r][c] / 255.0;
       }
     }
 }

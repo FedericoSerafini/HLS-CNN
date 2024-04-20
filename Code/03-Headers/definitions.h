@@ -16,9 +16,9 @@
 #define PAD_IMG_COLS (IMG_COLS + PAD_COLS)
 
 // Convolutional layer.
-#define KRN_ROWS	3
-#define KRN_COLS	3
-#define FILTERS	8
+#define KRN_ROWS	7
+#define KRN_COLS	7
+#define FILTERS	4
 
 // Pool layer.
 #define POOL_ROWS	2

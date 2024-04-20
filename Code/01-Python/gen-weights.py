@@ -8,8 +8,6 @@ dense_weights.h.
 
 images size: 28x28
 
-DEFAULT: 	Accuracy=97.590
-ADAM:		Accuracy=97.080
 """
 
 from os import path
@@ -23,21 +21,22 @@ from tensorflow.keras.layers import ZeroPadding2D
 from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
-from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import load_model
 from numpy import empty
 from matplotlib import pyplot as plt
 import time
-
+import math
 
 # Constants.
 input_size       = (28,28)
 conv_kernel_size = (7,7)
 conv_filter_num  = 4
-pool_size        = (3,3)
+pool_size        = (2,2)
 dense_size       = 10
-training_epochs  = 10
+training_epochs  = 6
+pad = int(math.floor(conv_kernel_size[0] / 2))
 
 def load_dataset() -> tuple:
 	# Load dataset.
@@ -63,14 +62,13 @@ def prep_pixels(train, test) -> tuple:
 def define_model() -> Sequential:
 	# Define model.
 	model = Sequential()
-	model.add(ZeroPadding2D(padding=1, input_shape=(input_size[0], input_size[1], 1), name='padding_layer'))
+	model.add(ZeroPadding2D(padding=pad, input_shape=(input_size[0], input_size[1], 1), name='padding_layer'))
 	model.add(Conv2D(conv_filter_num, conv_kernel_size, activation='relu', padding='valid', kernel_initializer='he_uniform', input_shape=(30, 30, 1), name='convolution_layer'))
 	model.add(MaxPooling2D(pool_size, name='max_pooling_layer'))
 	model.add(Flatten(name='flatten_layer'))
 	model.add(Dense(10, activation='softmax', name='dense_layer'))
 	# Compile model.
-	opt = SGD(learning_rate=0.01, momentum=0.9)
-	model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
+	model.compile(optimizer=Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
 	# Return model.
 	return model
 
@@ -300,21 +298,21 @@ def main() -> None:
 
 	# If a trained model is already available: load it.
 	# Else: define a new model, train and save it.
-	if not path.isfile('model.h5'):
-		print('model not found: create and train it')
-		model = define_model()
-		#history = model.fit(trainX, trainY, epochs=5, batch_size=32, validation_data=(testX, testY), verbose=1)
-		history = model.fit(trainX,trainY, epochs=training_epochs, batch_size=32, validation_split=0.2, shuffle=True, verbose=1)
-		# Save model.
-		model.save("model.h5")
-		# Save training history.
-		with open('train_history_dict', 'wb') as f:
-			pickle.dump(history.history, f)
+	# if not path.isfile('model.h5'):
+		# print('model not found: create and train it')
+	model = define_model()
+	#history = model.fit(trainX, trainY, epochs=5, batch_size=32, validation_data=(testX, testY), verbose=1)
+	history = model.fit(trainX,trainY, epochs=training_epochs, batch_size=32, validation_split=0.2, shuffle=True, verbose=1)
+	# Save model.
+	model.save("model.h5")
+	# Save training history.
+	with open('train_history_dict', 'wb') as f:
+		pickle.dump(history.history, f)
 
-		print('model saved as \'model.h5\'')
-	else:
-		print('found a model: use it.')
-		model = load_model('model.h5')
+	# 	print('model saved as \'model.h5\'')
+	# else:
+	# 	print('found a model: use it.')
+	# 	model = load_model('model.h5')
 
 	# Print summary.
 	print(model.summary())

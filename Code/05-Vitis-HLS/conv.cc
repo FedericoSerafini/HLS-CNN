@@ -68,7 +68,7 @@ convolutional_layer
   hls::stream<float> conv_to_pool_streams [FILTERS]
 )
 {
-  convolution(pad_img0,  0, conv_to_pool_streams[0]);
+  convolution(pad_img0, 0, conv_to_pool_streams[0]);
   convolution(pad_img1, 1, conv_to_pool_streams[1]);
   convolution(pad_img2, 2, conv_to_pool_streams[2]);
   convolution(pad_img3, 3, conv_to_pool_streams[3]);

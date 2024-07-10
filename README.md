@@ -8,7 +8,9 @@ The main difference is that our implementation is written for Vitis HLS version 
 ## Slides
 
 Project presentations for the "Embedded Systems" master course at University of Parma:
-[FS presentation](HLS-CNN-presentation-FS.pdf) and [GB presentation](HLS-CNN-presentation-GB.pdf).
+[FS presentation](HLS-CNN-presentation-FS.pdf) and [GB presentation](HLS-CNN-presentation-GB.pdf)
+(*note that the presentations are dated back to 2023 and some information may result outdated wrt to
+the current network architecture*).
 
 ## Code structure and workflow
 
